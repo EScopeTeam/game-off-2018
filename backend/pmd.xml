@@ -5,8 +5,7 @@
   xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
   http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
   	<description>This ruleset checks my code for bad stuff</description>
-  	<exclude-pattern>.*/Application.*</exclude-pattern>
-  	<exclude-pattern>.*/src/it/.*</exclude-pattern>
+  	<exclude-pattern>.*/generated-sources/.*</exclude-pattern>
     <rule ref="rulesets/java/basic.xml" />
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/design.xml"/>

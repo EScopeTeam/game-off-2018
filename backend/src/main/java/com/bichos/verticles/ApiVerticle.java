@@ -14,18 +14,16 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ApiVerticle extends AbstractVerticle {
 
-  private static final int LOGIN_ROUTE_HANDLER_ORDER = 0;
-  private static final int AUTHENTICATION_ROUTE_HANDLER_ORDER = 1;
-  // private static final int GENERAL_ROUTE_HANDLER_ORDER = 2;
-
   private static final String KEY_PORT = "port";
   private static final int DEFAULT_PORT = 8080;
+
+  private static final String API_DESCRIPTION_PATH = "src/main/resources/api-v1.yml";
 
   private Injector injector;
 
@@ -33,11 +31,19 @@ public class ApiVerticle extends AbstractVerticle {
   public void start(final Future<Void> fStart) {
     initializeGuice();
 
-    final Router router = createRouter();
+    OpenAPI3RouterFactory.create(vertx, API_DESCRIPTION_PATH, routerFactoryResult -> {
+      if (routerFactoryResult.succeeded()) {
+        final OpenAPI3RouterFactory routerFactory = routerFactoryResult.result();
+        addHandlersToRoute(routerFactory);
+        final Router router = routerFactory.getRouter();
 
-    final int port = config().getInteger(KEY_PORT, DEFAULT_PORT);
-    final HttpServer server = vertx.createHttpServer();
-    server.requestHandler(router::accept).listen(port, (serverResult) -> handleServerStart(port, serverResult, fStart));
+        final int port = config().getInteger(KEY_PORT, DEFAULT_PORT);
+        final HttpServer server = vertx.createHttpServer();
+        server.requestHandler(router::accept).listen(port, (serverResult) -> handleServerStart(port, serverResult, fStart));
+      } else {
+        fStart.fail(routerFactoryResult.cause());
+      }
+    });
   }
 
   private void initializeGuice() {
@@ -53,13 +59,10 @@ public class ApiVerticle extends AbstractVerticle {
     }
   }
 
-  private Router createRouter() {
-    final Router router = Router.router(vertx);
-    router.route().handler(BodyHandler.create());
-    router.post("/login").order(LOGIN_ROUTE_HANDLER_ORDER).handler(injector.getInstance(LoginHandler.class));
-    router.route().order(AUTHENTICATION_ROUTE_HANDLER_ORDER).handler(injector.getInstance(AuthenticationHandler.class));
-
-    return router;
+  private void addHandlersToRoute(final OpenAPI3RouterFactory routerFactory) {
+    routerFactory
+        .addHandlerByOperationId("login", injector.getInstance(LoginHandler.class))
+        .addSecurityHandler("bearerAuth", injector.getInstance(AuthenticationHandler.class));
   }
 
 }

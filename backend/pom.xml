@@ -13,8 +13,11 @@
   	
     <vertx.version>3.5.4</vertx.version>
     <lombok.version>1.18.4</lombok.version>
+    <logback.version>1.2.3</logback.version>
+    <guice.version>4.2.2</guice.version>
     <checkstyle.version>2.17</checkstyle.version>
     <pmd.version>3.8</pmd.version>
+    <version.swagger.codegen>3.0.0-rc1</version.swagger.codegen>
   </properties>
   
   <dependencies>
@@ -27,6 +30,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-api-contract</artifactId>
       <version>${vertx.version}</version>
     </dependency>
     
@@ -58,13 +67,13 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
+      <version>${logback.version}</version>
     </dependency>
     
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>4.2.2</version>
+      <version>${guice.version}</version>
     </dependency>
   </dependencies>
   
@@ -123,6 +132,51 @@
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-codegen-maven-plugin</artifactId>
+        <version>${version.swagger.codegen}</version>
+        <configuration>
+          <inputSpec>src/main/resources/api-v1.yml</inputSpec>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-swagger-api-v1</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <language>java</language>
+              <modelPackage>${project.groupId}.models</modelPackage>
+              <modelNamePrefix>Api</modelNamePrefix>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApis>false</generateApis>
+              <library>vertx</library>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>        
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-generated-source</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>target/generated-sources/swagger/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin> 
   	</plugins>
   </build>
 </project>
