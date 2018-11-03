@@ -8,6 +8,7 @@
 .checkstyle
 .pmd
 .pmdruleset.xml
+.eclipse-pmd
 
 # Intellij
 .idea/
