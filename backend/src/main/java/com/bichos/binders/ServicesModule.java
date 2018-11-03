@@ -14,10 +14,11 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 
 public class ServicesModule extends AbstractModule {
 
-	@Provides
-	@Singleton
-	public AuthenticationService provideAuthenticationService(final Vertx vertx, final JWTAuth jwtAuth, final AuthenticationConfig authConfig, final PlayersRepository playersRepository) {
-		return new AuthenticationJWTService(jwtAuth, authConfig.getJWTOptions(), JDBCHashStrategy.createSHA512(vertx), playersRepository);
-	}
-	
+  @Provides
+  @Singleton
+  public AuthenticationService provideAuthenticationService(final Vertx vertx, final JWTAuth jwtAuth, final AuthenticationConfig authConfig,
+      final PlayersRepository playersRepository) {
+    return new AuthenticationJWTService(jwtAuth, authConfig.getJWTOptions(), JDBCHashStrategy.createSHA512(vertx), playersRepository);
+  }
+
 }

@@ -6,6 +6,6 @@ import io.vertx.core.Future;
 
 public interface PlayersRepository {
 
-	Future<Player> findPlayer(String username);
-	
+  Future<Player> findPlayer(String username);
+
 }

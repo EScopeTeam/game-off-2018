@@ -11,16 +11,16 @@ import io.vertx.ext.auth.jwt.JWTAuth;
 
 public class HandlersModule extends AbstractModule {
 
-	@Provides
-	@Singleton
-	public AuthenticationHandler provideAuthenticationHandler(final JWTAuth jwtAuth) {
-		return new AuthenticationHandler(jwtAuth);
-	}
-	
-	@Provides
-	@Singleton
-	public LoginHandler provideLoginHandler(AuthenticationService authService) {
-		return new LoginHandler(authService);
-	}
-	
+  @Provides
+  @Singleton
+  public AuthenticationHandler provideAuthenticationHandler(final JWTAuth jwtAuth) {
+    return new AuthenticationHandler(jwtAuth);
+  }
+
+  @Provides
+  @Singleton
+  public LoginHandler provideLoginHandler(final AuthenticationService authService) {
+    return new LoginHandler(authService);
+  }
+
 }

@@ -8,10 +8,10 @@ import com.google.inject.Singleton;
 
 public class RepositoriesModule extends AbstractModule {
 
-	@Provides
-	@Singleton
-	public PlayersRepository providePlayersRepository() {
-		return new PlayersInMemoryRepository();
-	}
-	
+  @Provides
+  @Singleton
+  public PlayersRepository providePlayersRepository() {
+    return new PlayersInMemoryRepository();
+  }
+
 }

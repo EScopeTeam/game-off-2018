@@ -7,20 +7,20 @@ import io.vertx.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Main {
+public final class Main {
 
-	public static void main(String[] args) {
-		Vertx vertx = Vertx.vertx();
-	    vertx.deployVerticle(
-	    		ApiVerticle.class.getName(), 
-	    		new DeploymentOptions(), 
-	    		result -> {
-	    			if(result.succeeded()) {
-	    				log.info("Verticle " + ApiVerticle.class.getName() + " deployed.");
-	    			} else {
-	    				log.error("Error deploying verticle " + ApiVerticle.class.getName() + ".", result.cause());
-	    			}
-	    		});
-	}
+  private Main() {
+  }
+
+  public static void main(final String[] args) {
+    final Vertx vertx = Vertx.vertx();
+    vertx.deployVerticle(ApiVerticle.class.getName(), new DeploymentOptions(), result -> {
+      if (result.succeeded()) {
+        log.info("Verticle " + ApiVerticle.class.getName() + " deployed.");
+      } else {
+        log.error("Error deploying verticle " + ApiVerticle.class.getName() + ".", result.cause());
+      }
+    });
+  }
 
 }

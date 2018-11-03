@@ -13,6 +13,8 @@
   	
     <vertx.version>3.5.4</vertx.version>
     <lombok.version>1.18.4</lombok.version>
+    <checkstyle.version>2.17</checkstyle.version>
+    <pmd.version>3.8</pmd.version>
   </properties>
   
   <dependencies>
@@ -65,4 +67,62 @@
       <version>4.2.2</version>
     </dependency>
   </dependencies>
+  
+  <build>
+  	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>validate</phase>
+            <configuration>
+              <configLocation>checkstyle.xml</configLocation>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <failsOnError>true</failsOnError>
+              <linkXRef>false</linkXRef>
+              <sourceDirectories>
+                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+              </sourceDirectories>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      		
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+        <executions>
+          <execution>
+            <id>pmd</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+              <minimumTokens>20</minimumTokens>
+              <targetJdk>${javaVersion}</targetJdk>
+              <linkXRef>false</linkXRef>
+              <rulesets>
+                <ruleset>${project.basedir}/pmd.xml</ruleset>
+              </rulesets>
+              <excludes>
+                <exclude>.*/Application.*</exclude>
+                <exclude>.*/src/it/.*</exclude>
+              </excludes>
+            </configuration>	
+          </execution>
+        </executions>
+      </plugin>
+  	</plugins>
+  </build>
 </project>

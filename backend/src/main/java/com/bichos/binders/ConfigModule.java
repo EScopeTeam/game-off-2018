@@ -13,27 +13,27 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ConfigModule extends AbstractModule {
-	
-	private final Vertx vertx;
-	
-	private final JsonObject config;
 
-	@Override
-	protected void configure() {
-		bind(Vertx.class).toInstance(vertx);
-		bind(JsonObject.class).annotatedWith(Names.named("config")).toInstance(config);
-	}
-	
-	@Provides 
-	@Singleton
-	public AuthenticationConfig provideAuthenticationConfig() {
-		return new AuthenticationConfig(config);
-	}
-	
-	@Provides 
-	@Singleton
-	public JWTAuth provideJWTAuth(final AuthenticationConfig authenticationConfig) {
-		return JWTAuth.create(vertx, authenticationConfig.getJWTAuthOptions());
-	}
-	
+  private final Vertx vertx;
+
+  private final JsonObject config;
+
+  @Override
+  protected void configure() {
+    bind(Vertx.class).toInstance(vertx);
+    bind(JsonObject.class).annotatedWith(Names.named("config")).toInstance(config);
+  }
+
+  @Provides
+  @Singleton
+  public AuthenticationConfig provideAuthenticationConfig() {
+    return new AuthenticationConfig(config);
+  }
+
+  @Provides
+  @Singleton
+  public JWTAuth provideJWTAuth(final AuthenticationConfig authenticationConfig) {
+    return JWTAuth.create(vertx, authenticationConfig.getJWTAuthOptions());
+  }
+
 }

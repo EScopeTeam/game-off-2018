@@ -5,6 +5,9 @@
 .classpath
 .project
 .settings/
+.checkstyle
+.pmd
+.pmdruleset.xml
 
 # Intellij
 .idea/
