@@ -27,7 +27,7 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   @Override
   public Future<String> login(final String username, final String password) {
-    final Future<Player> playerFuture = playersRepository.findPlayer(username);
+    final Future<Player> playerFuture = playersRepository.findPlayerByUsername(username);
 
     return playerFuture.map(player -> checkPasswordAndGenerateToken(player, password));
   }

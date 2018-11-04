@@ -15,4 +15,6 @@ public class Player {
 
   private String salt;
 
+  private String email;
+
 }

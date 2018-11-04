@@ -23,7 +23,7 @@
     
     <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
 	  <properties>
-	    <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*"/>
+	    <property name="violationSuppressRegex" value="^Found '(UR|DU)'-anomaly.*"/>
 	  </properties>
 	</rule>
 </ruleset>

@@ -11,16 +11,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlayersSqlRepository implements PlayersRepository {
 
-  private static final String FIND_PLAYER_BY_USERNAME_SQL = "SELECT player_id, username, password, salt FROM players WHERE username = ?";
+  private static final String FIND_PLAYER_BY_USERNAME_SQL = "SELECT player_id, username, password, salt, email FROM players WHERE username = ?";
   private static final int INDEX_ID = 0;
   private static final int INDEX_USERNAME = 1;
   private static final int INDEX_PASSWORD = 2;
   private static final int INDEX_SALT = 3;
+  private static final int INDEX_EMAIL = 4;
 
   private final SQLClient client;
 
   @Override
-  public Future<Player> findPlayer(final String username) {
+  public Future<Player> findPlayerByUsername(final String username) {
     final Future<JsonArray> fQuery = Future.future();
     final JsonArray params = new JsonArray().add(username);
     client.querySingleWithParams(FIND_PLAYER_BY_USERNAME_SQL, params, fQuery.completer());
@@ -39,6 +40,7 @@ public class PlayersSqlRepository implements PlayersRepository {
       result.setUsername(row.getString(INDEX_USERNAME));
       result.setPassword(row.getString(INDEX_PASSWORD));
       result.setSalt(row.getString(INDEX_SALT));
+      result.setEmail(row.getString(INDEX_EMAIL));
     }
 
     return result;
