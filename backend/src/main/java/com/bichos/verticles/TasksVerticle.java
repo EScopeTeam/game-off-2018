@@ -26,7 +26,7 @@ public class TasksVerticle extends AbstractVerticle {
 
   private void runTasks() {
     for (final WorkerTask task : getWorkerTasks()) {
-      task.run(vertx, config());
+      task.run();
     }
   }
 
