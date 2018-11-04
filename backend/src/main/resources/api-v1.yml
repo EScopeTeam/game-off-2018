@@ -119,3 +119,10 @@ components:
           type: "string"
           description: "The error description."
           example: "The username cannot be null."
+        params:
+          type: "object"
+          description: "Attributes to complete the message."
+          example:
+            min: 1
+          additionalProperties: 
+            type: "string"

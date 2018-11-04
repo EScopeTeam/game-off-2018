@@ -20,6 +20,10 @@
     <version.swagger.codegen>3.0.0-rc1</version.swagger.codegen>
     <junit.version>4.12</junit.version>
     <mockito.version>2.23.0</mockito.version>
+    <swagger.version>1.5.21</swagger.version>
+    <javax.el.version>3.0.0</javax.el.version>
+    <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
+    <hibernate.validator.version>6.0.2.Final</hibernate.validator.version>
   </properties>
   
   <dependencies>
@@ -32,12 +36,6 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-      <version>${vertx.version}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-web-api-contract</artifactId>
       <version>${vertx.version}</version>
     </dependency>
     
@@ -86,7 +84,6 @@
       <scope>test</scope>
     </dependency>
     
-    
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -104,6 +101,28 @@
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
       <version>${guice.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>javax.el-api</artifactId>
+      <version>${javax.el.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>${glassfish.javax.el.version}</version>
+    </dependency> 
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
     </dependency>
   </dependencies>
   
@@ -184,6 +203,10 @@
               <generateSupportingFiles>false</generateSupportingFiles>
               <generateApis>false</generateApis>
               <library>vertx</library>
+              <templateDirectory>src/main/resources/swagger-templates</templateDirectory>
+              <configOptions>
+              	<useBeanValidation>true</useBeanValidation>
+              </configOptions>
             </configuration>
           </execution>
         </executions>

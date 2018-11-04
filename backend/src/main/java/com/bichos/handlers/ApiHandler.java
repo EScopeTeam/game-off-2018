@@ -8,7 +8,7 @@ public interface ApiHandler extends Handler<RoutingContext> {
 
   int DEFAULT_ORDER = 5;
   int BODY_ORDER = 0;
-  int AUTHENTICATION_ORDER = 0;
+  int AUTHENTICATION_ORDER = 2;
 
   String getPath();
 

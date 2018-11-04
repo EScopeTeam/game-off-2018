@@ -1,0 +1,17 @@
+{{#required}}
+  @NotNull
+  @NotEmpty
+{{/required}}
+{{#is this 'container'}}
+{{#isNot this 'primitive-type'}}
+{{#isNot this 'enum'}}
+  @Valid
+{{/isNot}}
+{{/isNot}}
+{{/is}}
+{{#isNot this 'container'}}
+{{#isNot this 'primitive-type'}}
+  @Valid
+{{/isNot}}
+{{/isNot}}
+{{>beanValidationCore}}

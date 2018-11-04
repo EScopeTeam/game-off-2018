@@ -1,6 +1,6 @@
 package com.bichos.utils;
 
-public enum HttpStatusCode {
+public enum HttpStatus {
   OK(200, "OK"),
   FOUND(302, "Found"),
   NOT_MODIFIED(304, "Not Modified"),
@@ -16,7 +16,7 @@ public enum HttpStatusCode {
   private final int statusCode;
   private final String statusMessage;
 
-  HttpStatusCode(final int statusCode, final String statusMessage) {
+  HttpStatus(final int statusCode, final String statusMessage) {
     this.statusCode = statusCode;
     this.statusMessage = statusMessage;
   }

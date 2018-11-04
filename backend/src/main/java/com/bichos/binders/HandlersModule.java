@@ -19,7 +19,7 @@ public class HandlersModule extends AbstractModule {
     final Multibinder<ApiHandler> apiHandlerBinder = Multibinder.newSetBinder(binder(), ApiHandler.class);
     bindApiHandler(apiHandlerBinder, LoginHandler.class);
 
-    final Multibinder<ApiWSHandler> apiWSHandlerBinder = Multibinder.newSetBinder(binder(), ApiWSHandler.class);
+    /* FIXME final Multibinder<ApiWSHandler> apiWSHandlerBinder = */Multibinder.newSetBinder(binder(), ApiWSHandler.class);
   }
 
   private void bindApiHandler(final Multibinder<ApiHandler> apiHandlerBinder, final Class<? extends ApiHandler> clazz) {
@@ -27,10 +27,12 @@ public class HandlersModule extends AbstractModule {
     apiHandlerBinder.addBinding().to(Key.get(clazz));
   }
 
-  private void bindApiWSHandler(final Multibinder<ApiWSHandler> apiHandlerBinder, final Class<? extends ApiWSHandler> clazz) {
-    binder().bind(clazz).in(Singleton.class);
-    apiHandlerBinder.addBinding().to(Key.get(clazz));
-  }
+  /*
+   * FIXME private void bindApiWSHandler(final Multibinder<ApiWSHandler>
+   * apiHandlerBinder, final Class<? extends ApiWSHandler> clazz) {
+   * binder().bind(clazz).in(Singleton.class);
+   * apiHandlerBinder.addBinding().to(Key.get(clazz)); }
+   */
 
   @Provides
   @Singleton

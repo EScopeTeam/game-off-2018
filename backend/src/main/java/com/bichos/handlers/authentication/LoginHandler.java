@@ -5,8 +5,9 @@ import com.bichos.handlers.ApiHandler;
 import com.bichos.mappers.LoginMappers;
 import com.bichos.models.ApiLoginRequest;
 import com.bichos.services.AuthenticationService;
+import com.bichos.services.ValidationService;
 import com.bichos.utils.HandlerUtils;
-import com.bichos.utils.HttpStatusCode;
+import com.bichos.utils.HttpStatus;
 import com.google.inject.Inject;
 
 import io.vertx.core.http.HttpMethod;
@@ -21,14 +22,18 @@ public class LoginHandler implements ApiHandler {
 
   private final AuthenticationService authenticationService;
 
+  private final ValidationService validationService;
+
   @Override
   public void handle(final RoutingContext context) {
     final ApiLoginRequest request = HandlerUtils.jsonRequest(context, ApiLoginRequest.class);
+    validationService.validate(request);
+
     authenticationService.login(request.getUsername(), request.getPassword()).setHandler(result -> {
       if (result.succeeded()) {
         HandlerUtils.jsonResponse(context, LoginMappers.mapTokenToResponse(result.result()));
       } else if (result.cause() != null && result.cause() instanceof InvalidLoginException) {
-        context.fail(HttpStatusCode.UNAUTHORIZED.getStatusCode());
+        context.fail(HttpStatus.UNAUTHORIZED.getStatusCode());
       } else {
         context.fail(result.cause());
       }
@@ -43,6 +48,11 @@ public class LoginHandler implements ApiHandler {
   @Override
   public HttpMethod getMethod() {
     return METHOD;
+  }
+
+  @Override
+  public int getOrder() {
+    return ApiHandler.AUTHENTICATION_ORDER - 1;
   }
 
 }

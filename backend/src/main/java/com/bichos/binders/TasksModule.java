@@ -8,7 +8,7 @@ public class TasksModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    final Multibinder<WorkerTask> workerTasksBinder = Multibinder.newSetBinder(binder(), WorkerTask.class);
+    /* FIXME final Multibinder<WorkerTask> workerTasksBinder = */Multibinder.newSetBinder(binder(), WorkerTask.class);
   }
 
 }

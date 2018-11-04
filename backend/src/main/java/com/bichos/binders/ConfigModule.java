@@ -1,5 +1,8 @@
 package com.bichos.binders;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import com.bichos.config.AuthenticationConfig;
 import com.bichos.config.SqlConfig;
 import com.google.inject.AbstractModule;
@@ -49,6 +52,12 @@ public class ConfigModule extends AbstractModule {
   @Singleton
   public SQLClient provideSqlClient(final SqlConfig sqlConfig) {
     return PostgreSQLClient.createShared(vertx, sqlConfig.getSQLClientConfig());
+  }
+
+  @Provides
+  @Singleton
+  public Validator provideValidator() {
+    return Validation.buildDefaultValidatorFactory().getValidator();
   }
 
 }

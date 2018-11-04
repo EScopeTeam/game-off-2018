@@ -1,9 +1,13 @@
 package com.bichos.binders;
 
+import javax.validation.Validator;
+
 import com.bichos.config.AuthenticationConfig;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.services.AuthenticationService;
+import com.bichos.services.ValidationService;
 import com.bichos.services.impl.AuthenticationJWTService;
+import com.bichos.services.impl.JavaxValidationService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -19,6 +23,12 @@ public class ServicesModule extends AbstractModule {
   public AuthenticationService provideAuthenticationService(final Vertx vertx, final JWTAuth jwtAuth, final AuthenticationConfig authConfig,
       final PlayersRepository playersRepository) {
     return new AuthenticationJWTService(jwtAuth, authConfig.getJWTOptions(), JDBCHashStrategy.createSHA512(vertx), playersRepository);
+  }
+
+  @Provides
+  @Singleton
+  public ValidationService provideValidationService(final Validator validator) {
+    return new JavaxValidationService(validator);
   }
 
 }
