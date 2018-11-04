@@ -1,5 +1,7 @@
 package com.bichos.mappers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
@@ -25,8 +27,20 @@ public final class ErrorMappers {
     result.setAttribute(error.getPropertyPath().toString());
     result.setCode(error.getMessageTemplate());
     result.setDescription(error.getMessage());
+    result.setParams(mapErrorParams(error.getConstraintDescriptor().getAttributes()));
 
     return result;
+  }
+
+  private static Map<String, String> mapErrorParams(final Map<String, Object> params) {
+    return params == null ? new HashMap<>()
+        : params.entrySet().stream().filter(ErrorMappers::filterParam).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toString()));
+  }
+
+  private static boolean filterParam(final Map.Entry<String, Object> param) {
+    final String key = param.getKey();
+
+    return !"payload".equals(key) && !"groups".equals(key) && !"message".equals(key);
   }
 
 }

@@ -3,6 +3,7 @@ package com.bichos.verticles;
 import java.util.Set;
 
 import com.bichos.binders.GuiceInitializer;
+import com.bichos.exceptions.ResourceNotFoundException;
 import com.bichos.handlers.ApiHandler;
 import com.bichos.handlers.ApiWSHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
@@ -60,6 +61,9 @@ public class ApiVerticle extends AbstractVerticle {
 
     router.route(EVENTBUS_PATH + "/*").handler(createSockJsHandler());
 
+    router.route()
+        .order(ApiHandler.NOT_FOUND_ORDER)
+        .handler(context -> context.fail(new ResourceNotFoundException(context.request().method().name(), context.request().path())));
     router.route().failureHandler(injector.getInstance(ErrorHandler.class));
   }
 

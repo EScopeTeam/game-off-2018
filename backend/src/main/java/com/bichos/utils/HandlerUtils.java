@@ -6,7 +6,7 @@ import io.vertx.ext.web.RoutingContext;
 
 public final class HandlerUtils {
 
-  private static final String HEADER_CONTENT_TYPE_JSON_VALUE = "application/json";
+  private static final String HEADER_CONTENT_TYPE_JSON_VALUE = "application/json; charset=utf-8";
 
   private HandlerUtils() {
   }
