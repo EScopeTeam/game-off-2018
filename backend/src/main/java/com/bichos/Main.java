@@ -2,7 +2,9 @@ package com.bichos;
 
 import java.util.stream.Stream;
 
+import com.bichos.utils.VerticleDeployment;
 import com.bichos.verticles.ApiVerticle;
+import com.bichos.verticles.TasksVerticle;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.config.ConfigRetrieverOptions;
@@ -13,6 +15,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.SLF4JLogDelegateFactory;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -20,27 +23,37 @@ public final class Main {
 
   private static final String ENV_PROPERTY_PROFILE = "profile";
 
-  @SuppressWarnings("unchecked")
-  private static final Class<? extends AbstractVerticle>[] VERTICLES = new Class[] {
-      ApiVerticle.class
+  private static final String TASKS_WORKER_POOL_NAME = "taks-pool";
+  private static final int TASKS_WORKER_SIZE = 5;
+
+  private static final VerticleDeployment[] VERTICLES = new VerticleDeployment[] {
+      VerticleDeployment.of(ApiVerticle.class, new DeploymentOptions()),
+      VerticleDeployment.of(TasksVerticle.class, new DeploymentOptions()
+          .setWorkerPoolName(TASKS_WORKER_POOL_NAME)
+          .setWorkerPoolSize(TASKS_WORKER_SIZE)
+          .setWorker(true))
   };
 
   private Main() {
   }
 
   public static void main(final String[] args) {
+    System.setProperty("vertx.logger-delegate-factory-class-name", SLF4JLogDelegateFactory.class.getName());
+
     final Vertx vertx = Vertx.vertx();
 
     loadConfig(vertx, configResult -> {
       if (configResult.succeeded()) {
-        Stream.of(VERTICLES).forEach(clazz -> {
-          final DeploymentOptions options = new DeploymentOptions()
+        Stream.of(VERTICLES).forEach(deployment -> {
+          final DeploymentOptions options = deployment.getOptions()
               .setConfig(configResult.result());
-          vertx.deployVerticle(clazz.getName(), options, result -> {
+          final Class<? extends AbstractVerticle> verticle = deployment.getVerticle();
+
+          vertx.deployVerticle(verticle.getName(), options, result -> {
             if (result.succeeded()) {
-              log.info("Verticle " + clazz.getSimpleName() + " deployed.");
+              log.info("Verticle " + verticle.getSimpleName() + " deployed.");
             } else {
-              log.error("Error deploying verticle " + clazz.getSimpleName() + ".", result.cause());
+              log.error("Error deploying verticle " + verticle.getSimpleName() + ".", result.cause());
             }
           });
         });
