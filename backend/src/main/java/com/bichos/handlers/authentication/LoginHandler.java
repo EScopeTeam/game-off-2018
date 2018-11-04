@@ -9,13 +9,15 @@ import com.bichos.utils.HandlerUtils;
 import com.bichos.utils.HttpStatusCode;
 import com.google.inject.Inject;
 
+import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class LoginHandler implements ApiHandler {
 
-  private static final String OPERATION_ID = "login";
+  private static final String PATH = "/login";
+  private static final HttpMethod METHOD = HttpMethod.POST;
 
   private final AuthenticationService authenticationService;
 
@@ -34,8 +36,13 @@ public class LoginHandler implements ApiHandler {
   }
 
   @Override
-  public String getOperationId() {
-    return OPERATION_ID;
+  public String getPath() {
+    return PATH;
+  }
+
+  @Override
+  public HttpMethod getMethod() {
+    return METHOD;
   }
 
 }

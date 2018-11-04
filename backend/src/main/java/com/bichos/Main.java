@@ -23,7 +23,7 @@ public final class Main {
 
   private static final String ENV_PROPERTY_PROFILE = "profile";
 
-  private static final String TASKS_WORKER_POOL_NAME = "taks-pool";
+  private static final String TASKS_WORKER_POOL_NAME = "tasks-pool";
   private static final int TASKS_WORKER_SIZE = 5;
 
   private static final VerticleDeployment[] VERTICLES = new VerticleDeployment[] {
