@@ -8,4 +8,6 @@ public interface PlayersRepository {
 
   Future<Player> findPlayerByUsername(String username);
 
+  Future<Void> updateOnlineById(String playerId, boolean online);
+
 }

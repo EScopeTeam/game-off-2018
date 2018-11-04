@@ -17,4 +17,6 @@ public class Player {
 
   private String email;
 
+  private boolean online;
+
 }

@@ -8,6 +8,8 @@ import com.bichos.handlers.ApiHandler;
 import com.bichos.handlers.ApiWSHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.errors.ErrorHandler;
+import com.bichos.handlers.websockets.CloseConnectionHandler;
+import com.bichos.handlers.websockets.OpenConnectionHandler;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 
@@ -16,6 +18,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.bridge.BridgeEventType;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
@@ -52,6 +55,11 @@ public class ApiVerticle extends AbstractVerticle {
     router.route().order(ApiHandler.BODY_ORDER).handler(BodyHandler.create());
     router.route().order(ApiHandler.AUTHENTICATION_ORDER).handler(injector.getInstance(AuthenticationHandler.class));
 
+    router.route().order(ApiHandler.BODY_ORDER + 1).handler(context -> {
+      context.response().putHeader("Access-Control-Allow-Origin", "*");
+      context.next();
+    });
+
     for (final ApiHandler handler : getApiHandlers()) {
       router
           .route(handler.getMethod(), handler.getPath())
@@ -82,7 +90,15 @@ public class ApiVerticle extends AbstractVerticle {
     }
 
     final SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-    sockJSHandler.bridge(options);
+    final OpenConnectionHandler openConnectionHandler = injector.getInstance(OpenConnectionHandler.class);
+    final CloseConnectionHandler closeConnectionHandler = injector.getInstance(CloseConnectionHandler.class);
+    sockJSHandler.bridge(options, event -> {
+      if (event.type() == BridgeEventType.SOCKET_CREATED) {
+        openConnectionHandler.handle(event);
+      } else if (event.type() == BridgeEventType.SOCKET_CLOSED) {
+        closeConnectionHandler.handle(event);
+      }
+    });
 
     return sockJSHandler;
   }

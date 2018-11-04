@@ -10,6 +10,9 @@ import com.bichos.handlers.authentication.LoginHandler;
 import com.bichos.handlers.errors.DecodeExceptionHandler;
 import com.bichos.handlers.errors.ResourceNotFoundHandler;
 import com.bichos.handlers.errors.ValidationErrorHandler;
+import com.bichos.handlers.websockets.CloseConnectionHandler;
+import com.bichos.handlers.websockets.OpenConnectionHandler;
+import com.bichos.services.PlayersService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Provides;
@@ -60,6 +63,18 @@ public class HandlersModule extends AbstractModule {
   @Singleton
   public AuthenticationHandler provideAuthenticationHandler(final JWTAuth jwtAuth) {
     return new AuthenticationHandler(jwtAuth);
+  }
+
+  @Provides
+  @Singleton
+  public OpenConnectionHandler provideOpenConnectionHandler(final PlayersService playersService) {
+    return new OpenConnectionHandler(playersService);
+  }
+
+  @Provides
+  @Singleton
+  public CloseConnectionHandler provideCloseConnectionHandler(final PlayersService playersService) {
+    return new CloseConnectionHandler(playersService);
   }
 
 }
