@@ -1,6 +1,7 @@
 package com.bichos.binders;
 
 import com.bichos.config.AuthenticationConfig;
+import com.bichos.config.SqlConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -8,7 +9,9 @@ import com.google.inject.name.Names;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.asyncsql.PostgreSQLClient;
 import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.sql.SQLClient;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -34,6 +37,18 @@ public class ConfigModule extends AbstractModule {
   @Singleton
   public JWTAuth provideJWTAuth(final AuthenticationConfig authenticationConfig) {
     return JWTAuth.create(vertx, authenticationConfig.getJWTAuthOptions());
+  }
+
+  @Provides
+  @Singleton
+  public SqlConfig provideSqlConfig() {
+    return new SqlConfig(config);
+  }
+
+  @Provides
+  @Singleton
+  public SQLClient provideSqlClient(final SqlConfig sqlConfig) {
+    return PostgreSQLClient.createShared(vertx, sqlConfig.getSQLClientConfig());
   }
 
 }
