@@ -1,6 +1,7 @@
 package com.bichos.binders;
 
 import com.bichos.handlers.ApiHandler;
+import com.bichos.handlers.ApiWSHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.authentication.LoginHandler;
 import com.google.inject.AbstractModule;
@@ -16,11 +17,17 @@ public class HandlersModule extends AbstractModule {
   @Override
   protected void configure() {
     final Multibinder<ApiHandler> apiHandlerBinder = Multibinder.newSetBinder(binder(), ApiHandler.class);
-
     bindApiHandler(apiHandlerBinder, LoginHandler.class);
+
+    final Multibinder<ApiWSHandler> apiWSHandlerBinder = Multibinder.newSetBinder(binder(), ApiWSHandler.class);
   }
 
   private void bindApiHandler(final Multibinder<ApiHandler> apiHandlerBinder, final Class<? extends ApiHandler> clazz) {
+    binder().bind(clazz).in(Singleton.class);
+    apiHandlerBinder.addBinding().to(Key.get(clazz));
+  }
+
+  private void bindApiWSHandler(final Multibinder<ApiWSHandler> apiHandlerBinder, final Class<? extends ApiWSHandler> clazz) {
     binder().bind(clazz).in(Singleton.class);
     apiHandlerBinder.addBinding().to(Key.get(clazz));
   }
