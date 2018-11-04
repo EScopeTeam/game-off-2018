@@ -1,13 +1,12 @@
 package com.bichos.verticles;
 
-import com.bichos.binders.ConfigModule;
-import com.bichos.binders.HandlersModule;
-import com.bichos.binders.RepositoriesModule;
-import com.bichos.binders.ServicesModule;
+import java.util.Set;
+
+import com.bichos.binders.GuiceInitializer;
+import com.bichos.handlers.ApiHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
-import com.bichos.handlers.authentication.LoginHandler;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
@@ -47,7 +46,7 @@ public class ApiVerticle extends AbstractVerticle {
   }
 
   private void initializeGuice() {
-    injector = Guice.createInjector(new ConfigModule(vertx, config()), new RepositoriesModule(), new ServicesModule(), new HandlersModule());
+    injector = GuiceInitializer.initialize(vertx, config());
   }
 
   private void handleServerStart(final int port, final AsyncResult<HttpServer> serverResult, final Future<Void> fStart) {
@@ -60,9 +59,15 @@ public class ApiVerticle extends AbstractVerticle {
   }
 
   private void addHandlersToRoute(final OpenAPI3RouterFactory routerFactory) {
-    routerFactory
-        .addHandlerByOperationId("login", injector.getInstance(LoginHandler.class))
-        .addSecurityHandler("bearerAuth", injector.getInstance(AuthenticationHandler.class));
+    for (final ApiHandler handler : getApiHandlers()) {
+      routerFactory.addHandlerByOperationId(handler.getOperationId(), handler);
+    }
+    routerFactory.addSecurityHandler("bearerAuth", injector.getInstance(AuthenticationHandler.class));
+  }
+
+  private Set<ApiHandler> getApiHandlers() {
+    return injector.getInstance(new Key<Set<ApiHandler>>() {
+    });
   }
 
 }
