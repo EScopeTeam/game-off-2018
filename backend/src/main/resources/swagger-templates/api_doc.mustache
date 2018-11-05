@@ -12,7 +12,7 @@ Method | HTTP request | Description
 {{#operation}}
 <a name="{{operationId}}"></a>
 # **{{operationId}}**
-> {{#returnType}}{{returnType}} {{/returnType}}{{operationId}}({{#allParams}}{{{paramName}}}{{#has this 'more'}}, {{/has}}{{/allParams}})
+> {{#returnType}}{{returnType}} {{/returnType}}{{operationId}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
 
 {{summary}}{{#notes}}
 
@@ -29,19 +29,19 @@ Method | HTTP request | Description
 
 {{#hasAuthMethods}}
 ApiClient defaultClient = Configuration.getDefaultApiClient();
-{{#authMethods}}{{#is this 'basic'}}
+{{#authMethods}}{{#isBasic}}
 // Configure HTTP basic authorization: {{{name}}}
 HttpBasicAuth {{{name}}} = (HttpBasicAuth) defaultClient.getAuthentication("{{{name}}}");
 {{{name}}}.setUsername("YOUR USERNAME");
-{{{name}}}.setPassword("YOUR PASSWORD");{{/is}}{{#is this 'api-key'}}
+{{{name}}}.setPassword("YOUR PASSWORD");{{/isBasic}}{{#isApiKey}}
 // Configure API key authorization: {{{name}}}
 ApiKeyAuth {{{name}}} = (ApiKeyAuth) defaultClient.getAuthentication("{{{name}}}");
 {{{name}}}.setApiKey("YOUR API KEY");
 // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//{{{name}}}.setApiKeyPrefix("Token");{{/is}}{{#is this 'oauth'}}
+//{{{name}}}.setApiKeyPrefix("Token");{{/isApiKey}}{{#isOAuth}}
 // Configure OAuth2 access token for authorization: {{{name}}}
 OAuth {{{name}}} = (OAuth) defaultClient.getAuthentication("{{{name}}}");
-{{{name}}}.setAccessToken("YOUR ACCESS TOKEN");{{/is}}
+{{{name}}}.setAccessToken("YOUR ACCESS TOKEN");{{/isOAuth}}
 {{/authMethods}}
 {{/hasAuthMethods}}
 
@@ -50,7 +50,7 @@ OAuth {{{name}}} = (OAuth) defaultClient.getAuthentication("{{{name}}}");
 {{{dataType}}} {{{paramName}}} = {{{example}}}; // {{{dataType}}} | {{{description}}}
 {{/allParams}}
 try {
-    {{#returnType}}{{{returnType}}} result = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#has this 'more'}}, {{/has}}{{/allParams}});{{#returnType}}
+    {{#returnType}}{{{returnType}}} result = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}});{{#returnType}}
     System.out.println(result);{{/returnType}}
 } catch (ApiException e) {
     System.err.println("Exception when calling {{{classname}}}#{{{operationId}}}");
@@ -59,10 +59,10 @@ try {
 ```
 
 ### Parameters
-{{^allParams}}This endpoint does not need any parameter.{{/allParams}}{{#allParams}}{{#@last}}
+{{^allParams}}This endpoint does not need any parameter.{{/allParams}}{{#allParams}}{{#-last}}
 Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------{{/@last}}{{/allParams}}
-{{#allParams}} **{{paramName}}** | {{#is this 'primitive-type'}}**{{dataType}}**{{/is}}{{#isNot this 'primitive-type'}}{{#is this 'file'}}**{{dataType}}**{{/is}}{{#isNot this 'file'}}[**{{dataType}}**]({{baseType}}.md){{/isNot}}{{/isNot}}| {{description}} |{{^required}} [optional]{{/required}}{{#defaultValue}} [default to {{defaultValue}}]{{/defaultValue}}{{#allowableValues}} [enum: {{#values}}{{{.}}}{{^@last}}, {{/@last}}{{/values}}]{{/allowableValues}}
+------------- | ------------- | ------------- | -------------{{/-last}}{{/allParams}}
+{{#allParams}} **{{paramName}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isFile}}**{{dataType}}**{{/isFile}}{{^isFile}}[**{{dataType}}**]({{baseType}}.md){{/isFile}}{{/isPrimitiveType}}| {{description}} |{{^required}} [optional]{{/required}}{{#defaultValue}} [default to {{defaultValue}}]{{/defaultValue}}{{#allowableValues}} [enum: {{#values}}{{{.}}}{{^-last}}, {{/-last}}{{/values}}]{{/allowableValues}}
 {{/allParams}}
 
 ### Return type
@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-{{^authMethods}}No authorization required{{/authMethods}}{{#authMethods}}[{{name}}](../README.md#{{name}}){{/authMethods}}
+{{^authMethods}}No authorization required{{/authMethods}}{{#authMethods}}[{{name}}](../README.md#{{name}}){{^-last}}, {{/-last}}{{/authMethods}}
 
 ### HTTP request headers
 

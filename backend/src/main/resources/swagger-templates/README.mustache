@@ -57,7 +57,7 @@ Then manually install the following JARs:
 Please follow the [installation](#installation) instruction and execute the following Java code:
 
 ```java
-{{#apiInfo}}{{#apis}}{{#@first}}{{#operations}}{{#operation}}{{#@first}}
+{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
 import {{{invokerPackage}}}.*;
 import {{{invokerPackage}}}.auth.*;
 import {{{modelPackage}}}.*;
@@ -70,19 +70,19 @@ public class {{{classname}}}Example {
 
     public static void main(String[] args) {
         {{#hasAuthMethods}}ApiClient defaultClient = Configuration.getDefaultApiClient();
-        {{#authMethods}}{{#is this 'basic'}}
+        {{#authMethods}}{{#isBasic}}
         // Configure HTTP basic authorization: {{{name}}}
         HttpBasicAuth {{{name}}} = (HttpBasicAuth) defaultClient.getAuthentication("{{{name}}}");
         {{{name}}}.setUsername("YOUR USERNAME");
-        {{{name}}}.setPassword("YOUR PASSWORD");{{/is}}{{#is this 'api-key'}}
+        {{{name}}}.setPassword("YOUR PASSWORD");{{/isBasic}}{{#isApiKey}}
         // Configure API key authorization: {{{name}}}
         ApiKeyAuth {{{name}}} = (ApiKeyAuth) defaultClient.getAuthentication("{{{name}}}");
         {{{name}}}.setApiKey("YOUR API KEY");
         // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //{{{name}}}.setApiKeyPrefix("Token");{{/is}}{{#is this 'oauth'}}
+        //{{{name}}}.setApiKeyPrefix("Token");{{/isApiKey}}{{#isOAuth}}
         // Configure OAuth2 access token for authorization: {{{name}}}
         OAuth {{{name}}} = (OAuth) defaultClient.getAuthentication("{{{name}}}");
-        {{{name}}}.setAccessToken("YOUR ACCESS TOKEN");{{/is}}
+        {{{name}}}.setAccessToken("YOUR ACCESS TOKEN");{{/isOAuth}}
         {{/authMethods}}
         {{/hasAuthMethods}}
 
@@ -91,7 +91,7 @@ public class {{{classname}}}Example {
         {{{dataType}}} {{{paramName}}} = {{{example}}}; // {{{dataType}}} | {{{description}}}
         {{/allParams}}
         try {
-            {{#returnType}}{{{returnType}}} result = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#has this 'more'}}, {{/has}}{{/allParams}});{{#returnType}}
+            {{#returnType}}{{{returnType}}} result = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}});{{#returnType}}
             System.out.println(result);{{/returnType}}
         } catch (ApiException e) {
             System.err.println("Exception when calling {{{classname}}}#{{{operationId}}}");
@@ -99,7 +99,7 @@ public class {{{classname}}}Example {
         }
     }
 }
-{{/@first}}{{/operation}}{{/operations}}{{/@first}}{{/apis}}{{/apiInfo}}
+{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
 ```
 
 ## Documentation for API Endpoints
@@ -122,19 +122,19 @@ Class | Method | HTTP request | Description
 {{/authMethods}}Authentication schemes defined for the API:
 {{#authMethods}}### {{name}}
 
-{{#is this 'api-key'}}- **Type**: API key
+{{#isApiKey}}- **Type**: API key
 - **API key parameter name**: {{keyParamName}}
-- **Location**: {{#is this 'key-in-query'}}URL query string{{/is}}{{#is this 'key-in-header'}}HTTP header{{/is}}
-{{/is}}
-{{#is this 'basic'}}- **Type**: HTTP basic authentication
-{{/is}}
-{{#is this 'oauth'}}- **Type**: OAuth
+- **Location**: {{#isKeyInQuery}}URL query string{{/isKeyInQuery}}{{#isKeyInHeader}}HTTP header{{/isKeyInHeader}}
+{{/isApiKey}}
+{{#isBasic}}- **Type**: HTTP basic authentication
+{{/isBasic}}
+{{#isOAuth}}- **Type**: OAuth
 - **Flow**: {{flow}}
 - **Authorization URL**: {{authorizationUrl}}
 - **Scopes**: {{^scopes}}N/A{{/scopes}}
 {{#scopes}}  - {{scope}}: {{description}}
 {{/scopes}}
-{{/is}}
+{{/isOAuth}}
 
 {{/authMethods}}
 

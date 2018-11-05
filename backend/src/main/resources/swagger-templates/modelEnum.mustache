@@ -18,8 +18,8 @@ import com.google.gson.stream.JsonWriter;
 {{/gson}}
 public enum {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}} {
   {{#allowableValues}}{{#enumVars}}
-  {{{name}}}({{{value}}}){{^@last}},
-  {{/@last}}{{#@last}};{{/@last}}{{/enumVars}}{{/allowableValues}}
+  {{{name}}}({{{value}}}){{^-last}},
+  {{/-last}}{{#-last}};{{/-last}}{{/enumVars}}{{/allowableValues}}
 
   private {{{dataType}}} value;
 
@@ -50,7 +50,7 @@ public enum {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum
     }
     return null;
   }
-{{#if gson}}
+{{#gson}}
 
   public static class Adapter extends TypeAdapter<{{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}}> {
     @Override
@@ -60,9 +60,9 @@ public enum {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum
 
     @Override
     public {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}} read(final JsonReader jsonReader) throws IOException {
-      {{{dataType}}} value = jsonReader.{{#is this 'integer'}}nextInt(){{/is}}{{#isNot this 'integer'}}next{{{dataType}}}(){{/isNot}};
+      {{{dataType}}} value = jsonReader.{{#isInteger}}nextInt(){{/isInteger}}{{^isInteger}}next{{{dataType}}}(){{/isInteger}};
       return {{#datatypeWithEnum}}{{{.}}}{{/datatypeWithEnum}}{{^datatypeWithEnum}}{{{classname}}}{{/datatypeWithEnum}}.fromValue(String.valueOf(value));
     }
   }
-{{/if}}
+{{/gson}}
 }

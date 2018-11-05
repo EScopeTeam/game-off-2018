@@ -60,15 +60,15 @@ public class ApiClient {
       {{#hasAuthMethods}}
       Interceptor auth;
       {{#authMethods}}if ("{{name}}".equals(authName)) {
-        {{#is this 'basic'}}
+        {{#isBasic}}
         auth = new HttpBasicAuth();
-        {{/is}}
-        {{#is this 'api-key'}}
-        auth = new ApiKeyAuth({{#is this 'key-in-header'}}"header"{{/is}}{{#isNot this 'key-in-header'}}"query"{{/isNot}}, "{{keyParamName}}");
-        {{/is}}
-        {{#is this 'oauth'}}
+        {{/isBasic}}
+        {{#isApiKey}}
+        auth = new ApiKeyAuth({{#isKeyInHeader}}"header"{{/isKeyInHeader}}{{^isKeyInHeader}}"query"{{/isKeyInHeader}}, "{{keyParamName}}");
+        {{/isApiKey}}
+        {{#isOAuth}}
         auth = new OAuth(OAuthFlow.{{flow}}, "{{authorizationUrl}}", "{{tokenUrl}}", "{{#scopes}}{{scope}}{{#hasMore}}, {{/hasMore}}{{/scopes}}");
-        {{/is}}
+        {{/isOAuth}}
       } else {{/authMethods}}{
         throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
       }

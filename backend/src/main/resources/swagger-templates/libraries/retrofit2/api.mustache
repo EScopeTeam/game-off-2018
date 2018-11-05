@@ -42,23 +42,23 @@ public interface {{classname}} {
 {{/externalDocs}}
    */
   {{#formParams}}
-  {{#@first}}
-  {{#is ../../this 'multipart'}}@retrofit2.http.Multipart{{/is}}{{#isNot ../../this 'multipart'}}@retrofit2.http.FormUrlEncoded{{/isNot}}
-  {{/@first}}
+  {{#-first}}
+  {{#isMultipart}}@retrofit2.http.Multipart{{/isMultipart}}{{^isMultipart}}@retrofit2.http.FormUrlEncoded{{/isMultipart}}
+  {{/-first}}
   {{/formParams}}
   {{^formParams}}
   {{#prioritizedContentTypes}}
-  {{#@first}}
+  {{#-first}}
   @Headers({
-    "Content-Type:{{mediaType}}"
+    "Content-Type:{{{mediaType}}}"
   })
-  {{/@first}}
+  {{/-first}}
   {{/prioritizedContentTypes}}
   {{/formParams}}  
   @{{httpMethod}}("{{{path}}}")
   {{^doNotUseRx}}Observable{{/doNotUseRx}}{{#doNotUseRx}}Call{{/doNotUseRx}}<{{#isResponseFile}}ResponseBody{{/isResponseFile}}{{^isResponseFile}}{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Object{{/returnType}}{{/isResponseFile}}> {{operationId}}({{^allParams}});{{/allParams}}
-    {{#allParams}}{{>libraries/retrofit2/queryParams}}{{>libraries/retrofit2/pathParams}}{{>libraries/retrofit2/headerParams}}{{>libraries/retrofit2/bodyParams}}{{>libraries/retrofit2/formParams}}{{#has this 'more'}}, {{/has}}{{#hasNot this 'more'}}
-  );{{/hasNot}}{{/allParams}}
+    {{#allParams}}{{>libraries/retrofit2/queryParams}}{{>libraries/retrofit2/pathParams}}{{>libraries/retrofit2/headerParams}}{{>libraries/retrofit2/bodyParams}}{{>libraries/retrofit2/formParams}}{{#hasMore}}, {{/hasMore}}{{^hasMore}}
+  );{{/hasMore}}{{/allParams}}
 
   {{/operation}}
 }
