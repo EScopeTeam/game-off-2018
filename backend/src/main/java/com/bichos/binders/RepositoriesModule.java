@@ -1,6 +1,8 @@
 package com.bichos.binders;
 
 import com.bichos.repositories.PlayersRepository;
+import com.bichos.repositories.PlayersSessionsRepository;
+import com.bichos.repositories.impl.PlayersSessionsSqlRepository;
 import com.bichos.repositories.impl.PlayersSqlRepository;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -14,6 +16,12 @@ public class RepositoriesModule extends AbstractModule {
   @Singleton
   public PlayersRepository providePlayersRepository(final SQLClient client) {
     return new PlayersSqlRepository(client);
+  }
+
+  @Provides
+  @Singleton
+  public PlayersSessionsRepository providePlayersSessionsRepository(final SQLClient client) {
+    return new PlayersSessionsSqlRepository(client);
   }
 
 }

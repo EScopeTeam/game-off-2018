@@ -1,5 +1,7 @@
 package com.bichos.binders;
 
+import java.time.Clock;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -58,6 +60,12 @@ public class ConfigModule extends AbstractModule {
   @Singleton
   public Validator provideValidator() {
     return Validation.buildDefaultValidatorFactory().getValidator();
+  }
+
+  @Provides
+  @Singleton
+  public Clock provideClock() {
+    return Clock.systemUTC();
   }
 
 }

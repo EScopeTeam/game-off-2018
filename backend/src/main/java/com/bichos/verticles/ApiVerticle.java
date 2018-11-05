@@ -6,7 +6,6 @@ import com.bichos.binders.GuiceInitializer;
 import com.bichos.exceptions.ResourceNotFoundException;
 import com.bichos.handlers.ApiHandler;
 import com.bichos.handlers.ApiWSHandler;
-import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.errors.ErrorHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
 import com.bichos.handlers.websockets.OpenConnectionHandler;
@@ -32,6 +31,7 @@ public class ApiVerticle extends AbstractVerticle {
   private static final int DEFAULT_PORT = 8080;
 
   private static final String EVENTBUS_PATH = "/websocket";
+  private static final String AUTHORIZATION_ADDRESS = "authorization";
 
   private Injector injector;
 
@@ -53,10 +53,13 @@ public class ApiVerticle extends AbstractVerticle {
 
   private void addHandlersToRoute(final Router router) {
     router.route().order(ApiHandler.BODY_ORDER).handler(BodyHandler.create());
-    router.route().order(ApiHandler.AUTHENTICATION_ORDER).handler(injector.getInstance(AuthenticationHandler.class));
+    // FIXME
+    // router.route().order(ApiHandler.AUTHENTICATION_ORDER).handler(injector.getInstance(AuthenticationHandler.class));
 
     router.route().order(ApiHandler.BODY_ORDER + 1).handler(context -> {
-      context.response().putHeader("Access-Control-Allow-Origin", "*");
+      context.response()
+          .putHeader("Access-Control-Allow-Origin", "*")
+          .putHeader("Access-Control-Allow-Credentials", "false");
       context.next();
     });
 
@@ -89,14 +92,18 @@ public class ApiVerticle extends AbstractVerticle {
       vertx.eventBus().<JsonObject>consumer(address).handler(handler);
     }
 
+    options.addInboundPermitted(ApiWSHandler.createPermittedOptionsFromAddress(AUTHORIZATION_ADDRESS));
+
     final SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
     final OpenConnectionHandler openConnectionHandler = injector.getInstance(OpenConnectionHandler.class);
     final CloseConnectionHandler closeConnectionHandler = injector.getInstance(CloseConnectionHandler.class);
     sockJSHandler.bridge(options, event -> {
-      if (event.type() == BridgeEventType.SOCKET_CREATED) {
-        openConnectionHandler.handle(event);
-      } else if (event.type() == BridgeEventType.SOCKET_CLOSED) {
+      if (event.type() == BridgeEventType.SOCKET_CLOSED) {
         closeConnectionHandler.handle(event);
+      } else if (event.type() == BridgeEventType.SEND && AUTHORIZATION_ADDRESS.equals(event.getRawMessage().getString("address"))) {
+        openConnectionHandler.handle(event);
+      } else {
+        event.complete(true);
       }
     });
 

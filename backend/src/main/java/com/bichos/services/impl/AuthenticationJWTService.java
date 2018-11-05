@@ -1,12 +1,19 @@
 package com.bichos.services.impl;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
+
 import com.bichos.exceptions.InvalidLoginException;
 import com.bichos.models.Player;
+import com.bichos.models.PlayerSession;
 import com.bichos.repositories.PlayersRepository;
+import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
 
 import io.vertx.core.Future;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.jdbc.JDBCHashStrategy;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.jwt.JWTOptions;
@@ -23,7 +30,11 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   private final JDBCHashStrategy hashStrategy;
 
+  private final Clock clock;
+
   private final PlayersRepository playersRepository;
+
+  private final PlayersSessionsRepository playersSessionsRepository;
 
   @Override
   public Future<String> login(final String username, final String password) {
@@ -46,6 +57,41 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   private String hashPassword(final String password, final String salt) {
     return hashStrategy.computeHash(password, salt, HASH_VERSION);
+  }
+
+  @Override
+  public Future<Void> loginWebsocket(final String sessionId, final String token) {
+    final Future<User> fAuthenticate = Future.future();
+    jwtAuth.authenticate(getAuthInfo(token), fAuthenticate.completer());
+
+    return fAuthenticate.compose(user -> {
+      final PlayerSession playerSession = new PlayerSession();
+      playerSession.setSessionId(sessionId);
+      playerSession.setPlayerId(user.principal().getString("sub"));
+      playerSession.setStartDate(OffsetDateTime.now(clock));
+      return playersSessionsRepository.insertSession(playerSession);
+    });
+  }
+
+  private JsonObject getAuthInfo(final String token) {
+    final JsonArray permissions = new JsonArray();
+    if (jwtOptions.getPermissions() != null) {
+      for (final String permission : jwtOptions.getPermissions()) {
+        permissions.add(permission);
+      }
+    }
+
+    return new JsonObject()
+        .put("jwt", token)
+        .put("options", new JsonObject()
+            .put("audience", permissions)
+            .put("issuer", jwtOptions.getIssuer())
+            .put("ignoreExpiration", false));
+  }
+
+  @Override
+  public Future<Void> logoutWebsocket(final String sessionId) {
+    return playersSessionsRepository.removeSession(sessionId);
   }
 
 }

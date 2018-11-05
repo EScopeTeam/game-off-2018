@@ -45,7 +45,7 @@ public class PlayersSqlRepository implements PlayersRepository {
       result.setPassword(row.getString(INDEX_PASSWORD));
       result.setSalt(row.getString(INDEX_SALT));
       result.setEmail(row.getString(INDEX_EMAIL));
-      result.setOnline(row.getInteger(INDEX_ONLINE) == 1);
+      result.setOnline(row.getBoolean(INDEX_ONLINE));
     }
 
     return result;
@@ -58,7 +58,7 @@ public class PlayersSqlRepository implements PlayersRepository {
     final Future<UpdateResult> fUpdate = Future.succeededFuture();
     client.updateWithParams(UPDATE_ONLINE_BY_ID_SQL, params, fUpdate.completer());
 
-    return fUpdate.map(null);
+    return fUpdate.mapEmpty();
   }
 
 }

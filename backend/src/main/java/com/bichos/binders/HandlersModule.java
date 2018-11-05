@@ -12,7 +12,7 @@ import com.bichos.handlers.errors.ResourceNotFoundHandler;
 import com.bichos.handlers.errors.ValidationErrorHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
 import com.bichos.handlers.websockets.OpenConnectionHandler;
-import com.bichos.services.PlayersService;
+import com.bichos.services.AuthenticationService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Provides;
@@ -67,14 +67,14 @@ public class HandlersModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public OpenConnectionHandler provideOpenConnectionHandler(final PlayersService playersService) {
-    return new OpenConnectionHandler(playersService);
+  public OpenConnectionHandler provideOpenConnectionHandler(final AuthenticationService authenticationService) {
+    return new OpenConnectionHandler(authenticationService);
   }
 
   @Provides
   @Singleton
-  public CloseConnectionHandler provideCloseConnectionHandler(final PlayersService playersService) {
-    return new CloseConnectionHandler(playersService);
+  public CloseConnectionHandler provideCloseConnectionHandler(final AuthenticationService authenticationService) {
+    return new CloseConnectionHandler(authenticationService);
   }
 
 }
