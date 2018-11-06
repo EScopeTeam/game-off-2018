@@ -18,4 +18,11 @@ public final class HandlersUtils {
     return null;
   }
 
+  public static <T> T asyncFailure(final InvocationOnMock invokation, final int handlerPosition, final Exception exception) {
+    final Handler<AsyncResult<T>> handler = invokation.getArgument(handlerPosition);
+    handler.handle(Future.failedFuture(exception));
+
+    return null;
+  }
+
 }

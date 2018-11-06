@@ -20,6 +20,7 @@ public class PlayersSqlRepositoryTest {
   private static final String PLAYER_PASSWORD = "superSecretPasswordHASHED";
   private static final String PLAYER_SALT = "abcd";
   private static final String PLAYER_EMAIL = "test@test.com";
+  private static final boolean PLAYER_ONLINE = false;
 
   private PlayersSqlRepository playersRepository;
 
@@ -39,7 +40,8 @@ public class PlayersSqlRepositoryTest {
         .add(PLAYER_USERNAME)
         .add(PLAYER_PASSWORD)
         .add(PLAYER_SALT)
-        .add(PLAYER_EMAIL));
+        .add(PLAYER_EMAIL)
+        .add(PLAYER_ONLINE));
 
     final Async async = context.async();
     playersRepository.findPlayerByUsername(PLAYER_USERNAME).setHandler(playerResult -> {

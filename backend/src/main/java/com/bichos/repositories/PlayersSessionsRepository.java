@@ -12,4 +12,6 @@ public interface PlayersSessionsRepository {
 
   Future<Void> insertSession(PlayerSession session);
 
+  Future<PlayerSession> findSession(String sessionId);
+
 }

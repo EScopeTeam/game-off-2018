@@ -67,15 +67,6 @@ public class AuthenticationJWTService implements AuthenticationService {
     return fAuthenticate.map(user -> user.principal().getString("sub"));
   }
 
-  @Override
-  public Future<Void> addWebsocketSession(final String sessionId, final String playerId) {
-    final PlayerSession playerSession = new PlayerSession();
-    playerSession.setSessionId(sessionId);
-    playerSession.setPlayerId(playerId);
-    playerSession.setStartDate(OffsetDateTime.now(clock));
-    return playersSessionsRepository.insertSession(playerSession);
-  }
-
   private JsonObject getAuthInfo(final String token) {
     final JsonArray permissions = new JsonArray();
     if (jwtOptions.getPermissions() != null) {
@@ -93,8 +84,37 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
+  public Future<Void> addWebsocketSession(final String sessionId, final String playerId) {
+    final PlayerSession playerSession = new PlayerSession();
+    playerSession.setSessionId(sessionId);
+    playerSession.setPlayerId(playerId);
+    playerSession.setStartDate(OffsetDateTime.now(clock));
+    return playersSessionsRepository
+        .insertSession(playerSession)
+        .compose(v -> {
+          return playersRepository.updateOnlineById(playerId, true);
+        });
+  }
+
+  @Override
   public Future<Void> removeWebsocketSession(final String sessionId) {
-    return playersSessionsRepository.removeSession(sessionId);
+    return findPlayerIdOfSessionId(sessionId)
+        .compose(playerId -> {
+          return playersSessionsRepository.removeSession(sessionId)
+              .compose(v -> {
+                return playersSessionsRepository.countSessions(playerId);
+              }).compose(countSessions -> {
+                if (countSessions == 0) {
+                  return playersRepository.updateOnlineById(playerId, false);
+                } else {
+                  return Future.succeededFuture();
+                }
+              });
+        });
+  }
+
+  private Future<String> findPlayerIdOfSessionId(final String sessionId) {
+    return playersSessionsRepository.findSession(sessionId).map(PlayerSession::getPlayerId);
   }
 
 }
