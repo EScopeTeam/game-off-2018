@@ -3,8 +3,8 @@ package com.bichos.config;
 import java.util.Set;
 
 import com.bichos.handlers.ApiWSHandler;
+import com.bichos.handlers.authentication.WsAuthenticationHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
-import com.bichos.handlers.websockets.OpenConnectionHandler;
 import com.google.inject.Inject;
 
 import io.vertx.core.Vertx;
@@ -23,7 +23,7 @@ public class WebsocketConfig {
 
   private final Set<ApiWSHandler> handlers;
 
-  private final OpenConnectionHandler openConnectionHandler;
+  private final WsAuthenticationHandler wsAuthentactionHandler;
 
   private final CloseConnectionHandler closeConnectionHandler;
 
@@ -42,8 +42,8 @@ public class WebsocketConfig {
     sockJSHandler.bridge(options, event -> {
       if (event.type() == BridgeEventType.SOCKET_CLOSED) {
         closeConnectionHandler.handle(event);
-      } else if (event.type() == BridgeEventType.SEND && AUTHORIZATION_ADDRESS.equals(event.getRawMessage().getString("address"))) {
-        openConnectionHandler.handle(event);
+      } else if (event.type() == BridgeEventType.SEND) {
+        wsAuthentactionHandler.handle(event);
       } else {
         event.complete(true);
       }

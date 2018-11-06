@@ -60,17 +60,20 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
-  public Future<Void> loginWebsocket(final String sessionId, final String token) {
+  public Future<String> authenticateToken(String token) {
     final Future<User> fAuthenticate = Future.future();
     jwtAuth.authenticate(getAuthInfo(token), fAuthenticate.completer());
 
-    return fAuthenticate.compose(user -> {
-      final PlayerSession playerSession = new PlayerSession();
-      playerSession.setSessionId(sessionId);
-      playerSession.setPlayerId(user.principal().getString("sub"));
-      playerSession.setStartDate(OffsetDateTime.now(clock));
-      return playersSessionsRepository.insertSession(playerSession);
-    });
+    return fAuthenticate.map(user -> user.principal().getString("sub"));
+  }
+
+  @Override
+  public Future<Void> addWebsocketSession(final String sessionId, final String playerId) {
+    final PlayerSession playerSession = new PlayerSession();
+    playerSession.setSessionId(sessionId);
+    playerSession.setPlayerId(playerId);
+    playerSession.setStartDate(OffsetDateTime.now(clock));
+    return playersSessionsRepository.insertSession(playerSession);
   }
 
   private JsonObject getAuthInfo(final String token) {
@@ -90,7 +93,7 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
-  public Future<Void> logoutWebsocket(final String sessionId) {
+  public Future<Void> removeWebsocketSession(final String sessionId) {
     return playersSessionsRepository.removeSession(sessionId);
   }
 

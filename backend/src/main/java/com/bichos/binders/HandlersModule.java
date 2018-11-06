@@ -7,11 +7,12 @@ import com.bichos.handlers.ApiHandler;
 import com.bichos.handlers.ApiWSHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.authentication.LoginHandler;
+import com.bichos.handlers.authentication.WsAuthenticationHandler;
 import com.bichos.handlers.errors.DecodeExceptionHandler;
 import com.bichos.handlers.errors.ResourceNotFoundHandler;
 import com.bichos.handlers.errors.ValidationErrorHandler;
+import com.bichos.handlers.players.HelloHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
-import com.bichos.handlers.websockets.OpenConnectionHandler;
 import com.bichos.services.AuthenticationService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
@@ -30,7 +31,8 @@ public class HandlersModule extends AbstractModule {
     final Multibinder<ApiHandler> apiHandlerBinder = Multibinder.newSetBinder(binder(), ApiHandler.class);
     bindApiHandler(apiHandlerBinder, LoginHandler.class);
 
-    /* FIXME final Multibinder<ApiWSHandler> apiWSHandlerBinder = */Multibinder.newSetBinder(binder(), ApiWSHandler.class);
+    final Multibinder<ApiWSHandler> apiWSHandlerBinder = Multibinder.newSetBinder(binder(), ApiWSHandler.class);
+    bindApiWSHandler(apiWSHandlerBinder, HelloHandler.class);
 
     @SuppressWarnings("rawtypes")
     final MapBinder<Class, ApiErrorHandler> apiErrorHandlerBinder = MapBinder.newMapBinder(binder(), Class.class,
@@ -45,12 +47,10 @@ public class HandlersModule extends AbstractModule {
     apiHandlerBinder.addBinding().to(Key.get(clazz));
   }
 
-  /*
-   * FIXME private void bindApiWSHandler(final Multibinder<ApiWSHandler>
-   * apiHandlerBinder, final Class<? extends ApiWSHandler> clazz) {
-   * binder().bind(clazz).in(Singleton.class);
-   * apiHandlerBinder.addBinding().to(Key.get(clazz)); }
-   */
+  private void bindApiWSHandler(final Multibinder<ApiWSHandler> apiHandlerBinder, final Class<? extends ApiWSHandler> clazz) {
+    binder().bind(clazz).in(Singleton.class);
+    apiHandlerBinder.addBinding().to(Key.get(clazz));
+  }
 
   @SuppressWarnings("rawtypes")
   private <T extends Throwable> void bindApiErrorHandler(final MapBinder<Class, ApiErrorHandler> apiErrorHandlerBinder, final Class<T> exceptionClass,
@@ -67,8 +67,8 @@ public class HandlersModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public OpenConnectionHandler provideOpenConnectionHandler(final AuthenticationService authenticationService) {
-    return new OpenConnectionHandler(authenticationService);
+  public WsAuthenticationHandler provideWsAuthenticationHandler(final AuthenticationService authenticationService) {
+    return new WsAuthenticationHandler(authenticationService);
   }
 
   @Provides

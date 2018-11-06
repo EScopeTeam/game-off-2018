@@ -47,15 +47,20 @@ public class RouterConfig {
 
     for (final ApiHandler handler : handlers) {
       if (handler.hasAuthentication()) {
-        router.route(handler.getMethod(), handler.getPath()).order(AUTHENTICATION_ORDER).handler(authenticationHandler);
+        router.route(handler.getMethod(), handler.getPath())
+            .order(AUTHENTICATION_ORDER)
+            .handler(authenticationHandler);
       }
-      router.route(handler.getMethod(), handler.getPath()).order(DEFAULT_ORDER).handler(handler);
+      router.route(handler.getMethod(), handler.getPath())
+          .order(DEFAULT_ORDER)
+          .handler(handler);
     }
 
     router.route(EVENTBUS_PATH + "/*").handler(websocketConfig.getSockJSHandler());
 
     router.route().order(NOT_FOUND_ORDER)
         .handler(context -> context.fail(new ResourceNotFoundException(context.request().method().name(), context.request().path())));
+
     router.route().failureHandler(errorHandler);
 
     return router;

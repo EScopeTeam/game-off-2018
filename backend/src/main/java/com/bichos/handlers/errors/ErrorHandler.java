@@ -20,7 +20,7 @@ public class ErrorHandler implements Handler<RoutingContext> {
   @Override
   public void handle(final RoutingContext context) {
     if (context.failure() == null) {
-      context.response().end();
+      context.response().setStatusCode(context.statusCode()).end();
     } else {
       final ApiErrorHandler handler = errorsHandlers.get(context.failure().getClass());
       if (handler == null) {

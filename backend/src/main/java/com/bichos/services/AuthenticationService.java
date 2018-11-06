@@ -6,8 +6,10 @@ public interface AuthenticationService {
 
   Future<String> login(String username, String password);
 
-  Future<Void> loginWebsocket(String sessionId, String token);
+  Future<String> authenticateToken(String token);
 
-  Future<Void> logoutWebsocket(String sessionId);
+  Future<Void> addWebsocketSession(String sessionId, String playerId);
+
+  Future<Void> removeWebsocketSession(String sessionId);
 
 }

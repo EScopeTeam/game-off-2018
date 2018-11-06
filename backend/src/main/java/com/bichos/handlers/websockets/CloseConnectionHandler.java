@@ -20,7 +20,7 @@ public class CloseConnectionHandler implements Handler<BridgeEvent> {
     log.debug("Session " + sessionId + " disconnected.");
 
     authenticationService
-        .logoutWebsocket(sessionId)
+        .removeWebsocketSession(sessionId)
         .setHandler(v -> event.complete(true));
   }
 

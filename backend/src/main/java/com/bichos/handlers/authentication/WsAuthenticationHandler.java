@@ -1,4 +1,4 @@
-package com.bichos.handlers.websockets;
+package com.bichos.handlers.authentication;
 
 import com.bichos.services.AuthenticationService;
 
@@ -10,23 +10,37 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class OpenConnectionHandler implements Handler<BridgeEvent> {
-
-  private static final int BEARER_PART_SIZE = 7;
+public class WsAuthenticationHandler implements Handler<BridgeEvent> {
 
   private final AuthenticationService authenticationService;
 
+  private static final int BEARER_PART_SIZE = 7;
+
   @Override
   public void handle(final BridgeEvent event) {
+    cleanUserHeader(event);
+
     final String token = getToken(event.getRawMessage());
-    authenticationService.loginWebsocket(event.socket().writeHandlerID(), token).setHandler(result -> {
+    authenticationService.authenticateToken(token).setHandler(result -> {
       if (result.succeeded()) {
+        final String playerId = result.result();
+        event.getRawMessage()
+            .getJsonObject("headers", new JsonObject())
+            .put("user", playerId)
+            .put("session", event.socket().writeHandlerID());
+
         event.complete(true);
       } else {
         log.debug("Closing socket.");
         event.socket().close();
+
+        event.complete(false);
       }
     });
+  }
+
+  private void cleanUserHeader(final BridgeEvent event) {
+    event.getRawMessage().getJsonObject("headers", new JsonObject()).remove("user");
   }
 
   private String getToken(final JsonObject rawMessage) {
