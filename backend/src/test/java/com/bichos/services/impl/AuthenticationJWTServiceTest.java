@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.mockito.ArgumentCaptor;
 import com.bichos.exceptions.InvalidLoginException;
 import com.bichos.models.Player;
 import com.bichos.repositories.PlayersRepository;
+import com.bichos.repositories.PlayersSessionsRepository;
 
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
@@ -45,6 +48,8 @@ public class AuthenticationJWTServiceTest {
 
   private PlayersRepository playersRepository;
 
+  private PlayersSessionsRepository playersSessionsRepository;
+
   @Rule
   public RunTestOnContext rule = new RunTestOnContext();
 
@@ -54,7 +59,7 @@ public class AuthenticationJWTServiceTest {
     hashStrategy = JDBCHashStrategy.createSHA512(rule.vertx());
     playersRepository = mock(PlayersRepository.class);
 
-    service = new AuthenticationJWTService(jwtAuth, mock(JWTOptions.class), hashStrategy, playersRepository);
+    service = new AuthenticationJWTService(jwtAuth, mock(JWTOptions.class), hashStrategy, Clock.systemUTC(), playersRepository, playersSessionsRepository);
   }
 
   @Test
