@@ -35,7 +35,7 @@ public class RouterConfig {
   private final WebsocketConfig websocketConfig;
 
   public Router getRouter() {
-    Router router = Router.router(vertx);
+    final Router router = Router.router(vertx);
     router.route().order(BODY_ORDER).handler(BodyHandler.create());
 
     router.route().order(CORS_ORDER).handler(context -> {

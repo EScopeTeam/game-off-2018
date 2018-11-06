@@ -14,7 +14,7 @@ public class HelloHandler implements ApiWSHandler {
   private final AuthenticationService authenticationService;
 
   @Override
-  public void handle(Message<JsonObject> message) {
+  public void handle(final Message<JsonObject> message) {
     final String sessionId = message.headers().get("session");
     final String playerId = message.headers().get("user");
 

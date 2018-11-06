@@ -60,7 +60,7 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
-  public Future<String> authenticateToken(String token) {
+  public Future<String> authenticateToken(final String token) {
     final Future<User> fAuthenticate = Future.future();
     jwtAuth.authenticate(getAuthInfo(token), fAuthenticate.completer());
 

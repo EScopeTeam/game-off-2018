@@ -60,8 +60,7 @@ public class PlayersSessionsSqlRepository implements PlayersSessionsRepository {
   }
 
   private PlayerSession mapRow(final JsonArray row) {
-    final PlayerSession result;
-
+    PlayerSession result;
     if (row == null) {
       result = null;
     } else {
