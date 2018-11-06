@@ -51,8 +51,8 @@ public class LoginHandler implements ApiHandler {
   }
 
   @Override
-  public int getOrder() {
-    return ApiHandler.AUTHENTICATION_ORDER - 1;
+  public boolean hasAuthentication() {
+    return false;
   }
 
 }

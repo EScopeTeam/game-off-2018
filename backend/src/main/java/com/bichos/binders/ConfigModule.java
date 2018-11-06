@@ -6,7 +6,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import com.bichos.config.AuthenticationConfig;
+import com.bichos.config.RouterConfig;
 import com.bichos.config.SqlConfig;
+import com.bichos.config.WebsocketConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -30,6 +32,9 @@ public class ConfigModule extends AbstractModule {
   protected void configure() {
     bind(Vertx.class).toInstance(vertx);
     bind(JsonObject.class).annotatedWith(Names.named("config")).toInstance(config);
+
+    binder().bind(WebsocketConfig.class).in(Singleton.class);
+    binder().bind(RouterConfig.class).in(Singleton.class);
   }
 
   @Provides
