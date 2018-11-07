@@ -1,0 +1,23 @@
+# Vert.x
+.vertx
+
+# Eclipse
+.classpath
+.project
+.settings/
+.checkstyle
+.pmd
+.pmdruleset.xml
+.eclipse-pmd
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/

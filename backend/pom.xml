@@ -1,0 +1,235 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.bichos</groupId>
+  <artifactId>bichos-backend</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  	
+    <vertx.version>3.5.4</vertx.version>
+    <lombok.version>1.18.4</lombok.version>
+    <logback.version>1.2.3</logback.version>
+    <guice.version>4.2.2</guice.version>
+    <checkstyle.version>2.17</checkstyle.version>
+    <pmd.version>3.8</pmd.version>
+    <version.swagger.codegen>2.3.1</version.swagger.codegen>
+    <junit.version>4.12</junit.version>
+    <mockito.version>2.23.0</mockito.version>
+    <swagger.version>1.5.21</swagger.version>
+    <javax.el.version>3.0.0</javax.el.version>
+    <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
+    <hibernate.validator.version>6.0.2.Final</hibernate.validator.version>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-config</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-mysql-postgresql-client</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-jwt</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-jdbc</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-unit</artifactId>
+      <version>${vertx.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>javax.el-api</artifactId>
+      <version>${javax.el.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>${glassfish.javax.el.version}</version>
+    </dependency> 
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+    </dependency>
+  </dependencies>
+  
+  <build>
+  	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>validate</phase>
+            <configuration>
+              <configLocation>checkstyle.xml</configLocation>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <failsOnError>true</failsOnError>
+              <linkXRef>false</linkXRef>
+              <sourceDirectories>
+                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+              </sourceDirectories>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      		
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.version}</version>
+        <executions>
+          <execution>
+            <id>pmd</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+              <minimumTokens>20</minimumTokens>
+              <targetJdk>${javaVersion}</targetJdk>
+              <linkXRef>false</linkXRef>
+              <rulesets>
+                <ruleset>${project.basedir}/pmd.xml</ruleset>
+              </rulesets>
+              <excludes>
+                <exclude>.*/Application.*</exclude>
+                <exclude>.*/src/it/.*</exclude>
+              </excludes>
+            </configuration>	
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-codegen-maven-plugin</artifactId>
+        <version>${version.swagger.codegen}</version>
+        <configuration>
+          <inputSpec>src/main/resources/api-v1.yml</inputSpec>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-swagger-api-v1</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <language>java</language>
+              <modelPackage>${project.groupId}.models</modelPackage>
+              <modelNamePrefix>Api</modelNamePrefix>
+              <generateSupportingFiles>false</generateSupportingFiles>
+              <generateApis>false</generateApis>
+              <library>vertx</library>
+              <templateDirectory>src/main/resources/swagger-templates</templateDirectory>
+              <configOptions>
+              	<useBeanValidation>true</useBeanValidation>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>        
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-generated-source</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>target/generated-sources/swagger/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin> 
+  	</plugins>
+  </build>
+</project>
