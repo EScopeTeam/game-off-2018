@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "npm run jest && npm run lint",
+    "jest": "jest",
+    "lint": "tslint --config tslint.json --project tsconfig.json"
   },
   "dependencies": {
     "expo": "^31.0.0",
@@ -20,8 +22,13 @@
     "@types/react-native": "^0.57.7",
     "babel-preset-expo": "^5.0.0",
     "jest": "^23.6.0",
+    "prettier": "^1.15.1",
     "react-native-typescript-transformer": "^1.2.10",
     "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.1.6"
   },
   "jest": {
