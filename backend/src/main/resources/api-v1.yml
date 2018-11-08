@@ -1,0 +1,105 @@
+swagger: "2.0"
+info:
+  description: "This is the API definition for Bichos!."
+  version: "1.0.0"
+  title: "Bichos!"
+tags:
+- name: "authentication"
+  description: "Authentication actions."
+paths:
+  "/login":
+    post:
+      tags:
+      - "authentication"
+      description: "Login as player."
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: "Logged successfully."
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        401:
+          description: "Not valid username or password."
+        422:
+          description: "Error in entity."
+          schema:
+            $ref: "#/definitions/EntityErrors"
+        default:
+          description: "Unexpected error."
+            
+definitions:
+  LoginRequest:
+    type: "object"
+    required: 
+    - "username"
+    - "password"
+    properties:
+      username:
+        type: "string"
+        description: "The username of the player."
+        example: "user01"
+      password:
+        type: "string"
+        description: "The password of the player."
+        example: "mySuperStrongPassword"
+        
+  LoginResponse:
+    type: "object"
+    required:
+    - "token"
+    properties:
+      token:
+        type: "string"
+        description: |
+          The token with which authenticate the player
+          in following calls.
+        example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTQxMjU2NTc3LCJleHAiOjE1NDE4NjEzNzcsImlzcyI6IkJJQ0hPUyJ9.18y4y62ycN_0NHYMht9AXOlckEw80Z5z_tzyBiag-HHiiwhzMqG_CnZSormN-F7K-TE2JhMbJ-DD2JanTEgXGw"
+        
+  EntityErrors:
+    type: "object"
+    required: 
+    - "errors"
+    properties:
+      errors:
+        type: "array"
+        items:
+          $ref: "#/definitions/EntityError"
+  
+  EntityError:
+    type: "object"
+    required:
+    - "code"
+    - "description"
+    properties:
+      attribute:
+        type: "string"
+        description: |
+          ID of the entity attribute where the error is.
+          It could be null if the error is not in an attribute
+          but in the whole entity.
+        example: "username"
+      code:
+        type: "string"
+        description: "The code of the error."
+        example: "NOT_NULL"
+      description:
+        type: "string"
+        description: "The error description."
+        example: "The username cannot be null."
+      params:
+        type: "object"
+        description: "Attributes to complete the message."
+        example:
+          min: 1
+        additionalProperties: 
+          type: "string"
