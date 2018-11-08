@@ -1,4 +1,4 @@
-import User from "../models/User";
+import axios from "axios";
 import { IApiSettings } from "../models/ISettings";
 
 export default class AuthenticationClient {
@@ -6,5 +6,14 @@ export default class AuthenticationClient {
 
   constructor(settings: IApiSettings) {
     this._settings = settings;
+  }
+
+  public async login(username: string, password: string): Promise<string> {
+    const response = await axios.post(this._settings.rest.login, {
+      username,
+      password,
+    });
+    // TODO custom exception for error in forms
+    return response.data.token;
   }
 }

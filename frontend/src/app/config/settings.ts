@@ -1,9 +1,14 @@
 import { ISettings } from "../models/ISettings";
+import env from "./env.conf";
 
 const settings: ISettings = {
   api: {
-    websocket: {},
-    rest: {},
+    websocket: {
+      hello: "hello",
+    },
+    rest: {
+      login: env.BASE_PATH + "/login",
+    },
   },
 };
 
