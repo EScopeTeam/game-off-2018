@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, View, Text, TextInput } from "react-native";
 import {
+  NavigationScreenProps,
   NavigationScreenProp,
   NavigationScreenOptions,
 } from "react-navigation";
@@ -9,9 +10,10 @@ import UserContext from "./../contexts/UserContext";
 import { authenticationClient, playersClient } from "../config/clients";
 import { IUserContextData } from "../models/IUserContextData";
 import { saveToken } from "../utils/authenticationHelper";
+import i18n, { t } from "../config/i18n";
 
 interface IProp {
-  navigation: NavigationScreenProp<any, any>;
+  readonly navigation: NavigationScreenProp<any, any>;
 }
 
 interface IState {
@@ -22,7 +24,7 @@ interface IState {
 // TODO extract to a component
 export default class LoginScreen extends React.Component<IProp, IState> {
   public static navigationOptions: NavigationScreenOptions = {
-    title: "Login",
+    title: t("login:title"),
     ...navigationStyles,
   };
 
@@ -52,16 +54,16 @@ export default class LoginScreen extends React.Component<IProp, IState> {
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Login</Text>
+        <Text>Login {i18n.language}</Text>
         <TextInput
           onChangeText={username => this.setState({ username })}
           value={this.state.username}
-          placeholder="Username"
+          placeholder={t("login:username")}
         />
         <TextInput
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
-          placeholder="Password"
+          placeholder={t("login:password")}
         />
         <UserContext.Consumer>
           {(contextData: IUserContextData) => (

@@ -52,17 +52,7 @@ export default class Main extends React.Component<{}, IState> {
     if (this.state.loading) {
       return <Loading />;
     } else if (currentUser) {
-      return (
-        <UserContext.Provider
-          value={{
-            currentUser,
-            login: this.login.bind(this),
-            logout: this.logout.bind(this),
-          }}
-        >
-          <SignedInRoutes />
-        </UserContext.Provider>
-      );
+      return <SignedInRoutes />;
     } else {
       return <SignedOutRoutes />;
     }
