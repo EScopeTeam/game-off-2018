@@ -1,15 +1,13 @@
-import FormFieldError from "./FormFieldError";
-
 export default interface IFormField {
   readonly name: string;
 
   readonly labelCode?: string;
 
-  readonly value: string;
+  readonly labelParams?: { [key: string]: any };
 
-  readonly placeholderCode: string;
+  readonly placeholderCode?: string;
 
-  readonly errors?: FormFieldError[];
+  readonly placeholderParams?: { [key: string]: any };
 
   readonly setter: (value: string) => void;
 }
