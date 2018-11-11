@@ -2,7 +2,7 @@ import React from "react";
 import { View, TextInput, Text, TextInputProps } from "react-native";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
-import GenericTextInputErrors from "./GenericTextInputErrors";
+import FormError from "../FormError";
 import { t } from "../../config/i18n";
 import styles from "./styles";
 
@@ -34,7 +34,7 @@ export default class GenericTextInput extends React.Component<IProps> {
           }
           style={styles.input}
         />
-        <GenericTextInputErrors errors={fieldValue.errors} />
+        <FormError errors={fieldValue.errors} />
       </View>
     );
   }

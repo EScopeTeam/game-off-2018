@@ -8,18 +8,18 @@ interface IProps {
   errors?: IFormFieldError[];
 }
 
-export default class GenericTextInputErrors extends React.Component<IProps> {
+export default class FormError extends React.Component<IProps> {
   private translateError(error: IFormFieldError): string {
     if (error.code) {
       const key = "formErrors:" + error.code;
       const result = t(key, error.params);
       if (result === key || result === error.code) {
-        return error.description;
+        return error.description ? error.description : "Error.";
       } else {
         return result;
       }
     } else {
-      return error.description;
+      return error.description ? error.description : "Error.";
     }
   }
 
@@ -28,9 +28,9 @@ export default class GenericTextInputErrors extends React.Component<IProps> {
 
     if (errors && errors.length > 0) {
       return (
-        <View style={styles.errorContainer}>
+        <View style={styles.container}>
           {errors.map((error, index) => (
-            <Text key={index} style={styles.errorText}>
+            <Text key={index} style={styles.text}>
               {this.translateError(error)}
             </Text>
           ))}

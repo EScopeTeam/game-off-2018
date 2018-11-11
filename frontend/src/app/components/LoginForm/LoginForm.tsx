@@ -1,4 +1,5 @@
 import React from "react";
+import { AxiosError } from "axios";
 import { NavigationScreenProp } from "react-navigation";
 import { View, Text, Button } from "react-native";
 import UserContext from "./../../contexts/UserContext";
@@ -10,9 +11,16 @@ import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
-import validate from "validate.js";
 import { loginConstraints } from "./loginConstraints";
-import { setStateWithValidationErrors } from "../../utils/validationHelper";
+import {
+  getFieldValuesWithValidationErrors,
+  getFieldValuesWithHttpErrors,
+  validate,
+} from "../../utils/validationHelper";
+import ValidationError from "../../errors/ValidationError";
+import IFormFieldError from "../../models/IFormFieldError";
+import FormError from "../FormError";
+import Loading from "../Loading";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
@@ -21,6 +29,8 @@ interface IProp {
 interface IState {
   username: IFormFieldValue;
   password: IFormFieldValue;
+  generalErrors: IFormFieldError[];
+  loading: boolean;
 }
 
 export default class LoginForm extends React.Component<IProp, IState> {
@@ -36,6 +46,8 @@ export default class LoginForm extends React.Component<IProp, IState> {
       password: {
         value: "",
       },
+      generalErrors: [],
+      loading: false,
     };
 
     this._form = {
@@ -58,29 +70,70 @@ export default class LoginForm extends React.Component<IProp, IState> {
       password: this.state.password.value,
     };
 
-    validate
-      .async(form, loginConstraints)
+    this.setState({
+      generalErrors: [],
+      username: { value: form.username },
+      password: { value: form.password },
+      loading: true,
+    });
+
+    validate(form, loginConstraints)
       .then(() => {
         authenticationClient
           .login(form.username, form.password)
           .then((token: string) => {
-            // TODO handle 401 error
-            // TODO handle error in forms
-            saveToken(token).then(() => {
-              playersClient
-                .getCurrentUser()
-                .then(user => contextData.login(user));
-            });
-          });
+            saveToken(token)
+              .then(() => {
+                playersClient
+                  .getCurrentUser()
+                  .then(user => contextData.login(user));
+              })
+              .catch(() => {
+                this.setState({ generalErrors: [{ code: "generalError" }] });
+              })
+              .then(() => {
+                this.setState({ loading: false });
+              });
+          })
+          .catch(this.setHttpErrors.bind(this));
       })
-      .catch(error => {
-        setStateWithValidationErrors(
-          this._form,
-          error,
-          this.state,
-          this.setState.bind(this)
-        );
-      });
+      .catch(this.setValidationErrors.bind(this));
+  }
+
+  private setHttpErrors(error: AxiosError): void {
+    let newState: IState;
+
+    if (error.response && error.response.status === 401) {
+      newState = this.state;
+      newState.generalErrors = [
+        {
+          code: "wrongPasswordOrUsername",
+        },
+      ];
+    } else if (error.response && error.request.status === 422) {
+      newState = getFieldValuesWithHttpErrors(this._form, error, this.state);
+    } else {
+      newState = this.state;
+      newState.generalErrors = [
+        {
+          code: "generalError",
+        },
+      ];
+    }
+
+    // newState.loading = false;
+    this.setState(newState);
+  }
+
+  private setValidationErrors(error: ValidationError): void {
+    const newStatus: IState = getFieldValuesWithValidationErrors(
+      this._form,
+      error,
+      this.state
+    );
+    newStatus.loading = false;
+
+    this.setState(newStatus);
   }
 
   public render() {
@@ -88,6 +141,7 @@ export default class LoginForm extends React.Component<IProp, IState> {
 
     return (
       <View style={styles.container}>
+        {this.state.loading ? <Loading /> : null}
         <Text>Login {i18n.language}</Text>
         <GenericTextInput
           field={this._form.username}
@@ -99,6 +153,7 @@ export default class LoginForm extends React.Component<IProp, IState> {
           fieldValue={this.state.password}
           secureTextEntry={true}
         />
+        <FormError errors={this.state.generalErrors} />
         <UserContext.Consumer>
           {(contextData: IUserContextData) => (
             <Button title="LOGIN" onPress={() => this.submit(contextData)} />

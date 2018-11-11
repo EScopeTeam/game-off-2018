@@ -13,7 +13,7 @@ export default class AuthenticationClient {
       username,
       password,
     });
-    // TODO custom exception for error in forms
+
     return response.data.token;
   }
 }

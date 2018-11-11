@@ -1,3 +1,4 @@
 import login from "./login";
+import formErrors from "./formErrors";
 
-export default { login };
+export default { login, formErrors };

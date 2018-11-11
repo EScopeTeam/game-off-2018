@@ -1,7 +1,7 @@
 import React from "react";
 import User from "../../models/User";
 import UserContext from "../../contexts/UserContext";
-import Loading from "../Loading";
+import Welcome from "../Welcome";
 import { SignedInRoutes, SignedOutRoutes } from "../../config/routes";
 import { playersClient } from "../../config/clients";
 import { loadToken, removeToken } from "../../utils/authenticationHelper";
@@ -50,7 +50,7 @@ export default class Main extends React.Component<{}, IState> {
 
   private getChildComponent(currentUser?: User) {
     if (this.state.loading) {
-      return <Loading />;
+      return <Welcome />;
     } else if (currentUser) {
       return <SignedInRoutes />;
     } else {
