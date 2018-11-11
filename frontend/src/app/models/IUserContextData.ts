@@ -1,9 +1,8 @@
 import User from "./User";
+import { EventBus } from "vertx3-eventbus-client";
 
-export interface IUserContextData {
-  readonly currentUser?: User;
+export default interface IUserContextData {
+  readonly user?: User;
 
-  readonly login: (currentUser: User) => void;
-
-  readonly logout: () => void;
+  readonly eventBus?: EventBus;
 }

@@ -1,17 +1,16 @@
 import React from "react";
-import User from "../../models/User";
-import UserContext from "../../contexts/UserContext";
+import TokenContext from "../../contexts/TokenContext";
 import Welcome from "../Welcome";
-import { SignedInRoutes, SignedOutRoutes } from "../../config/routes";
-import { playersClient } from "../../config/clients";
+import { SignedOutRoutes } from "../../config/routes";
+import SignedInLayout from "../SignedInLayout";
 import { loadToken, removeToken } from "../../utils/authenticationHelper";
 
 interface IState {
   loading: boolean;
-  currentUser?: User;
+  token?: string;
 }
 
-export default class Main extends React.Component<{}, IState> {
+export default class Layout extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
@@ -21,56 +20,52 @@ export default class Main extends React.Component<{}, IState> {
   }
 
   public componentDidMount(): void {
-    loadToken().then(hasToken => {
-      if (hasToken) {
-        playersClient
-          .getCurrentUser()
-          .then(user => {
-            this.setState({ loading: false });
-            this.login(user);
-          })
-          .catch(() => {
-            this.setState({ loading: false });
-            this.logout();
-          });
-      } else {
+    loadToken()
+      .then(token => {
+        if (token !== null) {
+          this.login(token);
+        }
+      })
+      .catch(() => {
+        removeToken();
+      })
+      .then(() => {
         this.setState({ loading: false });
-      }
-    });
+      });
   }
 
-  private login(currentUser: User): void {
-    this.setState({ currentUser });
+  private login(token: string): void {
+    this.setState({ token });
   }
 
   private logout(): void {
     removeToken();
-    this.setState({ currentUser: undefined });
+    this.setState({ token: undefined });
   }
 
-  private getChildComponent(currentUser?: User) {
+  private getChildComponent(token?: string) {
     if (this.state.loading) {
       return <Welcome />;
-    } else if (currentUser) {
-      return <SignedInRoutes />;
+    } else if (token) {
+      return <SignedInLayout />;
     } else {
       return <SignedOutRoutes />;
     }
   }
 
   public render() {
-    const currentUser = this.state.currentUser;
+    const token = this.state.token;
 
     return (
-      <UserContext.Provider
+      <TokenContext.Provider
         value={{
-          currentUser,
+          token,
           login: this.login.bind(this),
           logout: this.logout.bind(this),
         }}
       >
-        {this.getChildComponent(currentUser)}
-      </UserContext.Provider>
+        {this.getChildComponent(token)}
+      </TokenContext.Provider>
     );
   }
 }

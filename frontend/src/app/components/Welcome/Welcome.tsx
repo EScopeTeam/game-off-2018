@@ -6,7 +6,7 @@ export default class Welcome extends React.Component {
   public render() {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text>Welcome!</Text>
       </View>
     );
   }
