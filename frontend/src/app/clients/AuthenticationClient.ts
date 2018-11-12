@@ -1,7 +1,6 @@
 import axios from "axios";
 import { IApiSettings } from "../models/ISettings";
 import User from "../models/User";
-import websocketHelper from "../utils/websocketHelper";
 
 export default class AuthenticationClient {
   private _settings: IApiSettings;
@@ -17,9 +16,5 @@ export default class AuthenticationClient {
     });
 
     return response.data.token;
-  }
-
-  public async hello(token: string): Promise<User> {
-    return websocketHelper.connect(token);
   }
 }
