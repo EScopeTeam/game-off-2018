@@ -11,7 +11,7 @@ interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
 }
 
-export default class SignupScreen extends React.Component {
+export default class SignupScreen extends React.Component<IProp>{
   public static navigationOptions: NavigationScreenOptions = {
     title: t("signIn:title"),
     ...navigationStyles,
