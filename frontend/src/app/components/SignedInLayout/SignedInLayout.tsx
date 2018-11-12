@@ -7,6 +7,7 @@ import UserContext from "../../contexts/UserContext";
 import WebsocketClient from "../../utils/WebsocketClient";
 import EventBusStatus from "../../models/EventBusStatus";
 import Reconnecting from "../Reconnecting";
+import RestClient from "../../utils/RestClient";
 
 interface IProp {
   readonly tokenContextData: ITokenContextData;
@@ -20,6 +21,8 @@ interface IState {
 class SignedInLayout extends React.Component<IProp, IState> {
   private _eventBus: WebsocketClient;
 
+  private _restClient: RestClient;
+
   constructor(props: IProp) {
     super(props);
 
@@ -32,12 +35,14 @@ class SignedInLayout extends React.Component<IProp, IState> {
         logout,
         this.changeEventBusStatus.bind(this)
       );
+      this._restClient = new RestClient(token);
     } else {
       this._eventBus = new WebsocketClient(
         "",
         logout,
         this.changeEventBusStatus.bind(this)
       );
+      this._restClient = new RestClient("");
       logout();
     }
 
@@ -75,7 +80,13 @@ class SignedInLayout extends React.Component<IProp, IState> {
 
     if (eventBusStatus === EventBusStatus.CONNECTED && user) {
       return (
-        <UserContext.Provider value={{ user, eventBus: this._eventBus }}>
+        <UserContext.Provider
+          value={{
+            user,
+            eventBus: this._eventBus,
+            restClient: this._restClient,
+          }}
+        >
           <SignedInRoutes />
         </UserContext.Provider>
       );

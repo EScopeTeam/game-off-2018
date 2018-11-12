@@ -1,6 +1,5 @@
 import axios from "axios";
 import { IApiSettings } from "../models/ISettings";
-import User from "../models/User";
 
 export default class AuthenticationClient {
   private _settings: IApiSettings;
