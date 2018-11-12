@@ -52,7 +52,7 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   private boolean isValidPassword(final Player player, final String password) {
-    return player.getPassword().equals(hashPassword(password, player.getSalt()));
+    return player.getUserAccount().getPassword().equals(hashPassword(password, player.getUserAccount().getSalt()));
   }
 
   private String hashPassword(final String password, final String salt) {
