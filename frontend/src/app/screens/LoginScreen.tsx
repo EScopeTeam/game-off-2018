@@ -1,29 +1,23 @@
 import React from "react";
-import { Button, View, Text } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
 } from "react-navigation";
 import { navigationStyles } from "./../config/globalStyles";
+import { t } from "../config/i18n";
+import LoginForm from "../components/LoginForm";
 
 interface IProp {
-  navigation: NavigationScreenProp<any, any>;
+  readonly navigation: NavigationScreenProp<any, any>;
 }
 
-export default class LoginScreen extends React.Component<IProp, {}> {
+export default class LoginScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
-    title: "Login",
+    title: t("login:title"),
     ...navigationStyles,
   };
 
   public render() {
-    const navigation = this.props.navigation;
-
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Login</Text>
-        <Button title="SIGNUP" onPress={() => navigation.navigate("Signup")} />
-      </View>
-    );
+    return <LoginForm navigation={this.props.navigation} />;
   }
 }
