@@ -1,13 +1,22 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Modal, ActivityIndicator } from "react-native";
 import styles from "./styles";
 
 export default class Loading extends React.Component {
   public render() {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
+      <Modal supportedOrientations={["landscape", "portrait"]} transparent>
+        <View style={styles.container}>
+          <ActivityIndicator
+            color="white"
+            size="large"
+            style={styles.activityIndicator}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.textContent}>Loading...</Text>
+          </View>
+        </View>
+      </Modal>
     );
   }
 }
