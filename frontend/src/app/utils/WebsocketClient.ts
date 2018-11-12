@@ -62,18 +62,18 @@ export default class WebsocketClient {
       };
       this._eventBus.onclose = (e: CloseEvent) => {
         this._connected = false;
-        this._changeStatus(EventBusStatus.DISCONNECTED);
 
-        if (e && e.code === GOAWAY_ERROR_CODE) {
-          this._logout();
-        } else if (
-          (!e || e.code !== NORMAL_CLOSURE_CODE) &&
-          this._reconnects < MAX_RECONNECT
-        ) {
-          this._reconnectId = setTimeout(
-            this.connect.bind(this),
-            TIME_BETWEEN_RECONNECTION
-          );
+        if (!e || e.code !== NORMAL_CLOSURE_CODE) {
+          this._changeStatus(EventBusStatus.DISCONNECTED);
+
+          if (e && e.code === GOAWAY_ERROR_CODE) {
+            this._logout();
+          } else {
+            this._reconnectId = setTimeout(
+              this.connect.bind(this),
+              TIME_BETWEEN_RECONNECTION
+            );
+          }
         }
       };
     });
