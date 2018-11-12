@@ -1,13 +1,21 @@
 import React from "react";
 import { AxiosError } from "axios";
 import { NavigationScreenProp } from "react-navigation";
-import { View, Text, Button } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  ImageBackground,
+} from 'react-native';
+import { Card, Button, Divider } from 'react-native-elements';
 import TokenContext from "../../contexts/TokenContext";
 import { authenticationClient } from "../../config/clients";
 import ITokenContextData from "../../models/ITokenContextData";
 import { saveToken } from "../../utils/authenticationHelper";
 import i18n from "../../config/i18n";
-import styles from "./styles";
+//import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
@@ -143,22 +151,26 @@ class LoginForm extends React.Component<IProp, IState> {
     const navigation = this.props.navigation;
 
     return (
-      <View style={styles.container}>
+      <View style={styles.body}>
         {this.state.loading ? <Loading /> : null}
-        <Text>Login {i18n.language}</Text>
-        <GenericTextInput
-          field={this._form.username}
-          fieldValue={this.state.username}
-          keyboardType="email-address"
+        <Image style={styles.logo} source={require('../../../../assets/image_login.png')} />
+        <Card containerStyle={{ flex: 2 }}>
+          <TextInput clearButtonMode="while-editing" defaultValue="Insert your user" placeholderTextColor="white" textContentType="username" style={{ height: 40, textDecorationColor: "#dae4e5" }} />
+          <Divider style={{ backgroundColor: "#dae4e5" }} />
+          <TextInput clearButtonMode="while-editing" defaultValue="Insert your password" placeholderTextColor="white" textContentType="password" style={{ height: 40, textDecorationColor: "#dae4e5" }} />
+          <FormError errors={this.state.generalErrors} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <Button title="LOGIN" onPress={() => this.submit()} backgroundColor="#389798" buttonStyle={{ marginTop: 20 }} />
+            <Button title="SIGNUP" onPress={() => navigation.navigate("Signup")} backgroundColor="#389798" buttonStyle={{ marginTop: 20 }} />
+          </View>
+        </Card>
+        <View
+          style={styles.footer}
         />
-        <GenericTextInput
-          field={this._form.password}
-          fieldValue={this.state.password}
-          secureTextEntry={true}
-        />
-        <FormError errors={this.state.generalErrors} />
-        <Button title="LOGIN" onPress={() => this.submit()} />
-        <Button title="SIGNUP" onPress={() => navigation.navigate("Signup")} />
       </View>
     );
   }
@@ -176,3 +188,19 @@ export default (props: any) => {
     </TokenContext.Consumer>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    flex: 2,
+    justifyContent: 'center',
+    width: '100%', 
+    height: '100%',
+  },
+  body: {
+    flex: 1,
+    backgroundColor: '#4cd4cc',
+  },
+  footer: {
+    flex: 2,
+  },
+});
