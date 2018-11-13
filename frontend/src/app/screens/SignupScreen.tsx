@@ -5,7 +5,7 @@ import {
 } from "react-navigation";
 import { navigationStyles } from "./../config/globalStyles";
 import { t } from "../config/i18n";
-import SignedInLayout from "../components/SignedInLayout";
+import SignInForm from "../components/SignInForm";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
@@ -18,6 +18,6 @@ export default class SignupScreen extends React.Component<IProp>{
   };
 
   public render() {
-    return <SignedInLayout navigation={this.props.navigation} />;
+    return <SignInForm navigation={this.props.navigation} />;
   }
 }

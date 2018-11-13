@@ -12,7 +12,7 @@ import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
-import { loginConstraints } from "./loginConstraints";
+import { signInConstraints } from "./signInConstraints";
 import {
   getFieldValuesWithValidationErrors,
   getFieldValuesWithHttpErrors,
@@ -31,11 +31,12 @@ interface IProp {
 interface IState {
   username: IFormFieldValue;
   password: IFormFieldValue;
+  rePassword: IFormFieldValue;
   generalErrors: IFormFieldError[];
   loading: boolean;
 }
 
-class LoginForm extends React.Component<IProp, IState> {
+class SignInForm extends React.Component<IProp, IState> {
   private _form: { [key: string]: IFormField };
 
   private secondInput: React.RefObject<TextInput> = createRef<TextInput>();
@@ -48,6 +49,9 @@ class LoginForm extends React.Component<IProp, IState> {
         value: "",
       },
       password: {
+        value: "",
+      },
+      rePassword: {
         value: "",
       },
       generalErrors: [],
@@ -72,6 +76,7 @@ class LoginForm extends React.Component<IProp, IState> {
     const form = {
       username: this.state.username.value,
       password: this.state.password.value,
+      rePassword: this.state.rePassword.value,
     };
 
     this.setState({
@@ -81,20 +86,24 @@ class LoginForm extends React.Component<IProp, IState> {
       loading: true,
     });
 
-    validate(form, loginConstraints)
+    validate(form, signInConstraints)
       .then(() => {
-        authenticationClient
-          .login(form.username, form.password)
-          .then((token: string) => {
-            saveToken(token)
-              .then(() => {
-                this.setState({ loading: false }, () => {
-                  this.props.tokenContextData.login(token);
-                });
-              })
-              .catch(this.setGeneralError.bind(this));
-          })
-          .catch(this.setHttpErrors.bind(this));
+        if (form.password === form.rePassword) {
+          authenticationClient
+            .signIn(form.username, form.password)
+            .then((token: string) => {
+              saveToken(token)
+                .then(() => {
+                  this.setState({ loading: false }, () => {
+                    this.props.tokenContextData.login(token);
+                  });
+                })
+                .catch(this.setGeneralError.bind(this));
+            })
+            .catch(this.setHttpErrors.bind(this));
+        } else {
+          this.setValidationPasswordErrors.bind("this")
+        }
       })
       .catch(this.setValidationErrors.bind(this));
   }
@@ -103,6 +112,12 @@ class LoginForm extends React.Component<IProp, IState> {
     this.setState({
       loading: false,
       generalErrors: [{ code: "generalError" }],
+    });
+  }
+  private setValidationPasswordErrors(): void {
+    this.setState({
+      loading: false,
+      generalErrors: [{ code: "The password is different" }],
     });
   }
 
@@ -151,7 +166,8 @@ class LoginForm extends React.Component<IProp, IState> {
         <View style={styles.logo}>
           <Image source={require("../../../../assets/background_login.gif")} />
         </View>
-        <Card containerStyle={{ height:225 }}>
+        <Card containerStyle={{ height: 280 }}>
+          <FormError errors={this.state.generalErrors} />
           <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
@@ -186,7 +202,21 @@ class LoginForm extends React.Component<IProp, IState> {
             clearButtonMode={"while-editing"}
             refInput={this.secondInput}
           />
-          <FormError errors={this.state.generalErrors} />
+          <GenericTextInput
+            field={this._form.rePassword}
+            fieldValue={this.state.rePassword}
+            autoCapitalize="none"
+            keyboardAppearance="dark"
+            returnKeyLabel="Definir"
+            returnKeyType="go"
+            underlineColorAndroid="transparent"
+            autoCorrect={false}
+            spellCheck={false}
+            placeholderTextColor="rgba(0,0,0,0.5)"
+            secureTextEntry
+            clearButtonMode={"while-editing"}
+            refInput={this.secondInput}
+          />
           <View
             style={{
               flexDirection: "row",
@@ -195,13 +225,13 @@ class LoginForm extends React.Component<IProp, IState> {
           >
             <Button
               title="LOGIN"
-              onPress={() => this.submit()}
+              onPress={() => navigation.navigate("Login")}
               backgroundColor="#389798"
               buttonStyle={{ marginTop: 20, width: 120 }}
             />
             <Button
               title="SIGNUP"
-              onPress={() => navigation.navigate("Signup")}
+              onPress={() => this.submit()}
               backgroundColor="#389798"
               buttonStyle={{ marginTop: 20, width: 120 }}
             />
@@ -217,7 +247,7 @@ export default (props: any) => {
   return (
     <TokenContext.Consumer>
       {(tokenContextData: ITokenContextData) => (
-        <LoginForm
+        <SignInForm
           navigation={props.navigation}
           tokenContextData={tokenContextData}
         />
