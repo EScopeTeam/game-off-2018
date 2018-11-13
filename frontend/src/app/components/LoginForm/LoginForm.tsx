@@ -151,7 +151,8 @@ class LoginForm extends React.Component<IProp, IState> {
         <View style={styles.logo}>
           <Image source={require("../../../../assets/background_login.gif")} />
         </View>
-        <Card containerStyle={{ height:225 }}>
+        <Card containerStyle={{ height: 225 }}>
+          <FormError errors={this.state.generalErrors} />
           <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
@@ -186,7 +187,6 @@ class LoginForm extends React.Component<IProp, IState> {
             clearButtonMode={"while-editing"}
             refInput={this.secondInput}
           />
-          <FormError errors={this.state.generalErrors} />
           <View
             style={{
               flexDirection: "row",
