@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 
 import com.bichos.exceptions.InvalidLoginException;
+import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
 import com.bichos.repositories.PlayersRepository;
@@ -115,6 +116,23 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   private Future<String> findPlayerIdOfSessionId(final String sessionId) {
     return playersSessionsRepository.findSession(sessionId).map(PlayerSession::getPlayerId);
+  }
+
+  @Override
+  public Future<Void> signUp(Player player) {
+
+    return validatePlayerData(player).compose(future -> {
+      if (future) {
+        return Future.succeededFuture();
+      } else {
+        return Future.failedFuture(new UserAlreadyCreatedException());
+      }
+    });
+  }
+
+  private Future<Boolean> validatePlayerData(Player player) {
+
+    return playersRepository.existsPlayerbyUsernameOrEmail(player.getUsername(), player.getUserAccount().getEmail());
   }
 
 }

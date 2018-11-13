@@ -1,11 +1,13 @@
 package com.bichos.handlers.authentication;
 
+import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.handlers.ApiHandler;
 import com.bichos.mappers.SignUpMappers;
 import com.bichos.models.ApiSignUpRequest;
-import com.bichos.services.SignUpService;
+import com.bichos.services.AuthenticationService;
 import com.bichos.services.ValidationService;
 import com.bichos.utils.HandlerUtils;
+import com.bichos.utils.HttpStatus;
 import com.google.inject.Inject;
 
 import io.vertx.core.http.HttpMethod;
@@ -20,15 +22,21 @@ public class SignUpHandler implements ApiHandler {
 
   private final ValidationService validationService;
 
-  private final SignUpService signUpService;
+  private final AuthenticationService authenticationService;
 
   @Override
   public void handle(final RoutingContext context) {
     final ApiSignUpRequest request = HandlerUtils.jsonRequest(context, ApiSignUpRequest.class);
     validationService.validate(request);
 
-    signUpService.signUp(SignUpMappers.mapSignUpToPlayer(request)).setHandler(handler -> {
-
+    authenticationService.signUp(SignUpMappers.mapSignUpToPlayer(request)).setHandler(result -> {
+      if (result.succeeded()) {
+        context.response().setStatusCode(HttpStatus.CREATED.getStatusCode());
+      } else if (result.failed() && result.cause() instanceof UserAlreadyCreatedException) {
+        context.fail(HttpStatus.CONFLICT.getStatusCode());
+      } else {
+        context.fail(result.cause());
+      }
     });
 
   }
