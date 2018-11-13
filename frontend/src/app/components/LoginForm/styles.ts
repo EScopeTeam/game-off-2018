@@ -7,4 +7,17 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  logo: {
+    flex: 2,
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+  body_login: {
+    flex: 1,
+    backgroundColor: "#4cd4cc",
+  },
+  footer_login: {
+    flex: 2,
+  }
 });

@@ -8,7 +8,7 @@ import { authenticationClient } from "../../config/clients";
 import ITokenContextData from "../../models/ITokenContextData";
 import { saveToken } from "../../utils/authenticationHelper";
 import i18n from "../../config/i18n";
-// import styles from "./styles";
+import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
@@ -146,18 +146,16 @@ class LoginForm extends React.Component<IProp, IState> {
     const navigation = this.props.navigation;
 
     return (
-      <View style={styles.body}>
+      <View style={styles.body_login}>
         {this.state.loading ? <Loading /> : null}
-        <Image
-          style={styles.logo}
-          source={require("../../../../assets/background_login.gif")}
-        />
-        <Card containerStyle={{ flex: 2 }}>
+        <View style={styles.logo}>
+          <Image source={require("../../../../assets/background_login.gif")} />
+        </View>
+        <Card containerStyle={{ height:225 }}>
           <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
-            style={styles.input}
             autoCapitalize="none"
             keyboardAppearance="dark"
             returnKeyLabel="Definir"
@@ -176,7 +174,6 @@ class LoginForm extends React.Component<IProp, IState> {
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
-            style={styles.input}
             autoCapitalize="none"
             keyboardAppearance="dark"
             returnKeyLabel="Definir"
@@ -210,7 +207,7 @@ class LoginForm extends React.Component<IProp, IState> {
             />
           </View>
         </Card>
-        <View style={styles.footer} />
+        <View style={styles.footer_login} />
       </View>
     );
   }
@@ -229,19 +226,3 @@ export default (props: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  logo: {
-    flex: 2,
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "#4cd4cc",
-  },
-  footer: {
-    flex: 2,
-  },
-  input: {},
-});
