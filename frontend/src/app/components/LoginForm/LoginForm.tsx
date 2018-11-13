@@ -7,9 +7,8 @@ import {
   StyleSheet,
   TextInput,
   Image,
-  ImageBackground,
 } from 'react-native';
-import { Card, Button, Divider } from 'react-native-elements';
+import { Card, Button } from 'react-native-elements';
 import TokenContext from "../../contexts/TokenContext";
 import { authenticationClient } from "../../config/clients";
 import ITokenContextData from "../../models/ITokenContextData";
@@ -155,17 +154,60 @@ class LoginForm extends React.Component<IProp, IState> {
         {this.state.loading ? <Loading /> : null}
         <Image style={styles.logo} source={require('../../../../assets/image_login.png')} />
         <Card containerStyle={{ flex: 2 }}>
-          <TextInput clearButtonMode="while-editing" defaultValue="Insert your user" placeholderTextColor="white" textContentType="username" style={{ height: 40, textDecorationColor: "#dae4e5" }} />
-          <Divider style={{ backgroundColor: "#dae4e5" }} />
-          <TextInput clearButtonMode="while-editing" defaultValue="Insert your password" placeholderTextColor="white" textContentType="password" style={{ height: 40, textDecorationColor: "#dae4e5" }} />
+          <GenericTextInput
+            field={this._form.username}
+            fieldValue={this.state.username}
+            keyboardType="email-address"
+            style={styles.input}
+            placeholder="User"
+            autoCapitalize="none"
+            keyboardAppearance="dark"
+            returnKeyLabel="Definir"
+            returnKeyType="next"
+            underlineColorAndroid="transparent"
+            clearButtonMode={'while-editing'}
+            autoCorrect={false}
+            spellCheck={false}
+            placeholderTextColor="rgba(0,0,0,0.5)"
+            onSubmitEditing={()=> {this.secondInput.focus()}}
+          />
+          <GenericTextInput
+            field={this._form.password}
+            fieldValue={this.state.password}
+            style={styles.input}
+            placeholder="Password"
+            autoCapitalize="none"
+            keyboardAppearance="dark"
+            returnKeyLabel="Definir"
+            returnKeyType="go"
+            underlineColorAndroid="transparent"
+            autoCorrect={false}
+            spellCheck={false}
+            placeholderTextColor="rgba(0,0,0,0.5)"
+            secureTextEntry
+            clearButtonMode={'while-editing'}
+            ref={element => {
+              this.secondInput = element
+            }}
+          />
           <FormError errors={this.state.generalErrors} />
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-around',
             }}>
-            <Button title="LOGIN" onPress={() => this.submit()} backgroundColor="#389798" buttonStyle={{ marginTop: 20 }} />
-            <Button title="SIGNUP" onPress={() => navigation.navigate("Signup")} backgroundColor="#389798" buttonStyle={{ marginTop: 20 }} />
+            <Button
+              title="LOGIN"
+              onPress={() => this.submit()}
+              backgroundColor="#389798"
+              buttonStyle={{ marginTop: 20, width: 120 }}
+            />
+            <Button
+              title="SIGNUP"
+              onPress={() => navigation.navigate('Signup')}
+              backgroundColor="#389798"
+              buttonStyle={{ marginTop: 20, width: 120 }}
+            />
           </View>
         </Card>
         <View
@@ -193,7 +235,7 @@ const styles = StyleSheet.create({
   logo: {
     flex: 2,
     justifyContent: 'center',
-    width: '100%', 
+    width: '100%',
     height: '100%',
   },
   body: {
@@ -203,4 +245,15 @@ const styles = StyleSheet.create({
   footer: {
     flex: 2,
   },
+  input: {
+    height: 40,
+    color: '#484848',
+    width: 250,
+    borderBottomColor: "#000",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    fontSize: 18,
+    fontWeight: '500',
+    fontFamily: "OpenSans-Light",
+    marginBottom: 16,
+  }
 });
