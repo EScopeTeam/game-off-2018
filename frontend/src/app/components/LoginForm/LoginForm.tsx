@@ -1,20 +1,14 @@
-import React from "react";
+import React, { createRef } from "react";
 import { AxiosError } from "axios";
 import { NavigationScreenProp } from "react-navigation";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Image,
-} from 'react-native';
-import { Card, Button } from 'react-native-elements';
+import { Text, View, StyleSheet, TextInput, Image } from "react-native";
+import { Card, Button } from "react-native-elements";
 import TokenContext from "../../contexts/TokenContext";
 import { authenticationClient } from "../../config/clients";
 import ITokenContextData from "../../models/ITokenContextData";
 import { saveToken } from "../../utils/authenticationHelper";
 import i18n from "../../config/i18n";
-//import styles from "./styles";
+// import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
@@ -44,6 +38,8 @@ interface IState {
 class LoginForm extends React.Component<IProp, IState> {
   private _form: { [key: string]: IFormField };
 
+  private secondInput: React.RefObject<TextInput> = createRef<TextInput>();
+
   constructor(props: IProp) {
     super(props);
 
@@ -61,12 +57,12 @@ class LoginForm extends React.Component<IProp, IState> {
     this._form = {
       username: {
         name: "username",
-        labelCode: "login:username",
+        placeholderCode: "login:username",
         setter: (value: string) => this.setState({ username: { value } }),
       },
       password: {
         name: "password",
-        labelCode: "login:password",
+        placeholderCode: "login:password",
         setter: (value: string) => this.setState({ password: { value } }),
       },
     };
@@ -152,30 +148,35 @@ class LoginForm extends React.Component<IProp, IState> {
     return (
       <View style={styles.body}>
         {this.state.loading ? <Loading /> : null}
-        <Image style={styles.logo} source={require('../../../../assets/image_login.png')} />
+        <Image
+          style={styles.logo}
+          source={require("../../../../assets/background_login.gif")}
+        />
         <Card containerStyle={{ flex: 2 }}>
           <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
             style={styles.input}
-            placeholder="User"
             autoCapitalize="none"
             keyboardAppearance="dark"
             returnKeyLabel="Definir"
             returnKeyType="next"
             underlineColorAndroid="transparent"
-            clearButtonMode={'while-editing'}
+            clearButtonMode={"while-editing"}
             autoCorrect={false}
             spellCheck={false}
             placeholderTextColor="rgba(0,0,0,0.5)"
-            onSubmitEditing={()=> {this.secondInput.focus()}}
+            onSubmitEditing={() => {
+              if (this.secondInput.current) {
+                this.secondInput.current.focus();
+              }
+            }}
           />
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
             style={styles.input}
-            placeholder="Password"
             autoCapitalize="none"
             keyboardAppearance="dark"
             returnKeyLabel="Definir"
@@ -185,17 +186,16 @@ class LoginForm extends React.Component<IProp, IState> {
             spellCheck={false}
             placeholderTextColor="rgba(0,0,0,0.5)"
             secureTextEntry
-            clearButtonMode={'while-editing'}
-            ref={element => {
-              this.secondInput = element
-            }}
+            clearButtonMode={"while-editing"}
+            refInput={this.secondInput}
           />
           <FormError errors={this.state.generalErrors} />
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
             <Button
               title="LOGIN"
               onPress={() => this.submit()}
@@ -204,15 +204,13 @@ class LoginForm extends React.Component<IProp, IState> {
             />
             <Button
               title="SIGNUP"
-              onPress={() => navigation.navigate('Signup')}
+              onPress={() => navigation.navigate("Signup")}
               backgroundColor="#389798"
               buttonStyle={{ marginTop: 20, width: 120 }}
             />
           </View>
         </Card>
-        <View
-          style={styles.footer}
-        />
+        <View style={styles.footer} />
       </View>
     );
   }
@@ -234,26 +232,16 @@ export default (props: any) => {
 const styles = StyleSheet.create({
   logo: {
     flex: 2,
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
   body: {
     flex: 1,
-    backgroundColor: '#4cd4cc',
+    backgroundColor: "#4cd4cc",
   },
   footer: {
     flex: 2,
   },
-  input: {
-    height: 40,
-    color: '#484848',
-    width: 250,
-    borderBottomColor: "#000",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    fontSize: 18,
-    fontWeight: '500',
-    fontFamily: "OpenSans-Light",
-    marginBottom: 16,
-  }
+  input: {},
 });

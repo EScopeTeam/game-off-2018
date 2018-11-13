@@ -9,6 +9,7 @@ import styles from "./styles";
 interface IProps extends TextInputProps {
   field: IFormField;
   fieldValue: IFormFieldValue;
+  refInput?: React.RefObject<TextInput>;
 }
 
 export default class GenericTextInput extends React.Component<IProps> {
@@ -33,6 +34,7 @@ export default class GenericTextInput extends React.Component<IProps> {
               : null
           }
           style={styles.input}
+          ref={this.props.refInput}
         />
         <FormError errors={fieldValue.errors} />
       </View>
