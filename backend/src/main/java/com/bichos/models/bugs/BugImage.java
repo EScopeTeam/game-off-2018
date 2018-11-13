@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugImage {
+public class BugImage implements Comparable<BugImage> {
 
   private String bugImageId;
 
@@ -19,10 +19,20 @@ public class BugImage {
 
   private int generationChance;
 
-  public String generate(BugColorPalette colorPalette) {
+  public BugSelectedImage generate(BugColorPalette colorPalette) {
     BugColor color = colorPalette.getRandomColor();
+    BugSelectedImage result = new BugSelectedImage();
+    result.setBugColorId(bugImageId);
+    result.setBugColorId(color.getBugColorId());
+    result.setBugColorRgbCode(color.getRgbCode());
+    result.setPosition(position);
 
-    return bugImageId + "," + color.getRgbCode() + "|";
+    return result;
+  }
+
+  @Override
+  public int compareTo(BugImage o) {
+    return Integer.compare(position, o.position);
   }
 
 }

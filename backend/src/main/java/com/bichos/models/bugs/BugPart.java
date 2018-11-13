@@ -1,8 +1,8 @@
 package com.bichos.models.bugs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.bichos.utils.Randomizer;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugPart implements RandomElement {
+public class BugPart implements RandomElement, Comparable<BugPart> {
 
   private String bugPartId;
 
@@ -27,38 +27,35 @@ public class BugPart implements RandomElement {
 
   private List<BugPattern> patterns = new ArrayList<>();
 
-  public String generate(BugColorPalette colorPalette) {
-    StringBuilder builder = new StringBuilder();
+  public BugSelectedPart generate(BugColorPalette colorPalette) {
+    BugSelectedPart result = new BugSelectedPart();
+    result.setBugPartId(bugPartId);
+    result.setRelatedParts(generateRelatedParts(colorPalette));
+    result.setPattern(generatePattern(colorPalette));
+    result.setPosition(position);
 
-    Collections.sort(relatedParts, (a, b) -> Integer.compare(a.getPosition(), b.getPosition()));
-
-    boolean addedCurrent = false;
-    for (BugPart relatedPart : relatedParts) {
-      if (relatedPart.isRequired() || Randomizer.binaryDecision(relatedPart)) {
-        if (relatedPart.getPosition() >= getPosition() && !addedCurrent) {
-          builder.append(generateCurrent(colorPalette));
-          addedCurrent = true;
-        }
-
-        builder.append(relatedPart.generate(colorPalette));
-      }
-    }
-
-    if (!addedCurrent) {
-      builder.append(generateCurrent(colorPalette));
-    }
-
-    return builder.toString();
+    return result;
   }
 
-  private String generateCurrent(BugColorPalette colorPalette) {
-    BugPattern pattern = Randomizer.getOneRandomly(patterns);
+  public boolean shouldBeGenerateRandomly() {
+    return required || Randomizer.binaryDecision(this);
+  }
 
-    if (pattern == null) {
-      return "";
-    } else {
-      return pattern.generate(colorPalette);
-    }
+  private List<BugSelectedPart> generateRelatedParts(BugColorPalette colorPalette) {
+    return relatedParts.stream()
+        .filter(p -> p.shouldBeGenerateRandomly())
+        .sorted()
+        .map(part -> part.generate(colorPalette))
+        .collect(Collectors.toList());
+  }
+
+  private BugSelectedPattern generatePattern(BugColorPalette colorPalette) {
+    return Randomizer.getOneRandomly(patterns).generate(colorPalette);
+  }
+
+  @Override
+  public int compareTo(BugPart o) {
+    return Integer.compare(position, o.position);
   }
 
 }

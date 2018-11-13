@@ -1,8 +1,8 @@
 package com.bichos.models.bugs;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +19,19 @@ public class BugPattern implements RandomElement {
 
   private List<BugImage> images = new ArrayList<>();
 
-  public String generate(BugColorPalette colorPalette) {
-    StringBuilder builder = new StringBuilder();
+  public BugSelectedPattern generate(BugColorPalette colorPalette) {
+    BugSelectedPattern result = new BugSelectedPattern();
+    result.setBugPatternId(bugPatternId);
+    result.setImages(generateImages(colorPalette));
 
-    Collections.sort(images, (a, b) -> Integer.compare(a.getPosition(), b.getPosition()));
+    return result;
+  }
 
-    for (BugImage image : images) {
-      builder.append(image.generate(colorPalette));
-    }
-
-    return builder.toString();
+  private List<BugSelectedImage> generateImages(BugColorPalette colorPalette) {
+    return images.stream()
+        .sorted()
+        .map(i -> i.generate(colorPalette))
+        .collect(Collectors.toList());
   }
 
 }
