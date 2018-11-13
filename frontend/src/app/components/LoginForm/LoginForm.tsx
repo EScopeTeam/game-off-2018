@@ -157,15 +157,7 @@ class LoginForm extends React.Component<IProp, IState> {
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
-            autoCapitalize="none"
-            keyboardAppearance="dark"
-            returnKeyLabel="Definir"
-            returnKeyType="next"
-            underlineColorAndroid="transparent"
-            clearButtonMode={"while-editing"}
-            autoCorrect={false}
-            spellCheck={false}
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            keyLabel="Email"
             onSubmitEditing={() => {
               if (this.secondInput.current) {
                 this.secondInput.current.focus();
@@ -175,16 +167,8 @@ class LoginForm extends React.Component<IProp, IState> {
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
-            autoCapitalize="none"
-            keyboardAppearance="dark"
-            returnKeyLabel="Definir"
-            returnKeyType="go"
-            underlineColorAndroid="transparent"
-            autoCorrect={false}
-            spellCheck={false}
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            keyLabel="Password"
             secureTextEntry
-            clearButtonMode={"while-editing"}
             refInput={this.secondInput}
           />
           <View

@@ -40,6 +40,7 @@ class SignInForm extends React.Component<IProp, IState> {
   private _form: { [key: string]: IFormField };
 
   private secondInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private thirdInput: React.RefObject<TextInput> = createRef<TextInput>();
 
   constructor(props: IProp) {
     super(props);
@@ -172,15 +173,7 @@ class SignInForm extends React.Component<IProp, IState> {
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
-            autoCapitalize="none"
-            keyboardAppearance="dark"
-            returnKeyLabel="Definir"
-            returnKeyType="next"
-            underlineColorAndroid="transparent"
-            clearButtonMode={"while-editing"}
-            autoCorrect={false}
-            spellCheck={false}
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            keyLabel="Email"
             onSubmitEditing={() => {
               if (this.secondInput.current) {
                 this.secondInput.current.focus();
@@ -190,32 +183,21 @@ class SignInForm extends React.Component<IProp, IState> {
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
-            autoCapitalize="none"
-            keyboardAppearance="dark"
-            returnKeyLabel="Definir"
-            returnKeyType="go"
-            underlineColorAndroid="transparent"
-            autoCorrect={false}
-            spellCheck={false}
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            keyLabel="Password"
             secureTextEntry
-            clearButtonMode={"while-editing"}
             refInput={this.secondInput}
+            onSubmitEditing={() => {
+              if (this.thirdInput.current) {
+                this.thirdInput.current.focus();
+              }
+            }}
           />
           <GenericTextInput
             field={this._form.rePassword}
             fieldValue={this.state.rePassword}
-            autoCapitalize="none"
-            keyboardAppearance="dark"
-            returnKeyLabel="Definir"
-            returnKeyType="go"
-            underlineColorAndroid="transparent"
-            autoCorrect={false}
-            spellCheck={false}
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            keyLabel="Password"
             secureTextEntry
-            clearButtonMode={"while-editing"}
-            refInput={this.secondInput}
+            refInput={this.thirdInput}
           />
           <View
             style={{
