@@ -1,6 +1,6 @@
 import { requiredMessageGetter } from "../../utils/validationHelper";
 
-export const signInConstraints = {
+export const signUpConstraints = {
   username: {
     presence: {
       message: requiredMessageGetter,

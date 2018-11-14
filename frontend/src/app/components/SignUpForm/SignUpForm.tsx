@@ -12,7 +12,7 @@ import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
 import FormButton from "../FormButton/FormButton"
-import { signInConstraints } from "./signInConstraints";
+import { signUpConstraints } from "./signUpConstraints";
 import {
   getFieldValuesWithValidationErrors,
   getFieldValuesWithHttpErrors,
@@ -87,7 +87,7 @@ class SignInForm extends React.Component<IProp, IState> {
       loading: true,
     });
 
-    validate(form, signInConstraints)
+    validate(form, signUpConstraints)
       .then(() => {
         if (form.password === form.rePassword) {
           authenticationClient
