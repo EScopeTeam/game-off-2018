@@ -1,5 +1,7 @@
 package com.bichos.models.bugs;
 
+import com.bichos.utils.Randomizer;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class BugImage extends BaseBugImage {
 
-  public BugSelectedImage generate(BugColorPalette colorPalette) {
-    BugColor color = colorPalette.getRandomColor();
+  public BugSelectedImage generate(Randomizer randomizer, BugColorPalette colorPalette) {
+    BugColor color = colorPalette.getRandomColor(randomizer);
     BugSelectedImage result = new BugSelectedImage();
     result.setBugColorId(getBugImageId());
     result.setName(getName());

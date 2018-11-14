@@ -17,33 +17,33 @@ public class BugPart extends BaseBugPart {
 
   private List<BugPattern> patterns = new ArrayList<>();
 
-  public BugSelectedPart generate(BugColorPalette colorPalette) {
+  public BugSelectedPart generate(Randomizer randomizer, BugColorPalette colorPalette) {
     BugSelectedPart result = new BugSelectedPart();
     result.setBugPartId(getBugPartId());
     result.setName(getName());
     result.setRequired(isRequired());
     result.setPosition(getPosition());
     result.setGenerationChance(getGenerationChance());
-    result.setRelatedParts(generateRelatedParts(colorPalette));
-    result.setPattern(generatePattern(colorPalette));
+    result.setRelatedParts(generateRelatedParts(randomizer, colorPalette));
+    result.setPattern(generatePattern(randomizer, colorPalette));
 
     return result;
   }
 
-  public boolean shouldBeGenerateRandomly() {
-    return isRequired() || Randomizer.binaryDecision(this);
+  public boolean shouldBeGenerateRandomly(Randomizer randomizer) {
+    return isRequired() || randomizer.binaryDecision(this);
   }
 
-  private List<BugSelectedPart> generateRelatedParts(BugColorPalette colorPalette) {
+  private List<BugSelectedPart> generateRelatedParts(Randomizer randomizer, BugColorPalette colorPalette) {
     return relatedParts.stream()
-        .filter(p -> p.shouldBeGenerateRandomly())
+        .filter(p -> p.shouldBeGenerateRandomly(randomizer))
         .sorted()
-        .map(part -> part.generate(colorPalette))
+        .map(part -> part.generate(randomizer, colorPalette))
         .collect(Collectors.toList());
   }
 
-  private BugSelectedPattern generatePattern(BugColorPalette colorPalette) {
-    return Randomizer.getOneRandomly(patterns).generate(colorPalette);
+  private BugSelectedPattern generatePattern(Randomizer randomizer, BugColorPalette colorPalette) {
+    return randomizer.getOneRandomly(patterns).generate(randomizer, colorPalette);
   }
 
 }

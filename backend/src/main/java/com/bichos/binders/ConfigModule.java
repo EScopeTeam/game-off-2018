@@ -1,6 +1,7 @@
 package com.bichos.binders;
 
 import java.time.Clock;
+import java.util.Random;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -9,6 +10,7 @@ import com.bichos.config.AuthenticationConfig;
 import com.bichos.config.RouterConfig;
 import com.bichos.config.SqlConfig;
 import com.bichos.config.WebsocketConfig;
+import com.bichos.utils.Randomizer;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -71,6 +73,12 @@ public class ConfigModule extends AbstractModule {
   @Singleton
   public Clock provideClock() {
     return Clock.systemUTC();
+  }
+
+  @Provides
+  @Singleton
+  public Randomizer provideRandomizer() {
+    return new Randomizer(new Random());
   }
 
 }

@@ -6,8 +6,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.bichos.utils.Randomizer;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,15 +25,6 @@ public class Bug {
         .collect(Collectors.joining("|"));
 
     return Base64.getEncoder().encodeToString(hashedParts.getBytes(StandardCharsets.UTF_8));
-  }
-
-  public static Bug generate(List<BugRace> races) {
-    BugRace race = Randomizer.getOneRandomly(races);
-
-    Bug result = new Bug();
-    result.setBugRaceId(race.getBugRaceId());
-    result.setParts(race.generate());
-    return result;
   }
 
 }
