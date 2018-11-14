@@ -13,4 +13,8 @@ public class BaseBugPattern implements RandomElement {
 
   private int generationChance;
 
+  protected BaseBugPattern() {
+
+  }
+
 }
