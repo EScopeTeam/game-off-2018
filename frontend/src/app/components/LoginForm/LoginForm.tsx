@@ -2,16 +2,16 @@ import React, { createRef } from "react";
 import { AxiosError } from "axios";
 import { NavigationScreenProp } from "react-navigation";
 import { View, TextInput, Image } from "react-native";
-import { Card, Button } from "react-native-elements";
+import { Card } from "react-native-elements";
 import TokenContext from "../../contexts/TokenContext";
 import { authenticationClient } from "../../config/clients";
 import ITokenContextData from "../../models/ITokenContextData";
 import { saveToken } from "../../utils/authenticationHelper";
-import i18n from "../../config/i18n";
 import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
+import FormButton from "../FormButton/FormButton"
 import { loginConstraints } from "./loginConstraints";
 import {
   getFieldValuesWithValidationErrors,
@@ -177,17 +177,13 @@ class LoginForm extends React.Component<IProp, IState> {
               justifyContent: "space-around",
             }}
           >
-            <Button
+            <FormButton
               title="LOGIN"
               onPress={() => this.submit()}
-              backgroundColor="#389798"
-              buttonStyle={{ marginTop: 20, width: 120 }}
             />
-            <Button
+            <FormButton
               title="SIGNUP"
               onPress={() => navigation.navigate("Signup")}
-              backgroundColor="#389798"
-              buttonStyle={{ marginTop: 20, width: 120 }}
             />
           </View>
         </Card>

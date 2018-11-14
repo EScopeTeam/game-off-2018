@@ -3,14 +3,11 @@ import { Button, ButtonProps } from "react-native-elements";
 import { t } from "../../config/i18n";
 import styles from "./styles";
 
-interface IProps extends ButtonProps {
-}
-
-export default class FormButton extends React.Component<IProps> {
+export default class FormButton extends React.Component<ButtonProps> {
     public render() {
         return (
-            <Button 
-                buttonStyle = { styles.button }
+            <Button
+                buttonStyle={styles.button}
                 {...this.props}
             />
         );
