@@ -2,13 +2,10 @@ package com.bichos.repositories.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import com.bichos.models.Player;
-import com.bichos.models.UserAccount;
 import com.bichos.repositories.PlayersRepository;
 
 import io.vertx.core.Future;
@@ -32,14 +29,13 @@ public class PlayersSqlRepository implements PlayersRepository {
   private static final int INDEX_EXPERIENCE_POINTS = 9;
   private static final int INDEX_ONLINE = 10;
 
-  private static final String FIND_PLAYER_BY_USERNAME_SQL =
-      "SELECT player_id, email, password, salt, active, creation_time, update_time, username, coins, experiencePoints, online FROM players WHERE username = ?";
+  private static final String FIND_PLAYER_BY_USERNAME_SQL = "SELECT player_id, email, password, salt, active, username, creation_time, "
+      + "update_time, coins, experiencePoints, online FROM players WHERE username = ?";
 
   private static final String UPDATE_ONLINE_BY_ID_SQL = "UPDATE players SET online = ? WHERE player_id = ?";
 
-  private static final String INSERT_PLAYER_SQL =
-      "INSERT INTO players (email, password, salt, active, creation_time, update_time, username, coins, experiencePoints, online) "
-          + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  private static final String INSERT_PLAYER_SQL = "INSERT INTO players (email, password, salt, active, username, creation_time, update_time, "
+      + "coins, experiencePoints, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
 
@@ -67,16 +63,13 @@ public class PlayersSqlRepository implements PlayersRepository {
       result = null;
     } else {
       result = new Player();
-      final UserAccount userAccount = new UserAccount();
-      userAccount.setEmail(row.getString(INDEX_EMAIL));
-      userAccount.setPassword(row.getString(INDEX_PASSWORD));
-      userAccount.setSalt(row.getString(INDEX_SALT));
-      userAccount.setActive(row.getBoolean(INDEX_ACTIVE));
-      userAccount.setCreationTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(row.getLong(INDEX_CREATION_DATE)), ZoneId.systemDefault()));
-      userAccount.setUpdateTime(OffsetDateTime.ofInstant(Instant.ofEpochMilli(row.getLong(INDEX_UPDATE_DATE)), ZoneId.systemDefault()));
-
-      result.setId(String.valueOf(row.getLong(INDEX_ID)));
-      result.setUserAccount(userAccount);
+      result.setUserId(String.valueOf(row.getLong(INDEX_ID)));
+      result.setEmail(row.getString(INDEX_EMAIL));
+      result.setPassword(row.getString(INDEX_PASSWORD));
+      result.setSalt(row.getString(INDEX_SALT));
+      result.setActive(row.getBoolean(INDEX_ACTIVE));
+      result.setCreationTime(OffsetDateTime.parse(row.getString(INDEX_CREATION_DATE), POSTGRE_TIME_FORMATTER));
+      result.setUpdateTime(OffsetDateTime.parse(row.getString(INDEX_UPDATE_DATE), POSTGRE_TIME_FORMATTER));
       result.setUsername(row.getString(INDEX_USERNAME));
       result.setCoins(BigDecimal.valueOf(row.getFloat(INDEX_COINS)));
       result.setExperiencePoints(BigInteger.valueOf(row.getLong(INDEX_EXPERIENCE_POINTS)));
@@ -100,11 +93,15 @@ public class PlayersSqlRepository implements PlayersRepository {
   public Future<Void> insertPlayer(final Player player) {
     final Future<UpdateResult> fResult = Future.future();
     client.updateWithParams(INSERT_PLAYER_SQL, new JsonArray()
-        .add(player.getUserAccount().getEmail()).add(player.getUserAccount().getPassword())
-        .add(player.getUserAccount().getSalt()).add(START_ACTIVE_ACCOUNT)
+        .add(player.getEmail())
+        .add(player.getPassword())
+        .add(player.getSalt())
+        .add(START_ACTIVE_ACCOUNT)
+        .add(player.getUsername())
         .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
         .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
-        .add(player.getUsername()).add(START_PLAYER_COINS).add(START_EXPERIENCE_POINTS)
+        .add(START_PLAYER_COINS)
+        .add(START_EXPERIENCE_POINTS)
         .add(player.isOnline()), fResult.completer());
 
     return fResult.mapEmpty();

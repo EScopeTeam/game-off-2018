@@ -49,11 +49,11 @@ public class AuthenticationJWTService implements AuthenticationService {
       throw new InvalidLoginException();
     }
 
-    return jwtAuth.generateToken(new JsonObject().put("sub", player.getId()), jwtOptions);
+    return jwtAuth.generateToken(new JsonObject().put("sub", player.getUserId()), jwtOptions);
   }
 
   private boolean isValidPassword(final Player player, final String password) {
-    return player.getUserAccount().getPassword().equals(hashPassword(password, player.getUserAccount().getSalt()));
+    return player.getPassword().equals(hashPassword(password, player.getSalt()));
   }
 
   private String hashPassword(final String password, final String salt) {
@@ -132,7 +132,7 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   private Future<Boolean> validatePlayerData(final Player player) {
 
-    return playersRepository.existsPlayerbyUsernameOrEmail(player.getUsername(), player.getUserAccount().getEmail());
+    return playersRepository.existsPlayerbyUsernameOrEmail(player.getUsername(), player.getEmail());
   }
 
 }

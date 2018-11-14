@@ -3,6 +3,7 @@ package com.bichos.repositories.impl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,8 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 @RunWith(VertxUnitRunner.class)
 public class PlayersSqlRepositoryTest {
 
+  private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
+
   private static final int PLAYER_ID = 12;
   private static final String PLAYER_USERNAME = "test01";
   private static final String PLAYER_PASSWORD = "superSecretPasswordHASHED";
@@ -26,10 +29,10 @@ public class PlayersSqlRepositoryTest {
   private static final String PLAYER_EMAIL = "test@test.com";
   private static final boolean PLAYER_ONLINE = false;
   private static final boolean PLAYER_ACTIVE = true;
-  private static final OffsetDateTime CREATION_DATE = OffsetDateTime.now();
-  private static final OffsetDateTime UPDATE_DATE = OffsetDateTime.now();
-  private static final BigDecimal COINS = BigDecimal.valueOf(1);
-  private static final BigInteger EXP_POINTS = BigInteger.valueOf(10);
+  private static final String CREATION_DATE = OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER);
+  private static final String UPDATE_DATE = OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER);
+  private static final double COINS = 1;
+  private static final long EXP_POINTS = 10;
 
   private PlayersSqlRepository playersRepository;
 
@@ -63,17 +66,17 @@ public class PlayersSqlRepositoryTest {
         final Player player = playerResult.result();
 
         context.assertNotNull(player);
-        context.assertEquals(String.valueOf(PLAYER_ID), player.getId());
+        context.assertEquals(String.valueOf(PLAYER_ID), player.getUserId());
         context.assertEquals(PLAYER_USERNAME, player.getUsername());
-        context.assertEquals(PLAYER_PASSWORD, player.getUserAccount().getPassword());
-        context.assertEquals(PLAYER_SALT, player.getUserAccount().getSalt());
-        context.assertEquals(PLAYER_EMAIL, player.getUserAccount().getEmail());
+        context.assertEquals(PLAYER_PASSWORD, player.getPassword());
+        context.assertEquals(PLAYER_SALT, player.getSalt());
+        context.assertEquals(PLAYER_EMAIL, player.getEmail());
         context.assertEquals(PLAYER_ONLINE, player.isOnline());
-        context.assertEquals(PLAYER_ACTIVE, player.getUserAccount().getActive());
-        context.assertEquals(CREATION_DATE, player.getUserAccount().getCreationTime());
-        context.assertEquals(UPDATE_DATE, player.getUserAccount().getUpdateTime());
-        context.assertEquals(COINS, player.getCoins());
-        context.assertEquals(EXP_POINTS, player.getExperiencePoints());
+        context.assertEquals(PLAYER_ACTIVE, player.getActive());
+        context.assertEquals(OffsetDateTime.parse(CREATION_DATE, POSTGRE_TIME_FORMATTER), player.getCreationTime());
+        context.assertEquals(OffsetDateTime.parse(UPDATE_DATE, POSTGRE_TIME_FORMATTER), player.getUpdateTime());
+        context.assertEquals(BigDecimal.valueOf(COINS), player.getCoins());
+        context.assertEquals(BigInteger.valueOf(EXP_POINTS), player.getExperiencePoints());
 
         async.complete();
       } else {

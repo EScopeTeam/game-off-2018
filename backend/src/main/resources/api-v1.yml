@@ -39,9 +39,7 @@ paths:
   "/signup":
     post:
       tags:
-      - "signup"
-      - "register"
-      - "new account"
+      - "authentication"
       description: "Sign up."
       operationId: "signup"
       consumes:

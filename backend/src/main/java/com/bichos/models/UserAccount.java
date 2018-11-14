@@ -7,7 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserAccount {
+public abstract class UserAccount {
+
+  private String userId;
 
   private String email;
 

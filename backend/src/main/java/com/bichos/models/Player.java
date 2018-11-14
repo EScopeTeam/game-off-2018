@@ -8,11 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Player {
-
-  private String id;
-
-  private UserAccount userAccount;
+public class Player extends UserAccount {
 
   private String username;
 
