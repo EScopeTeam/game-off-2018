@@ -9,6 +9,8 @@ import styles from "./styles";
 interface IProps extends TextInputProps {
   field: IFormField;
   fieldValue: IFormFieldValue;
+  refInput?: React.RefObject<TextInput>;
+  keyLabel?: string;
 }
 
 export default class GenericTextInput extends React.Component<IProps> {
@@ -33,6 +35,16 @@ export default class GenericTextInput extends React.Component<IProps> {
               : null
           }
           style={styles.input}
+          ref={this.props.refInput}
+          autoCapitalize="none"
+          keyboardAppearance="dark"
+          returnKeyLabel={this.props.keyLabel}
+          returnKeyType="next"
+          underlineColorAndroid="transparent"
+          clearButtonMode={"while-editing"}
+          autoCorrect={false}
+          spellCheck={false}
+          placeholderTextColor="rgba(0,0,0,0.5)"
         />
         <FormError errors={fieldValue.errors} />
       </View>

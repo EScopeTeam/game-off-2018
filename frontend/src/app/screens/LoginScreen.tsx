@@ -7,6 +7,7 @@ import { navigationStyles } from "./../config/globalStyles";
 import { t } from "../config/i18n";
 import LoginForm from "../components/LoginForm";
 
+
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
 }
