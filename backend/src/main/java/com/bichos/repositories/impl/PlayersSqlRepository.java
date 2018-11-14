@@ -100,8 +100,8 @@ public class PlayersSqlRepository implements PlayersRepository {
         .add(player.getUsername())
         .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
         .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
-        .add(START_PLAYER_COINS)
-        .add(START_EXPERIENCE_POINTS)
+        .add(START_PLAYER_COINS.doubleValue())
+        .add(START_EXPERIENCE_POINTS.doubleValue())
         .add(player.isOnline()), fResult.completer());
 
     return fResult.mapEmpty();

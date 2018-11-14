@@ -123,7 +123,7 @@ public class AuthenticationJWTService implements AuthenticationService {
 
     return validatePlayerData(player).compose(future -> {
       if (future) {
-        return Future.succeededFuture();
+        return playersRepository.insertPlayer(player);
       } else {
         return Future.failedFuture(new UserAlreadyCreatedException());
       }
