@@ -12,10 +12,10 @@ public final class SignUpMappers {
 
   }
 
-  public static Player mapSignUpToPlayer(ApiSignUpRequest request) {
+  public static Player mapSignUpToPlayer(final ApiSignUpRequest request) {
 
-    Player player = new Player();
-    UserAccount userAccount = new UserAccount();
+    final Player player = new Player();
+    final UserAccount userAccount = new UserAccount();
     userAccount.setEmail(request.getMail());
     userAccount.setPassword(request.getPassword());
     userAccount.setSalt(DEFAULT_SALT);

@@ -23,6 +23,7 @@ import org.mockito.ArgumentCaptor;
 import com.bichos.exceptions.InvalidLoginException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
+import com.bichos.models.UserAccount;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.utils.HandlersUtils;
@@ -109,8 +110,11 @@ public class AuthenticationJWTServiceTest {
   @Test
   public void loginThrowsExceptionIfThePlayerPasswordIsNotTheGivenPasswordHashed(final TestContext context) {
     final Player player = new Player();
-    player.setSalt(SALT);
-    player.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+    UserAccount userAccount = new UserAccount();
+    userAccount.setSalt(SALT);
+    userAccount.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+    player.setUserAccount(userAccount);
+
     when(playersRepository.findPlayerByUsername(VALID_USERNAME)).thenReturn(Future.succeededFuture(player));
 
     final Async async = context.async();
@@ -127,9 +131,11 @@ public class AuthenticationJWTServiceTest {
   @Test
   public void loginReturnsAJWTTokenWithTheIDOfThePlayerIfTheDataIsRight(final TestContext context) {
     final Player player = new Player();
-    player.setId(PLAYER_ID);
-    player.setSalt(SALT);
-    player.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+    UserAccount userAccount = new UserAccount();
+    userAccount.setSalt(SALT);
+    userAccount.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+    player.setUserAccount(userAccount);
+
     when(playersRepository.findPlayerByUsername(VALID_USERNAME)).thenReturn(Future.succeededFuture(player));
     when(jwtAuth.generateToken(any(), any())).thenReturn(TOKEN);
 

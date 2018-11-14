@@ -67,7 +67,7 @@ public class PlayersSqlRepository implements PlayersRepository {
       result = null;
     } else {
       result = new Player();
-      UserAccount userAccount = new UserAccount();
+      final UserAccount userAccount = new UserAccount();
       userAccount.setEmail(row.getString(INDEX_EMAIL));
       userAccount.setPassword(row.getString(INDEX_PASSWORD));
       userAccount.setSalt(row.getString(INDEX_SALT));
@@ -111,7 +111,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   }
 
   @Override
-  public Future<Boolean> existsPlayerbyUsernameOrEmail(String username, String email) {
+  public Future<Boolean> existsPlayerbyUsernameOrEmail(final String username, final String email) {
     final Future<JsonArray> fCount = Future.future();
     final JsonArray params = new JsonArray().add(username).add(email);
     client.querySingleWithParams(COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL, params, fCount.completer());

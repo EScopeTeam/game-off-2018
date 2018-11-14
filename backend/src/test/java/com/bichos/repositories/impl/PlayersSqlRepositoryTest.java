@@ -1,5 +1,9 @@
 package com.bichos.repositories.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.OffsetDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +25,11 @@ public class PlayersSqlRepositoryTest {
   private static final String PLAYER_SALT = "abcd";
   private static final String PLAYER_EMAIL = "test@test.com";
   private static final boolean PLAYER_ONLINE = false;
+  private static final boolean PLAYER_ACTIVE = true;
+  private static final OffsetDateTime CREATION_DATE = OffsetDateTime.now();
+  private static final OffsetDateTime UPDATE_DATE = OffsetDateTime.now();
+  private static final BigDecimal COINS = BigDecimal.valueOf(1);
+  private static final BigInteger EXP_POINTS = BigInteger.valueOf(10);
 
   private PlayersSqlRepository playersRepository;
 
@@ -37,10 +46,15 @@ public class PlayersSqlRepositoryTest {
   public void checkFindPlayerByUsernameReturnsAPlayerIfThereIsOne(final TestContext context) {
     client.setResultQuerySingleWithParams(new JsonArray()
         .add(PLAYER_ID)
-        .add(PLAYER_USERNAME)
+        .add(PLAYER_EMAIL)
         .add(PLAYER_PASSWORD)
         .add(PLAYER_SALT)
-        .add(PLAYER_EMAIL)
+        .add(PLAYER_ACTIVE)
+        .add(PLAYER_USERNAME)
+        .add(CREATION_DATE)
+        .add(UPDATE_DATE)
+        .add(COINS)
+        .add(EXP_POINTS)
         .add(PLAYER_ONLINE));
 
     final Async async = context.async();
@@ -51,9 +65,16 @@ public class PlayersSqlRepositoryTest {
         context.assertNotNull(player);
         context.assertEquals(String.valueOf(PLAYER_ID), player.getId());
         context.assertEquals(PLAYER_USERNAME, player.getUsername());
-        context.assertEquals(PLAYER_PASSWORD, player.getPassword());
-        context.assertEquals(PLAYER_SALT, player.getSalt());
-        context.assertEquals(PLAYER_EMAIL, player.getEmail());
+        context.assertEquals(PLAYER_PASSWORD, player.getUserAccount().getPassword());
+        context.assertEquals(PLAYER_SALT, player.getUserAccount().getSalt());
+        context.assertEquals(PLAYER_EMAIL, player.getUserAccount().getEmail());
+        context.assertEquals(PLAYER_ONLINE, player.isOnline());
+        context.assertEquals(PLAYER_ACTIVE, player.getUserAccount().getActive());
+        context.assertEquals(CREATION_DATE, player.getUserAccount().getCreationTime());
+        context.assertEquals(UPDATE_DATE, player.getUserAccount().getUpdateTime());
+        context.assertEquals(COINS, player.getCoins());
+        context.assertEquals(EXP_POINTS, player.getExperiencePoints());
+
         async.complete();
       } else {
         context.fail(playerResult.cause());

@@ -119,7 +119,7 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
-  public Future<Void> signUp(Player player) {
+  public Future<Void> signUp(final Player player) {
 
     return validatePlayerData(player).compose(future -> {
       if (future) {
@@ -130,7 +130,7 @@ public class AuthenticationJWTService implements AuthenticationService {
     });
   }
 
-  private Future<Boolean> validatePlayerData(Player player) {
+  private Future<Boolean> validatePlayerData(final Player player) {
 
     return playersRepository.existsPlayerbyUsernameOrEmail(player.getUsername(), player.getUserAccount().getEmail());
   }
