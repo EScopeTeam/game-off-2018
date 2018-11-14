@@ -14,23 +14,25 @@ public class Randomizer {
 
   private final Random rand;
 
-  public <T extends RandomElement> T getOneRandomly(List<T> elements) {
-    int count = (int) elements.stream().mapToInt(RandomElement::getGenerationChance).count();
-    int random = rand.nextInt(count);
+  public <T extends RandomElement> T getOneRandomly(final List<T> elements) {
+    final int count = (int) elements.stream().mapToInt(RandomElement::getGenerationChance).sum();
+    final int random = rand.nextInt(count);
 
     int acc = 0;
-    for (T element : elements) {
+    T result = null;
+    for (final T element : elements) {
       acc += element.getGenerationChance();
 
       if (random < acc) {
-        return element;
+        result = element;
+        break;
       }
     }
 
-    return elements.isEmpty() ? null : elements.get(elements.size() - 1);
+    return result;
   }
 
-  public boolean binaryDecision(RandomElement element) {
+  public boolean binaryDecision(final RandomElement element) {
     return rand.nextInt(MAX_CHANCE_BINARY_DECISION) < element.getGenerationChance();
   }
 

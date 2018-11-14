@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class BaseBugPattern implements RandomElement {
+public class BaseBugPattern implements RandomElement {
 
   private String bugPatternId;
 

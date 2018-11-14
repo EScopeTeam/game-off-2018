@@ -20,7 +20,7 @@ public class BugColorPalette implements RandomElement {
 
   private List<BugColor> colors = new ArrayList<>();
 
-  public BugColor getRandomColor(Randomizer randomizer) {
+  public BugColor getRandomColor(final Randomizer randomizer) {
     return randomizer.getOneRandomly(colors);
   }
 

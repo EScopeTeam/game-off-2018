@@ -18,7 +18,7 @@ public class Bug {
   private List<BugSelectedPart> parts = new ArrayList<>();
 
   public String hash() {
-    String hashedParts = parts.stream()
+    final String hashedParts = parts.stream()
         .flatMap(BugSelectedPart::flat)
         .sorted()
         .flatMap(p -> p.hashPattern().stream())

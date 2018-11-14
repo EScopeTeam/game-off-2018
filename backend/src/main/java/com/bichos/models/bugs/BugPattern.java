@@ -15,8 +15,8 @@ public class BugPattern extends BaseBugPattern {
 
   private List<BugImage> images = new ArrayList<>();
 
-  public BugSelectedPattern generate(Randomizer randomizer, BugColorPalette colorPalette) {
-    BugSelectedPattern result = new BugSelectedPattern();
+  public BugSelectedPattern generate(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugSelectedPattern result = new BugSelectedPattern();
     result.setBugPatternId(getBugPatternId());
     result.setName(getName());
     result.setGenerationChance(getGenerationChance());
@@ -25,7 +25,7 @@ public class BugPattern extends BaseBugPattern {
     return result;
   }
 
-  private List<BugSelectedImage> generateImages(Randomizer randomizer, BugColorPalette colorPalette) {
+  private List<BugSelectedImage> generateImages(final Randomizer randomizer, final BugColorPalette colorPalette) {
     return images.stream()
         .sorted()
         .map(i -> i.generate(randomizer, colorPalette))

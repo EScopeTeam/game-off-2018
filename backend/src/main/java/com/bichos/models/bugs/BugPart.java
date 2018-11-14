@@ -17,8 +17,8 @@ public class BugPart extends BaseBugPart {
 
   private List<BugPattern> patterns = new ArrayList<>();
 
-  public BugSelectedPart generate(Randomizer randomizer, BugColorPalette colorPalette) {
-    BugSelectedPart result = new BugSelectedPart();
+  public BugSelectedPart generate(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugSelectedPart result = new BugSelectedPart();
     result.setBugPartId(getBugPartId());
     result.setName(getName());
     result.setRequired(isRequired());
@@ -30,11 +30,7 @@ public class BugPart extends BaseBugPart {
     return result;
   }
 
-  public boolean shouldBeGenerateRandomly(Randomizer randomizer) {
-    return isRequired() || randomizer.binaryDecision(this);
-  }
-
-  private List<BugSelectedPart> generateRelatedParts(Randomizer randomizer, BugColorPalette colorPalette) {
+  private List<BugSelectedPart> generateRelatedParts(final Randomizer randomizer, final BugColorPalette colorPalette) {
     return relatedParts.stream()
         .filter(p -> p.shouldBeGenerateRandomly(randomizer))
         .sorted()
@@ -42,8 +38,14 @@ public class BugPart extends BaseBugPart {
         .collect(Collectors.toList());
   }
 
-  private BugSelectedPattern generatePattern(Randomizer randomizer, BugColorPalette colorPalette) {
-    return randomizer.getOneRandomly(patterns).generate(randomizer, colorPalette);
+  private BugSelectedPattern generatePattern(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugPattern pattern = randomizer.getOneRandomly(patterns);
+
+    return pattern == null ? null : pattern.generate(randomizer, colorPalette);
+  }
+
+  public boolean shouldBeGenerateRandomly(final Randomizer randomizer) {
+    return isRequired() || randomizer.binaryDecision(this);
   }
 
 }

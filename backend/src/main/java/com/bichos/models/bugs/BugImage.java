@@ -9,16 +9,18 @@ import lombok.Setter;
 @Setter
 public class BugImage extends BaseBugImage {
 
-  public BugSelectedImage generate(Randomizer randomizer, BugColorPalette colorPalette) {
-    BugColor color = colorPalette.getRandomColor(randomizer);
-    BugSelectedImage result = new BugSelectedImage();
-    result.setBugColorId(getBugImageId());
+  public BugSelectedImage generate(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugSelectedImage result = new BugSelectedImage();
+    result.setBugImageId(getBugImageId());
     result.setName(getName());
     result.setImageUrl(getImageUrl());
     result.setAllowColor(isAllowColor());
     result.setPosition(getPosition());
-    result.setBugColorId(color.getBugColorId());
-    result.setBugColorRgbCode(color.getRgbCode());
+    if (isAllowColor()) {
+      final BugColor color = colorPalette.getRandomColor(randomizer);
+      result.setBugColorId(color.getBugColorId());
+      result.setBugColorRgbCode(color.getRgbCode());
+    }
 
     return result;
   }

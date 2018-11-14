@@ -18,8 +18,8 @@ public abstract class BaseBugImage implements Comparable<BaseBugImage> {
   private int position;
 
   @Override
-  public int compareTo(BaseBugImage o) {
-    return Integer.compare(position, o.position);
+  public int compareTo(final BaseBugImage o) {
+    return Integer.compare(getPosition(), o.getPosition());
   }
 
 }

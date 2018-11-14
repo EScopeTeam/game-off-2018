@@ -19,9 +19,9 @@ public class BugGeneratorServiceImpl implements BugGeneratorService {
 
   @Override
   public Bug generate() {
-    BugRace race = randomizer.getOneRandomly(getBugRaces());
+    final BugRace race = randomizer.getOneRandomly(getBugRaces());
 
-    Bug result = new Bug();
+    final Bug result = new Bug();
     result.setBugRaceId(race.getBugRaceId());
     result.setParts(race.generate(randomizer));
     return result;

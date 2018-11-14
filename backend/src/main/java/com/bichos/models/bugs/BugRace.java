@@ -23,8 +23,8 @@ public class BugRace implements RandomElement {
 
   private List<BugColorPalette> colorPalettes = new ArrayList<>();
 
-  public List<BugSelectedPart> generate(Randomizer randomizer) {
-    BugColorPalette colorPalette = randomizer.getOneRandomly(colorPalettes);
+  public List<BugSelectedPart> generate(final Randomizer randomizer) {
+    final BugColorPalette colorPalette = randomizer.getOneRandomly(colorPalettes);
 
     return parts.stream()
         .filter(p -> p.shouldBeGenerateRandomly(randomizer))

@@ -18,8 +18,8 @@ public abstract class BaseBugPart implements RandomElement, Comparable<BaseBugPa
   private int generationChance;
 
   @Override
-  public int compareTo(BaseBugPart o) {
-    return Integer.compare(position, o.position);
+  public int compareTo(final BaseBugPart o) {
+    return Integer.compare(getPosition(), o.getPosition());
   }
 
 }
