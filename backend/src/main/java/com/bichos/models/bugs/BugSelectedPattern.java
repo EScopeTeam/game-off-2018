@@ -9,16 +9,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugSelectedPattern {
-
-  private String bugPatternId;
+public class BugSelectedPattern extends BaseBugPattern {
 
   private List<BugSelectedImage> images = new ArrayList<>();
 
   public List<String> hash() {
     return images.stream()
         .sorted()
-        .map(i -> bugPatternId + "-" + i.hash())
+        .map(i -> getBugPatternId() + "-" + i.hash())
         .collect(Collectors.toList());
   }
 

@@ -11,17 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugPart implements RandomElement, Comparable<BugPart> {
-
-  private String bugPartId;
-
-  private String name;
-
-  private int position;
-
-  private boolean required;
-
-  private int generationChance;
+public class BugPart extends BaseBugPart {
 
   private List<BugPart> relatedParts = new ArrayList<>();
 
@@ -29,16 +19,19 @@ public class BugPart implements RandomElement, Comparable<BugPart> {
 
   public BugSelectedPart generate(BugColorPalette colorPalette) {
     BugSelectedPart result = new BugSelectedPart();
-    result.setBugPartId(bugPartId);
+    result.setBugPartId(getBugPartId());
+    result.setName(getName());
+    result.setRequired(isRequired());
+    result.setPosition(getPosition());
+    result.setGenerationChance(getGenerationChance());
     result.setRelatedParts(generateRelatedParts(colorPalette));
     result.setPattern(generatePattern(colorPalette));
-    result.setPosition(position);
 
     return result;
   }
 
   public boolean shouldBeGenerateRandomly() {
-    return required || Randomizer.binaryDecision(this);
+    return isRequired() || Randomizer.binaryDecision(this);
   }
 
   private List<BugSelectedPart> generateRelatedParts(BugColorPalette colorPalette) {
@@ -51,11 +44,6 @@ public class BugPart implements RandomElement, Comparable<BugPart> {
 
   private BugSelectedPattern generatePattern(BugColorPalette colorPalette) {
     return Randomizer.getOneRandomly(patterns).generate(colorPalette);
-  }
-
-  @Override
-  public int compareTo(BugPart o) {
-    return Integer.compare(position, o.position);
   }
 
 }

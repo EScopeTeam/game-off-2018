@@ -9,19 +9,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugPattern implements RandomElement {
-
-  private String bugPatternId;
-
-  private String name;
-
-  private int generationChance;
+public class BugPattern extends BaseBugPattern {
 
   private List<BugImage> images = new ArrayList<>();
 
   public BugSelectedPattern generate(BugColorPalette colorPalette) {
     BugSelectedPattern result = new BugSelectedPattern();
-    result.setBugPatternId(bugPatternId);
+    result.setBugPatternId(getBugPatternId());
+    result.setName(getName());
+    result.setGenerationChance(getGenerationChance());
     result.setImages(generateImages(colorPalette));
 
     return result;
