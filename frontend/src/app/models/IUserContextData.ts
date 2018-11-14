@@ -1,8 +1,11 @@
 import User from "./User";
-import { EventBus } from "vertx3-eventbus-client";
+import WebsocketClient from "../utils/WebsocketClient";
+import RestClient from "../utils/RestClient";
 
 export default interface IUserContextData {
-  readonly user?: User;
+  readonly user: User;
 
-  readonly eventBus?: EventBus;
+  readonly eventBus: WebsocketClient;
+
+  readonly restClient: RestClient;
 }

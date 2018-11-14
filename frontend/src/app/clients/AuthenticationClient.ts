@@ -1,7 +1,5 @@
 import axios from "axios";
 import { IApiSettings } from "../models/ISettings";
-import User from "../models/User";
-import websocketHelper from "../utils/websocketHelper";
 
 export default class AuthenticationClient {
   private _settings: IApiSettings;
@@ -18,7 +16,7 @@ export default class AuthenticationClient {
 
     return response.data.token;
   }
-
+  
   public async signIn(username: string, password: string): Promise<string> {
     const response = await axios.post(this._settings.rest.signIn, {
       username,
