@@ -171,12 +171,7 @@ class LoginForm extends React.Component<IProp, IState> {
             secureTextEntry
             refInput={this.secondInput}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
+          <View style={styles.button_login} >
             <FormButton
               title="LOGIN"
               onPress={() => this.submit()}
