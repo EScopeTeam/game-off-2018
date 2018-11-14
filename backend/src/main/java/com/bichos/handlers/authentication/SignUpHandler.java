@@ -29,7 +29,7 @@ public class SignUpHandler implements ApiHandler {
     final ApiSignUpRequest request = HandlerUtils.jsonRequest(context, ApiSignUpRequest.class);
     validationService.validate(request);
 
-    authenticationService.signUp(SignUpMappers.mapSignUpToPlayer(request)).setHandler(result -> {
+    authenticationService.signUp(SignUpMappers.mapApiToModel(request)).setHandler(result -> {
       if (result.succeeded()) {
         context.response().setStatusCode(HttpStatus.CREATED.getStatusCode());
       } else if (result.failed() && result.cause() instanceof UserAlreadyCreatedException) {

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class UserAccount {
+public class UserAccount {
 
   private String userId;
 
@@ -22,5 +22,9 @@ public abstract class UserAccount {
   private OffsetDateTime creationTime;
 
   private OffsetDateTime updateTime;
+
+  protected UserAccount() {
+    // Avoid abstract
+  }
 
 }

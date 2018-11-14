@@ -1,24 +1,20 @@
 package com.bichos.mappers;
 
 import com.bichos.models.ApiSignUpRequest;
-import com.bichos.models.Player;
+import com.bichos.models.SignupRequest;
 
 public final class SignUpMappers {
 
-  private static final String DEFAULT_SALT = "";
-
   private SignUpMappers() {
-
   }
 
-  public static Player mapSignUpToPlayer(final ApiSignUpRequest request) {
-    final Player player = new Player();
-    player.setEmail(request.getMail());
-    player.setPassword(request.getPassword());
-    player.setSalt(DEFAULT_SALT);
-    player.setUsername(request.getNickname());
+  public static SignupRequest mapApiToModel(final ApiSignUpRequest request) {
+    final SignupRequest model = new SignupRequest();
+    model.setEmail(request.getMail());
+    model.setPassword(request.getPassword());
+    model.setUsername(request.getNickname());
 
-    return player;
+    return model;
   }
 
 }

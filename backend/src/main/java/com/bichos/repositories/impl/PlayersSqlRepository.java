@@ -2,6 +2,7 @@ package com.bichos.repositories.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -42,10 +43,13 @@ public class PlayersSqlRepository implements PlayersRepository {
   private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
 
   private static final boolean START_ACTIVE_ACCOUNT = true;
-  private static final BigDecimal START_PLAYER_COINS = BigDecimal.ZERO;
-  private static final BigDecimal START_EXPERIENCE_POINTS = BigDecimal.ZERO;
+  private static final double START_PLAYER_COINS = 0.0;
+  private static final int START_EXPERIENCE_POINTS = 0;
+  private static final boolean START_PLAYER_ONLINE = false;
 
   private final SQLClient client;
+
+  private final Clock clock;
 
   @Override
   public Future<Player> findPlayerByUsername(final String username) {
@@ -98,11 +102,11 @@ public class PlayersSqlRepository implements PlayersRepository {
         .add(player.getSalt())
         .add(START_ACTIVE_ACCOUNT)
         .add(player.getUsername())
-        .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
-        .add(OffsetDateTime.now().format(POSTGRE_TIME_FORMATTER))
-        .add(START_PLAYER_COINS.doubleValue())
-        .add(START_EXPERIENCE_POINTS.doubleValue())
-        .add(player.isOnline()), fResult.completer());
+        .add(OffsetDateTime.now(clock).format(POSTGRE_TIME_FORMATTER))
+        .add(OffsetDateTime.now(clock).format(POSTGRE_TIME_FORMATTER))
+        .add(START_PLAYER_COINS)
+        .add(START_EXPERIENCE_POINTS)
+        .add(START_PLAYER_ONLINE), fResult.completer());
 
     return fResult.mapEmpty();
   }

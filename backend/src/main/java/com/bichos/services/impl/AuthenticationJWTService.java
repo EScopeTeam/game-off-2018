@@ -7,6 +7,7 @@ import com.bichos.exceptions.InvalidLoginException;
 import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
+import com.bichos.models.SignupRequest;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
@@ -119,10 +120,10 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   @Override
-  public Future<Void> signUp(final Player player) {
-
-    return validatePlayerData(player).compose(future -> {
-      if (future) {
+  public Future<Void> signUp(final SignupRequest request) {
+    return checkUniqueUsernameAndEmail(request).compose(checkUniqueResult -> {
+      if (checkUniqueResult) {
+        final Player player = createPlayerFromSignupRequest(request);
         return playersRepository.insertPlayer(player);
       } else {
         return Future.failedFuture(new UserAlreadyCreatedException());
@@ -130,9 +131,20 @@ public class AuthenticationJWTService implements AuthenticationService {
     });
   }
 
-  private Future<Boolean> validatePlayerData(final Player player) {
+  private Future<Boolean> checkUniqueUsernameAndEmail(final SignupRequest request) {
+    return playersRepository.existsPlayerbyUsernameOrEmail(request.getUsername(), request.getEmail());
+  }
 
-    return playersRepository.existsPlayerbyUsernameOrEmail(player.getUsername(), player.getEmail());
+  private Player createPlayerFromSignupRequest(final SignupRequest request) {
+    final Player player = new Player();
+    player.setUsername(request.getUsername());
+    player.setEmail(request.getEmail());
+
+    final String salt = hashStrategy.generateSalt();
+    player.setSalt(salt);
+    player.setPassword(hashPassword(request.getPassword(), salt));
+
+    return player;
   }
 
 }
