@@ -22,14 +22,14 @@ public class BugSelectedPartTest {
 
   @Test
   public void hashPatternShouldReturnAllTheResultsOfHasingThePatternPrependedByThePartId() {
-    BugSelectedPattern pattern = mock(BugSelectedPattern.class);
+    final BugSelectedPattern pattern = mock(BugSelectedPattern.class);
     when(pattern.hash()).thenReturn(Arrays.asList(HASH1, HASH2));
 
-    BugSelectedPart part = new BugSelectedPart();
+    final BugSelectedPart part = new BugSelectedPart();
     part.setBugPartId(PART_ID);
     part.setPattern(pattern);
 
-    List<String> hash = part.hashPattern();
+    final List<String> hash = part.hashPattern();
 
     Assert.assertThat(hash, hasSize(2));
     Assert.assertThat(hash, contains(

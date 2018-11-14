@@ -10,7 +10,7 @@ public class BugSelectedImageTest {
 
   @Test
   public void theHashShouldReturnTheImageIdAndTheColorCodeIfColorIsAllowed() {
-    BugSelectedImage image = new BugSelectedImage();
+    final BugSelectedImage image = new BugSelectedImage();
     image.setBugImageId(IMAGE_ID);
     image.setBugColorRgbCode(COLOR_RGB);
     image.setAllowColor(true);
@@ -20,7 +20,7 @@ public class BugSelectedImageTest {
 
   @Test
   public void theHashShouldReturnTheImageIdOnlyIfColorIsNOTAllowed() {
-    BugSelectedImage image = new BugSelectedImage();
+    final BugSelectedImage image = new BugSelectedImage();
     image.setBugImageId(IMAGE_ID);
     image.setAllowColor(false);
 

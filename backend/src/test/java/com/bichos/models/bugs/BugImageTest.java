@@ -45,15 +45,15 @@ public class BugImageTest {
 
     randomizer = mock(Randomizer.class);
 
-    List<BugColor> colors = Arrays.asList(
+    final List<BugColor> colors = Arrays.asList(
         createColor(COLOR_ID1, COLOR_RGB1),
         createColor(COLOR_ID2, COLOR_RGB2));
     colorPalette = new BugColorPalette();
     colorPalette.setColors(colors);
   }
 
-  private BugColor createColor(String bugColorId, String rgbCode) {
-    BugColor result = new BugColor();
+  private BugColor createColor(final String bugColorId, final String rgbCode) {
+    final BugColor result = new BugColor();
     result.setBugColorId(bugColorId);
     result.setRgbCode(rgbCode);
 
@@ -62,7 +62,7 @@ public class BugImageTest {
 
   @Test
   public void shouldCreateABugSelectedImage() {
-    BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
+    final BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
 
     Assert.assertThat(selectedImage, hasProperty("allowColor", equalTo(ALLOW_COLOR)));
     Assert.assertThat(selectedImage, hasProperty("bugImageId", equalTo(IMAGE_ID)));
@@ -76,7 +76,7 @@ public class BugImageTest {
     when(randomizer.getOneRandomly(colorPalette.getColors())).thenReturn(colorPalette.getColors().get(1));
     image.setAllowColor(true);
 
-    BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
+    final BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
 
     Assert.assertThat(selectedImage, hasProperty("bugColorId", equalTo(COLOR_ID2)));
     Assert.assertThat(selectedImage, hasProperty("bugColorRgbCode", equalTo(COLOR_RGB2)));
@@ -86,7 +86,7 @@ public class BugImageTest {
   public void shouldCreateABugSelectedImageWithoutAColorIfColorIsNOTAllowed() {
     image.setAllowColor(false);
 
-    BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
+    final BugSelectedImage selectedImage = image.generate(randomizer, colorPalette);
 
     Assert.assertThat(selectedImage, hasProperty("bugColorId", nullValue()));
     Assert.assertThat(selectedImage, hasProperty("bugColorRgbCode", nullValue()));

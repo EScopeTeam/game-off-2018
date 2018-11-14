@@ -28,14 +28,14 @@ public class BugSelectedPatternTest {
 
   @Test
   public void shouldReturnTheHashOfAllTheImagesSortedAndPrependedByThePatternId() {
-    BugSelectedPattern pattern = new BugSelectedPattern();
+    final BugSelectedPattern pattern = new BugSelectedPattern();
     pattern.setBugPatternId(PATTERN_ID);
     pattern.setImages(Arrays.asList(
         createImage(HASH1, POSITION1),
         createImage(HASH2, POSITION2),
         createImage(HASH3, POSITION3)));
 
-    List<String> hashes = pattern.hash();
+    final List<String> hashes = pattern.hash();
 
     Assert.assertThat(hashes, hasSize(pattern.getImages().size()));
     Assert.assertThat(hashes, contains(
@@ -44,8 +44,8 @@ public class BugSelectedPatternTest {
         PATTERN_ID + HASH_SEPARATOR + HASH1));
   }
 
-  private BugSelectedImage createImage(String hash, int position) {
-    BugSelectedImage result = mock(BugSelectedImage.class);
+  private BugSelectedImage createImage(final String hash, final int position) {
+    final BugSelectedImage result = mock(BugSelectedImage.class);
     when(result.hash()).thenReturn(hash);
     when(result.getPosition()).thenReturn(position);
     when(result.compareTo(any())).thenCallRealMethod();

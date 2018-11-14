@@ -44,8 +44,8 @@ public class BugRaceTest {
         createColorPalette()));
   }
 
-  private BugPart createBugPart(int position) {
-    BugPart result = mock(BugPart.class);
+  private BugPart createBugPart(final int position) {
+    final BugPart result = mock(BugPart.class);
     when(result.getPosition()).thenReturn(position);
     when(result.generate(any(), any())).thenReturn(new BugSelectedPart());
     when(result.shouldBeGenerateRandomly(randomizer)).thenReturn(false);
@@ -62,7 +62,7 @@ public class BugRaceTest {
   public void generateShouldReturnTheRequiredRandomlyPartsGenerated() {
     when(race.getParts().get(1).shouldBeGenerateRandomly(randomizer)).thenReturn(true);
 
-    List<BugSelectedPart> selectedParts = race.generate(randomizer);
+    final List<BugSelectedPart> selectedParts = race.generate(randomizer);
     Assert.assertThat(selectedParts, hasSize(1));
     Assert.assertThat(selectedParts, hasItem(race.getParts().get(1).generate(randomizer, null)));
   }
@@ -74,7 +74,7 @@ public class BugRaceTest {
 
     race.generate(randomizer);
 
-    ArgumentCaptor<BugColorPalette> argumentCaptor = ArgumentCaptor.forClass(BugColorPalette.class);
+    final ArgumentCaptor<BugColorPalette> argumentCaptor = ArgumentCaptor.forClass(BugColorPalette.class);
     verify(race.getParts().get(0), times(1)).generate(eq(randomizer), argumentCaptor.capture());
 
     Assert.assertEquals(race.getColorPalettes().get(1), argumentCaptor.getValue());
@@ -86,7 +86,7 @@ public class BugRaceTest {
     when(race.getParts().get(1).shouldBeGenerateRandomly(randomizer)).thenReturn(true);
     when(race.getParts().get(2).shouldBeGenerateRandomly(randomizer)).thenReturn(true);
 
-    List<BugSelectedPart> selectedParts = race.generate(randomizer);
+    final List<BugSelectedPart> selectedParts = race.generate(randomizer);
     Assert.assertThat(selectedParts, hasSize(race.getParts().size()));
     Assert.assertThat(selectedParts, contains(
         race.getParts().get(1).generate(randomizer, null),

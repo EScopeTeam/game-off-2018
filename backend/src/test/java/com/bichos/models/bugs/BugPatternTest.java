@@ -48,8 +48,8 @@ public class BugPatternTest {
         createImage(POSITION3)));
   }
 
-  private BugImage createImage(int position) {
-    BugImage result = mock(BugImage.class);
+  private BugImage createImage(final int position) {
+    final BugImage result = mock(BugImage.class);
     when(result.getPosition()).thenReturn(position);
     when(result.generate(eq(randomizer), any())).thenReturn(new BugSelectedImage());
     when(result.compareTo(any())).thenCallRealMethod();
@@ -59,7 +59,7 @@ public class BugPatternTest {
 
   @Test
   public void generateShouldReturnASelectedPattern() {
-    BugSelectedPattern result = pattern.generate(randomizer, colorPalette);
+    final BugSelectedPattern result = pattern.generate(randomizer, colorPalette);
 
     Assert.assertThat(result, hasProperty("bugPatternId", equalTo(PATTERN_ID)));
     Assert.assertThat(result, hasProperty("name", equalTo(PATTERN_NAME)));
@@ -68,7 +68,7 @@ public class BugPatternTest {
 
   @Test
   public void generateShouldReturnAllThePatternGeneratedImagesInOrder() {
-    BugSelectedPattern result = pattern.generate(randomizer, colorPalette);
+    final BugSelectedPattern result = pattern.generate(randomizer, colorPalette);
 
     Assert.assertThat(result.getImages(), hasSize(pattern.getImages().size()));
     Assert.assertThat(result.getImages(), contains(

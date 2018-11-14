@@ -182,10 +182,6 @@
               <rulesets>
                 <ruleset>${project.basedir}/pmd.xml</ruleset>
               </rulesets>
-              <excludes>
-                <exclude>.*/Application.*</exclude>
-                <exclude>.*/src/it/.*</exclude>
-              </excludes>
             </configuration>	
           </execution>
         </executions>

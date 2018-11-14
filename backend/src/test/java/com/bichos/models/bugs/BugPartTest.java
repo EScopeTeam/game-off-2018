@@ -46,8 +46,8 @@ public class BugPartTest {
     part.setGenerationChance(PART_GENERATION_CHANCE1);
   }
 
-  private BugPart createPart(String partId, int position, boolean required, boolean randomizerResult) {
-    BugPart result = new BugPart();
+  private BugPart createPart(final String partId, final int position, final boolean required, final boolean randomizerResult) {
+    final BugPart result = new BugPart();
     result.setBugPartId(partId);
     result.setPosition(position);
     result.setRequired(required);
@@ -58,7 +58,7 @@ public class BugPartTest {
 
   @Test
   public void generateShouldGenerateASelectedBugPart() {
-    BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
+    final BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
 
     Assert.assertThat(selectedPart, hasProperty("bugPartId", equalTo(PART_ID1)));
     Assert.assertThat(selectedPart, hasProperty("name", equalTo(PART_NAME1)));
@@ -69,17 +69,17 @@ public class BugPartTest {
 
   @Test
   public void generateShouldSetAndGenerateARandomPattern() {
-    List<BugPattern> patterns = Arrays.asList(createPattern(), createPattern());
+    final List<BugPattern> patterns = Arrays.asList(createPattern(), createPattern());
     when(randomizer.getOneRandomly(patterns)).thenReturn(patterns.get(1));
     part.setPatterns(patterns);
 
-    BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
+    final BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
 
     Assert.assertEquals(patterns.get(1).generate(randomizer, colorPalette), selectedPart.getPattern());
   }
 
   private BugPattern createPattern() {
-    BugPattern result = mock(BugPattern.class);
+    final BugPattern result = mock(BugPattern.class);
     when(result.generate(randomizer, colorPalette)).thenReturn(new BugSelectedPattern());
 
     return result;
@@ -87,13 +87,13 @@ public class BugPartTest {
 
   @Test
   public void generateShouldAddSortedTheRequiredRandomlyRelatedParts() {
-    List<BugPart> relatedParts = Arrays.asList(
+    final List<BugPart> relatedParts = Arrays.asList(
         createPart(PART_ID2, POSITION2, false, false),
         createPart(PART_ID3, POSITION3, true, false),
         createPart(PART_ID4, POSITION4, false, true));
     part.setRelatedParts(relatedParts);
 
-    BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
+    final BugSelectedPart selectedPart = part.generate(randomizer, colorPalette);
 
     Assert.assertThat(selectedPart.getRelatedParts().get(0), hasProperty("bugPartId", equalTo(PART_ID4)));
     Assert.assertThat(selectedPart.getRelatedParts().get(1), hasProperty("bugPartId", equalTo(PART_ID3)));

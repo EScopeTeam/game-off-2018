@@ -36,26 +36,26 @@ public class BugGeneratorServiceImplTest {
 
   @Test
   public void shouldGetARandomRaceAndSetItInTheNewBug() {
-    BugRace race = new BugRace();
+    final BugRace race = new BugRace();
     race.setBugRaceId(RACE_ID);
-    List<BugRace> races = Arrays.asList(race);
+    final List<BugRace> races = Arrays.asList(race);
     when(racesRepository.findAllRaces()).thenReturn(races);
     when(randomizer.getOneRandomly(races)).thenReturn(race);
 
-    Bug bug = service.generate();
+    final Bug bug = service.generate();
     Assert.assertEquals(RACE_ID, bug.getBugRaceId());
   }
 
   @Test
   public void shouldSetTheRandomPartsGeneratedByTheRaceInTheNewBug() {
-    List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
-    BugRace race = mock(BugRace.class);
+    final List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
+    final BugRace race = mock(BugRace.class);
     when(race.generate(randomizer)).thenReturn(parts);
-    List<BugRace> races = Arrays.asList(race);
+    final List<BugRace> races = Arrays.asList(race);
     when(racesRepository.findAllRaces()).thenReturn(races);
     when(randomizer.getOneRandomly(races)).thenReturn(race);
 
-    Bug bug = service.generate();
+    final Bug bug = service.generate();
     Assert.assertEquals(parts, bug.getParts());
   }
 

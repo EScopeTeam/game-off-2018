@@ -38,12 +38,12 @@ public class BugTest {
         createBugPart(BUG_PART_HASH3, BUG_PART_POSITION3)));
   }
 
-  private BugSelectedPart createBugPart(String hash, int position) {
+  private BugSelectedPart createBugPart(final String hash, final int position) {
     return createBugPart(hash, position, null, null);
   }
 
-  private BugSelectedPart createBugPart(String hash, int position, String hashB, Integer positionB) {
-    BugSelectedPart part = mock(BugSelectedPart.class);
+  private BugSelectedPart createBugPart(final String hash, final int position, final String hashB, final Integer positionB) {
+    final BugSelectedPart part = mock(BugSelectedPart.class);
     when(part.hashPattern()).thenReturn(Arrays.asList(hash));
     when(part.getPosition()).thenReturn(position);
     when(part.compareTo(any())).thenCallRealMethod();
@@ -60,8 +60,8 @@ public class BugTest {
 
   @Test
   public void hashReturnsTheHashedImagesOfAllTheBugPartsInOrder() {
-    String hash = bug.hash();
-    String decodedHash = new String(Base64.getDecoder().decode(hash), StandardCharsets.UTF_8);
+    final String hash = bug.hash();
+    final String decodedHash = new String(Base64.getDecoder().decode(hash), StandardCharsets.UTF_8);
 
     Assert.assertEquals(
         BUG_PART_HASH2 + PART_SEPARATION + BUG_PART_HASH1B + PART_SEPARATION + BUG_PART_HASH3 + PART_SEPARATION + BUG_PART_HASH1,

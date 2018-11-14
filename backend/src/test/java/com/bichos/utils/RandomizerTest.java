@@ -34,7 +34,7 @@ public class RandomizerTest {
 
   @Test
   public void shouldReturnTheElementIfTheRandomIsBetweenTheSumOfThePrevAndNextGenerationChances() {
-    List<RandomElement> elements = Arrays.asList(
+    final List<RandomElement> elements = Arrays.asList(
         createRandomElement(ELEMENT_GENERATION_CHANCE_1),
         createRandomElement(ELEMENT_GENERATION_CHANCE_2),
         createRandomElement(ELEMENT_GENERATION_CHANCE_3));
@@ -45,7 +45,7 @@ public class RandomizerTest {
     Assert.assertEquals(elements.get(1), randomizer.getOneRandomly(elements));
   }
 
-  private RandomElement createRandomElement(int generationChance) {
+  private RandomElement createRandomElement(final int generationChance) {
     return new RandomElement() {
       @Override
       public int getGenerationChance() {
@@ -56,7 +56,7 @@ public class RandomizerTest {
 
   @Test
   public void shouldReturnNullIfTheListIsEmpty() {
-    List<RandomElement> elements = Arrays.asList();
+    final List<RandomElement> elements = Arrays.asList();
 
     when(random.nextInt(0)).thenReturn(0);
 
@@ -65,7 +65,7 @@ public class RandomizerTest {
 
   @Test
   public void shouldReturnTrueIfTheRandomIsLowerThanTheGenerationChance() {
-    RandomElement element = createRandomElement(ELEMENT_GENERATION_CHANCE_1);
+    final RandomElement element = createRandomElement(ELEMENT_GENERATION_CHANCE_1);
 
     when(random.nextInt(MAX_CHANCE_BINARY_DECISION)).thenReturn(ELEMENT_GENERATION_CHANCE_1 - 1);
 
@@ -74,7 +74,7 @@ public class RandomizerTest {
 
   @Test
   public void shouldReturnFalseIfTheRandomIsHigherThanTheGenerationChance() {
-    RandomElement element = createRandomElement(ELEMENT_GENERATION_CHANCE_1);
+    final RandomElement element = createRandomElement(ELEMENT_GENERATION_CHANCE_1);
 
     when(random.nextInt(MAX_CHANCE_BINARY_DECISION)).thenReturn(ELEMENT_GENERATION_CHANCE_1 + 1);
 
