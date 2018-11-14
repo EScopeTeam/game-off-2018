@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.bichos.exceptions.InvalidLoginException;
+import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
 import com.bichos.repositories.PlayersRepository;
@@ -51,6 +52,8 @@ public class AuthenticationJWTServiceTest {
   private static final String SESSION_ID = "abcd-efgh";
   private static final Instant INSTANT_NOW = Instant.now();
   private static final ZoneId INSTANT_ZONEID = ZoneId.of("UTC");
+  private static final String VALID_EMAIL = "hello@world.com";
+  private static final String NOT_VALID_EMAIL = "wrong@you.com";
 
   private AuthenticationJWTService service;
 
@@ -269,6 +272,52 @@ public class AuthenticationJWTServiceTest {
         context.fail(result.cause());
       }
     });
+  }
+
+  @Test
+  public void signUpWithValidPlayer(final TestContext context) {
+    final Player player = new Player();
+    player.setEmail(VALID_EMAIL);
+    player.setUsername(VALID_USERNAME);
+    when(playersRepository.existsPlayerbyUsernameOrEmail(VALID_USERNAME, VALID_EMAIL)).thenReturn(Future.succeededFuture(true));
+    when(playersRepository.insertPlayer(any(Player.class))).thenReturn(Future.succeededFuture());
+
+    final Async async = context.async();
+    service.signUp(player).setHandler(result -> {
+      if (result.succeeded()) {
+
+        verify(playersRepository).existsPlayerbyUsernameOrEmail(anyString(), anyString());
+        verify(playersRepository).insertPlayer(any(Player.class));
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
+
+  }
+
+  @Test
+  public void signUpWithNotValidPlayer(final TestContext context) {
+    final Player player = new Player();
+    player.setEmail(NOT_VALID_EMAIL);
+    player.setUsername(NOT_VALID_USERNAME);
+    when(playersRepository.existsPlayerbyUsernameOrEmail(NOT_VALID_USERNAME, NOT_VALID_EMAIL))
+        .thenReturn(Future.failedFuture(new UserAlreadyCreatedException()));
+
+    final Async async = context.async();
+    service.signUp(player).setHandler(result -> {
+      if (result.failed()) {
+
+        verify(playersRepository).existsPlayerbyUsernameOrEmail(anyString(), anyString());
+        verify(playersRepository, times(0)).insertPlayer(any(Player.class));
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
+
   }
 
 }
