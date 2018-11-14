@@ -17,6 +17,10 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: "#4cd4cc",
   },
+  button_login: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
   footer_login: {
     flex: 2,
   }

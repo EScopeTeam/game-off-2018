@@ -13,7 +13,7 @@ interface IProp {
 
 export default class SignupScreen extends React.Component<IProp>{
   public static navigationOptions: NavigationScreenOptions = {
-    title: t("signIn:title"),
+    title: t("signUp:title"),
     ...navigationStyles,
   };
 

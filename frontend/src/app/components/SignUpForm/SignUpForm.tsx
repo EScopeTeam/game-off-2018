@@ -70,6 +70,11 @@ class SignInForm extends React.Component<IProp, IState> {
         placeholderCode: "login:password",
         setter: (value: string) => this.setState({ password: { value } }),
       },
+      rePassword: {
+        name: "password",
+        placeholderCode: "login:password",
+        setter: (value: string) => this.setState({ password: { value } }),
+      },
     };
   }
 
@@ -103,7 +108,7 @@ class SignInForm extends React.Component<IProp, IState> {
             })
             .catch(this.setHttpErrors.bind(this));
         } else {
-          this.setValidationPasswordErrors.bind("this")
+          this.setValidationPasswordErrors();
         }
       })
       .catch(this.setValidationErrors.bind(this));
@@ -199,12 +204,7 @@ class SignInForm extends React.Component<IProp, IState> {
             secureTextEntry
             refInput={this.thirdInput}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
+          <View style={styles.button_login} >
             <FormButton
               title="LOGIN"
               onPress={() => navigation.navigate("Login")}
