@@ -2,7 +2,7 @@ package com.bichos.verticles;
 
 import java.util.Set;
 
-import com.bichos.binders.GuiceInitializer;
+import com.bichos.binders.GuiceHelper;
 import com.bichos.tasks.WorkerTask;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -21,7 +21,7 @@ public class TasksVerticle extends AbstractVerticle {
   }
 
   private void initializeGuice() {
-    injector = GuiceInitializer.initialize(vertx, config());
+    injector = GuiceHelper.initialize(vertx, config());
   }
 
   private void runTasks() {

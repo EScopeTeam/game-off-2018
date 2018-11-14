@@ -5,6 +5,7 @@ import io.vertx.ext.web.RoutingContext;
 
 public interface ApiErrorHandler extends Handler<RoutingContext> {
 
+  @Override
   void handle(RoutingContext context);
 
 }
