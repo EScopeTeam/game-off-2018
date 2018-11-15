@@ -6,9 +6,9 @@ import com.google.inject.Injector;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
-public final class GuiceInitializer {
+public final class GuiceHelper {
 
-  private GuiceInitializer() {
+  private GuiceHelper() {
   }
 
   public static Injector initialize(final Vertx vertx, final JsonObject config) {

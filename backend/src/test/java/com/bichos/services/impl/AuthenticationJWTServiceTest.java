@@ -58,8 +58,6 @@ public class AuthenticationJWTServiceTest {
 
   private JDBCHashStrategy hashStrategy;
 
-  private Clock clock;
-
   private PlayersRepository playersRepository;
 
   private PlayersSessionsRepository playersSessionsRepository;
@@ -75,7 +73,7 @@ public class AuthenticationJWTServiceTest {
     playersRepository = mock(PlayersRepository.class);
     when(playersRepository.updateOnlineById(anyString(), anyBoolean())).thenReturn(Future.succeededFuture());
 
-    clock = mock(Clock.class);
+    final Clock clock = mock(Clock.class);
     when(clock.instant()).thenReturn(INSTANT_NOW);
     when(clock.getZone()).thenReturn(INSTANT_ZONEID);
 

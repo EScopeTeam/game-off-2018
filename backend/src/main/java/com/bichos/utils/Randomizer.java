@@ -5,33 +5,35 @@ import java.util.Random;
 
 import com.bichos.models.bugs.RandomElement;
 
-public final class Randomizer {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class Randomizer {
 
   private static final int MAX_CHANCE_BINARY_DECISION = 100;
 
-  private static final Random RAND = new Random();
+  private final Random rand;
 
-  private Randomizer() {
-  }
-
-  public static <T extends RandomElement> T getOneRandomly(List<T> elements) {
-    int count = (int) elements.stream().mapToInt(RandomElement::getGenerationChance).count();
-    int random = RAND.nextInt(count);
+  public <T extends RandomElement> T getOneRandomly(final List<T> elements) {
+    final int count = (int) elements.stream().mapToInt(RandomElement::getGenerationChance).sum();
+    final int random = rand.nextInt(count);
 
     int acc = 0;
-    for (T element : elements) {
+    T result = null;
+    for (final T element : elements) {
       acc += element.getGenerationChance();
 
       if (random < acc) {
-        return element;
+        result = element;
+        break;
       }
     }
 
-    return elements.isEmpty() ? null : elements.get(elements.size() - 1);
+    return result;
   }
 
-  public static boolean binaryDecision(RandomElement element) {
-    return RAND.nextInt(MAX_CHANCE_BINARY_DECISION) < element.getGenerationChance();
+  public boolean binaryDecision(final RandomElement element) {
+    return rand.nextInt(MAX_CHANCE_BINARY_DECISION) < element.getGenerationChance();
   }
 
 }

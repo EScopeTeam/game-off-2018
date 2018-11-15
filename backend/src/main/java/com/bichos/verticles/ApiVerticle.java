@@ -1,6 +1,6 @@
 package com.bichos.verticles;
 
-import com.bichos.binders.GuiceInitializer;
+import com.bichos.binders.GuiceHelper;
 import com.bichos.config.RouterConfig;
 import com.google.inject.Injector;
 
@@ -32,7 +32,7 @@ public class ApiVerticle extends AbstractVerticle {
   }
 
   private void initializeGuice() {
-    injector = GuiceInitializer.initialize(vertx, config());
+    injector = GuiceHelper.initialize(vertx, config());
   }
 
   private void handleServerStart(final int port, final AsyncResult<HttpServer> serverResult, final Future<Void> fStart) {

@@ -11,51 +11,41 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugPart implements RandomElement, Comparable<BugPart> {
-
-  private String bugPartId;
-
-  private String name;
-
-  private int position;
-
-  private boolean required;
-
-  private int generationChance;
+public class BugPart extends BaseBugPart {
 
   private List<BugPart> relatedParts = new ArrayList<>();
 
   private List<BugPattern> patterns = new ArrayList<>();
 
-  public BugSelectedPart generate(BugColorPalette colorPalette) {
-    BugSelectedPart result = new BugSelectedPart();
-    result.setBugPartId(bugPartId);
-    result.setRelatedParts(generateRelatedParts(colorPalette));
-    result.setPattern(generatePattern(colorPalette));
-    result.setPosition(position);
+  public BugSelectedPart generate(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugSelectedPart result = new BugSelectedPart();
+    result.setBugPartId(getBugPartId());
+    result.setName(getName());
+    result.setRequired(isRequired());
+    result.setPosition(getPosition());
+    result.setGenerationChance(getGenerationChance());
+    result.setRelatedParts(generateRelatedParts(randomizer, colorPalette));
+    result.setPattern(generatePattern(randomizer, colorPalette));
 
     return result;
   }
 
-  public boolean shouldBeGenerateRandomly() {
-    return required || Randomizer.binaryDecision(this);
-  }
-
-  private List<BugSelectedPart> generateRelatedParts(BugColorPalette colorPalette) {
+  private List<BugSelectedPart> generateRelatedParts(final Randomizer randomizer, final BugColorPalette colorPalette) {
     return relatedParts.stream()
-        .filter(p -> p.shouldBeGenerateRandomly())
+        .filter(p -> p.shouldBeGenerateRandomly(randomizer))
         .sorted()
-        .map(part -> part.generate(colorPalette))
+        .map(part -> part.generate(randomizer, colorPalette))
         .collect(Collectors.toList());
   }
 
-  private BugSelectedPattern generatePattern(BugColorPalette colorPalette) {
-    return Randomizer.getOneRandomly(patterns).generate(colorPalette);
+  private BugSelectedPattern generatePattern(final Randomizer randomizer, final BugColorPalette colorPalette) {
+    final BugPattern pattern = randomizer.getOneRandomly(patterns);
+
+    return pattern == null ? null : pattern.generate(randomizer, colorPalette);
   }
 
-  @Override
-  public int compareTo(BugPart o) {
-    return Integer.compare(position, o.position);
+  public boolean shouldBeGenerateRandomly(final Randomizer randomizer) {
+    return isRequired() || randomizer.binaryDecision(this);
   }
 
 }

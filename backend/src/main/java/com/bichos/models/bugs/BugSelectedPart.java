@@ -10,27 +10,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BugSelectedPart implements Comparable<BugSelectedPart> {
-
-  private String bugPartId;
-
-  private int position;
+public class BugSelectedPart extends BaseBugPart {
 
   private List<BugSelectedPart> relatedParts = new ArrayList<>();
 
   private BugSelectedPattern pattern;
 
   public List<String> hashPattern() {
-    return pattern.hash().stream().map(s -> bugPartId + "-" + s).collect(Collectors.toList());
+    return pattern.hash().stream().map(s -> getBugPartId() + "-" + s).collect(Collectors.toList());
   }
 
   public Stream<BugSelectedPart> flat() {
     return Stream.concat(Stream.of(this), relatedParts.stream().flatMap(BugSelectedPart::flat));
-  }
-
-  @Override
-  public int compareTo(BugSelectedPart o) {
-    return Integer.compare(position, o.position);
   }
 
 }
