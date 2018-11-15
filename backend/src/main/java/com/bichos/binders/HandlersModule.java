@@ -15,7 +15,6 @@ import com.bichos.handlers.errors.ValidationErrorHandler;
 import com.bichos.handlers.players.HelloHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
 import com.bichos.services.AuthenticationService;
-import com.bichos.services.BugsGeneratorService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Provides;
@@ -32,6 +31,7 @@ public class HandlersModule extends AbstractModule {
   protected void configure() {
     final Multibinder<ApiHandler> apiHandlerBinder = Multibinder.newSetBinder(binder(), ApiHandler.class);
     bindApiHandler(apiHandlerBinder, LoginHandler.class);
+    bindApiHandler(apiHandlerBinder, BugsGeneratorHandler.class);
 
     final Multibinder<ApiWSHandler> apiWSHandlerBinder = Multibinder.newSetBinder(binder(), ApiWSHandler.class);
     bindApiWSHandler(apiWSHandlerBinder, HelloHandler.class);
@@ -77,12 +77,6 @@ public class HandlersModule extends AbstractModule {
   @Singleton
   public CloseConnectionHandler provideCloseConnectionHandler(final AuthenticationService authenticationService) {
     return new CloseConnectionHandler(authenticationService);
-  }
-
-  @Provides
-  @Singleton
-  public BugsGeneratorHandler provideBugsGeneratorHandler(final BugsGeneratorService bugsGeneratorService) {
-    return new BugsGeneratorHandler(bugsGeneratorService);
   }
 
 }

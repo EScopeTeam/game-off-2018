@@ -56,11 +56,11 @@ public class BugPartsSqlRepository {
     return CompositeFuture.all(futureRelatedParts, futurePatterns)
         .map(v -> {
           final BugPart result = new BugPart();
-          result.setBugPartId(row.getString(INDEX_ID));
+          result.setBugPartId(String.valueOf(row.getLong(INDEX_ID)));
           result.setName(row.getString(INDEX_NAME));
           result.setRequired(row.getBoolean(INDEX_REQUIRED));
           result.setPosition(row.getInteger(INDEX_POSITION));
-          result.setGenerationChance(row.getInteger(INDEX_GENERATION_CHANCE));
+          result.setGenerationChance(row.getInteger(INDEX_GENERATION_CHANCE) == null ? 0 : row.getInteger(INDEX_GENERATION_CHANCE));
           result.setRelatedParts(futureRelatedParts.result());
           result.setPatterns(futurePatterns.result());
 

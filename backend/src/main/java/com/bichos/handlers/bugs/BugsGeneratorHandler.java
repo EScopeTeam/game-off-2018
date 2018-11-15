@@ -2,12 +2,13 @@ package com.bichos.handlers.bugs;
 
 import com.bichos.handlers.ApiHandler;
 import com.bichos.services.BugsGeneratorService;
+import com.google.inject.Inject;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.RoutingContext;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BugsGeneratorHandler implements ApiHandler {
 
   private final BugsGeneratorService bugsGeneratorService;
