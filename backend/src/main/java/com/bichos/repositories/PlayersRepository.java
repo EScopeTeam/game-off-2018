@@ -10,4 +10,8 @@ public interface PlayersRepository {
 
   Future<Void> updateOnlineById(String playerId, boolean online);
 
+  Future<Void> insertPlayer(Player player);
+
+  Future<Boolean> existsPlayerbyUsernameOrEmail(String username, String email);
+
 }

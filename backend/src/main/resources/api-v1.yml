@@ -36,6 +36,33 @@ paths:
             $ref: "#/definitions/EntityErrors"
         default:
           description: "Unexpected error."
+  "/signup":
+    post:
+      tags:
+      - "authentication"
+      description: "Sign up."
+      operationId: "signup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/SignUpRequest"
+      reponses:
+        201:
+          description: "User account created succesfully."
+        400:
+          description: "Invalid data in sign up."
+          schema:
+            $ref: "#/definitions/EntityErrors"
+        409:
+          description: "Mail or nickname have been already taken"
+        default:
+          description: "Unexpected error."
             
 definitions:
   LoginRequest:
@@ -103,3 +130,32 @@ definitions:
           min: 1
         additionalProperties: 
           type: "string"
+          
+  SignUpRequest:
+    type: "object"
+    required: 
+    - "mail"
+    - "nickname"
+    - "password"
+    - "passwordRep"
+    - "conditionsCheck"
+    properties:
+      mail:
+        type: "string"
+        description: "Mail account of the player."
+        example: "mymail@myaccount.com"
+      nickname:
+        type: "string"
+        description: "User name of the player."
+        example: "pepitoflores2"
+      password:
+        type: "string"
+        description: "User account password."
+        example: "thisismypassword"
+      passwordRep:
+        type: "string"
+        decription: "User account password repeated to check correct field"
+        example: "thisismypassword"
+      conditionsCheck:
+        type: "boolean"
+        description: "Wheter user has approved and read conditions"

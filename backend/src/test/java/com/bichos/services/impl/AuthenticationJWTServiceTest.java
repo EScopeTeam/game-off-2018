@@ -21,8 +21,10 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import com.bichos.exceptions.InvalidLoginException;
+import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
+import com.bichos.models.SignupRequest;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.utils.HandlersUtils;
@@ -51,14 +53,14 @@ public class AuthenticationJWTServiceTest {
   private static final String SESSION_ID = "abcd-efgh";
   private static final Instant INSTANT_NOW = Instant.now();
   private static final ZoneId INSTANT_ZONEID = ZoneId.of("UTC");
+  private static final String VALID_EMAIL = "hello@world.com";
+  private static final String NOT_VALID_EMAIL = "wrong@you.com";
 
   private AuthenticationJWTService service;
 
   private JWTAuth jwtAuth;
 
   private JDBCHashStrategy hashStrategy;
-
-  private Clock clock;
 
   private PlayersRepository playersRepository;
 
@@ -75,7 +77,7 @@ public class AuthenticationJWTServiceTest {
     playersRepository = mock(PlayersRepository.class);
     when(playersRepository.updateOnlineById(anyString(), anyBoolean())).thenReturn(Future.succeededFuture());
 
-    clock = mock(Clock.class);
+    final Clock clock = mock(Clock.class);
     when(clock.instant()).thenReturn(INSTANT_NOW);
     when(clock.getZone()).thenReturn(INSTANT_ZONEID);
 
@@ -111,6 +113,7 @@ public class AuthenticationJWTServiceTest {
     final Player player = new Player();
     player.setSalt(SALT);
     player.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+
     when(playersRepository.findPlayerByUsername(VALID_USERNAME)).thenReturn(Future.succeededFuture(player));
 
     final Async async = context.async();
@@ -127,9 +130,10 @@ public class AuthenticationJWTServiceTest {
   @Test
   public void loginReturnsAJWTTokenWithTheIDOfThePlayerIfTheDataIsRight(final TestContext context) {
     final Player player = new Player();
-    player.setId(PLAYER_ID);
+    player.setUserId(PLAYER_ID);
     player.setSalt(SALT);
     player.setPassword(hashStrategy.computeHash(VALID_PASSWORD, SALT, -1));
+
     when(playersRepository.findPlayerByUsername(VALID_USERNAME)).thenReturn(Future.succeededFuture(player));
     when(jwtAuth.generateToken(any(), any())).thenReturn(TOKEN);
 
@@ -267,6 +271,52 @@ public class AuthenticationJWTServiceTest {
         context.fail(result.cause());
       }
     });
+  }
+
+  @Test
+  public void signUpWithValidPlayer(final TestContext context) {
+    final SignupRequest request = new SignupRequest();
+    request.setEmail(VALID_EMAIL);
+    request.setUsername(VALID_USERNAME);
+    when(playersRepository.existsPlayerbyUsernameOrEmail(VALID_USERNAME, VALID_EMAIL)).thenReturn(Future.succeededFuture(true));
+    when(playersRepository.insertPlayer(any(Player.class))).thenReturn(Future.succeededFuture());
+
+    final Async async = context.async();
+    service.signUp(request).setHandler(result -> {
+      if (result.succeeded()) {
+
+        verify(playersRepository).existsPlayerbyUsernameOrEmail(anyString(), anyString());
+        verify(playersRepository).insertPlayer(any(Player.class));
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
+
+  }
+
+  @Test
+  public void signUpWithNotValidPlayer(final TestContext context) {
+    final SignupRequest request = new SignupRequest();
+    request.setEmail(NOT_VALID_EMAIL);
+    request.setUsername(NOT_VALID_USERNAME);
+    when(playersRepository.existsPlayerbyUsernameOrEmail(NOT_VALID_USERNAME, NOT_VALID_EMAIL))
+        .thenReturn(Future.failedFuture(new UserAlreadyCreatedException()));
+
+    final Async async = context.async();
+    service.signUp(request).setHandler(result -> {
+      if (result.failed()) {
+
+        verify(playersRepository).existsPlayerbyUsernameOrEmail(anyString(), anyString());
+        verify(playersRepository, times(0)).insertPlayer(any(Player.class));
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
+
   }
 
 }

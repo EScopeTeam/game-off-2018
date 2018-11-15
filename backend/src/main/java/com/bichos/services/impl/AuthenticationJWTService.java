@@ -4,8 +4,11 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 
 import com.bichos.exceptions.InvalidLoginException;
+import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
+import com.bichos.models.SignupRequest;
+
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
@@ -48,7 +51,7 @@ public class AuthenticationJWTService implements AuthenticationService {
       throw new InvalidLoginException();
     }
 
-    return jwtAuth.generateToken(new JsonObject().put("sub", player.getId()), jwtOptions);
+    return jwtAuth.generateToken(new JsonObject().put("sub", player.getUserId()), jwtOptions);
   }
 
   private boolean isValidPassword(final Player player, final String password) {
@@ -115,6 +118,34 @@ public class AuthenticationJWTService implements AuthenticationService {
 
   private Future<String> findPlayerIdOfSessionId(final String sessionId) {
     return playersSessionsRepository.findSession(sessionId).map(PlayerSession::getPlayerId);
+  }
+
+  @Override
+  public Future<Void> signUp(final SignupRequest request) {
+    return checkUniqueUsernameAndEmail(request).compose(checkUniqueResult -> {
+      if (checkUniqueResult) {
+        final Player player = createPlayerFromSignupRequest(request);
+        return playersRepository.insertPlayer(player);
+      } else {
+        return Future.failedFuture(new UserAlreadyCreatedException());
+      }
+    });
+  }
+
+  private Future<Boolean> checkUniqueUsernameAndEmail(final SignupRequest request) {
+    return playersRepository.existsPlayerbyUsernameOrEmail(request.getUsername(), request.getEmail());
+  }
+
+  private Player createPlayerFromSignupRequest(final SignupRequest request) {
+    final Player player = new Player();
+    player.setUsername(request.getUsername());
+    player.setEmail(request.getEmail());
+
+    final String salt = hashStrategy.generateSalt();
+    player.setSalt(salt);
+    player.setPassword(hashPassword(request.getPassword(), salt));
+
+    return player;
   }
 
 }

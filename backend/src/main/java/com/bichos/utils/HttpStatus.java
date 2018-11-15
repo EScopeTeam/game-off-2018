@@ -2,6 +2,7 @@ package com.bichos.utils;
 
 public enum HttpStatus {
   OK(200, "OK"),
+  CREATED(201, "Created"),
   FOUND(302, "Found"),
   NOT_MODIFIED(304, "Not Modified"),
   BAD_REQUEST(400, "Bad Request"),
