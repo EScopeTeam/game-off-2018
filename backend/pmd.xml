@@ -17,6 +17,7 @@
     <exclude name="ShortVariable"/>
     <exclude name="TooManyStaticImports"/>
     <exclude name="ShortClassName"/>
+    <exclude name="ClassNamingConventions"/>
   </rule>
   <rule ref="category/java/codestyle.xml/LongVariable">
     <properties>
@@ -45,10 +46,16 @@
     <exclude name="LoosePackageCoupling"/>
     <exclude name="SignatureDeclareThrowsException"/>
     <exclude name="ExcessiveImports"/>
+    <exclude name="NcssCount"/>
   </rule>
   <rule ref="category/java/design.xml/TooManyMethods">
     <properties>
         <property name="maxmethods" value="20" />
+    </properties>
+  </rule>
+  <rule ref="category/java/design.xml/NcssCount">
+    <properties>
+        <property name="methodReportLevel" value="40" />
     </properties>
   </rule>
   <rule ref="category/java/errorprone.xml">

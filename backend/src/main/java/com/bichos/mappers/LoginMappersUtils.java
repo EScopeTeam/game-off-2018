@@ -2,9 +2,9 @@ package com.bichos.mappers;
 
 import com.bichos.models.ApiLoginResponse;
 
-public final class LoginMappers {
+public final class LoginMappersUtils {
 
-  private LoginMappers() {
+  private LoginMappersUtils() {
   }
 
   public static ApiLoginResponse mapTokenToResponse(final String token) {

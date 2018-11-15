@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class BaseBugPart implements RandomElement, Comparable<BaseBugPart> {
+public class BaseBugPart implements RandomElement, Comparable<BaseBugPart> {
 
   private String bugPartId;
 
@@ -16,6 +16,9 @@ public abstract class BaseBugPart implements RandomElement, Comparable<BaseBugPa
   private int position;
 
   private int generationChance;
+
+  protected BaseBugPart() {
+  }
 
   @Override
   public int compareTo(final BaseBugPart o) {

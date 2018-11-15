@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class BaseBugImage implements Comparable<BaseBugImage> {
+public class BaseBugImage implements Comparable<BaseBugImage> {
 
   private String bugImageId;
 
@@ -16,6 +16,9 @@ public abstract class BaseBugImage implements Comparable<BaseBugImage> {
   private boolean allowColor;
 
   private int position;
+
+  protected BaseBugImage() {
+  }
 
   @Override
   public int compareTo(final BaseBugImage o) {
