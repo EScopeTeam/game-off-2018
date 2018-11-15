@@ -8,12 +8,14 @@ import com.bichos.handlers.ApiWSHandler;
 import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.authentication.LoginHandler;
 import com.bichos.handlers.authentication.WsAuthenticationHandler;
+import com.bichos.handlers.bugs.BugsGeneratorHandler;
 import com.bichos.handlers.errors.DecodeExceptionHandler;
 import com.bichos.handlers.errors.ResourceNotFoundHandler;
 import com.bichos.handlers.errors.ValidationErrorHandler;
 import com.bichos.handlers.players.HelloHandler;
 import com.bichos.handlers.websockets.CloseConnectionHandler;
 import com.bichos.services.AuthenticationService;
+import com.bichos.services.BugsGeneratorService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Provides;
@@ -75,6 +77,12 @@ public class HandlersModule extends AbstractModule {
   @Singleton
   public CloseConnectionHandler provideCloseConnectionHandler(final AuthenticationService authenticationService) {
     return new CloseConnectionHandler(authenticationService);
+  }
+
+  @Provides
+  @Singleton
+  public BugsGeneratorHandler provideBugsGeneratorHandler(final BugsGeneratorService bugsGeneratorService) {
+    return new BugsGeneratorHandler(bugsGeneratorService);
   }
 
 }

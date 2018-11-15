@@ -5,14 +5,14 @@ import java.util.List;
 import com.bichos.models.bugs.Bug;
 import com.bichos.models.bugs.BugRace;
 import com.bichos.repositories.BugRacesRepository;
-import com.bichos.services.BugGeneratorService;
+import com.bichos.services.BugsGeneratorService;
 import com.bichos.utils.Randomizer;
 
 import io.vertx.core.Future;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BugGeneratorServiceImpl implements BugGeneratorService {
+public class BugsGeneratorServiceImpl implements BugsGeneratorService {
 
   private final Randomizer randomizer;
 

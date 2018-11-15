@@ -9,10 +9,10 @@ import com.bichos.repositories.BugRacesRepository;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
-import com.bichos.services.BugGeneratorService;
+import com.bichos.services.BugsGeneratorService;
 import com.bichos.services.ValidationService;
 import com.bichos.services.impl.AuthenticationJWTService;
-import com.bichos.services.impl.BugGeneratorServiceImpl;
+import com.bichos.services.impl.BugsGeneratorServiceImpl;
 import com.bichos.services.impl.JavaxValidationService;
 import com.bichos.utils.Randomizer;
 import com.google.inject.AbstractModule;
@@ -41,8 +41,8 @@ public class ServicesModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public BugGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository) {
-    return new BugGeneratorServiceImpl(randomizer, racesRepository);
+  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository) {
+    return new BugsGeneratorServiceImpl(randomizer, racesRepository);
   }
 
 }

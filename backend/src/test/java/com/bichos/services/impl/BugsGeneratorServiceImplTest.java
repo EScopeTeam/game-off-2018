@@ -21,7 +21,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 
 @RunWith(VertxUnitRunner.class)
-public class BugGeneratorServiceImplTest {
+public class BugsGeneratorServiceImplTest {
 
   private static final String RACE_ID = "1";
 
@@ -29,14 +29,14 @@ public class BugGeneratorServiceImplTest {
 
   private BugRacesRepository racesRepository;
 
-  private BugGeneratorServiceImpl service;
+  private BugsGeneratorServiceImpl service;
 
   @Before
   public void initialize() {
     randomizer = mock(Randomizer.class);
     racesRepository = mock(BugRacesRepository.class);
 
-    service = new BugGeneratorServiceImpl(randomizer, racesRepository);
+    service = new BugsGeneratorServiceImpl(randomizer, racesRepository);
   }
 
   @Test
