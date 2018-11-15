@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.bichos.models.bugs.BugRace;
 
+import io.vertx.core.Future;
+
 public interface BugRacesRepository {
 
-  List<BugRace> findAllRaces();
+  Future<List<BugRace>> findAll();
 
 }

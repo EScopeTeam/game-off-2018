@@ -8,6 +8,7 @@ import com.bichos.repositories.BugRacesRepository;
 import com.bichos.services.BugGeneratorService;
 import com.bichos.utils.Randomizer;
 
+import io.vertx.core.Future;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -18,18 +19,20 @@ public class BugGeneratorServiceImpl implements BugGeneratorService {
   private final BugRacesRepository racesRepository;
 
   @Override
-  public Bug generate() {
-    final BugRace race = randomizer.getOneRandomly(getBugRaces());
+  public Future<Bug> generate() {
+    return getBugRaces().map(races -> {
+      final BugRace race = randomizer.getOneRandomly(races);
 
-    final Bug result = new Bug();
-    result.setBugRaceId(race.getBugRaceId());
-    result.setParts(race.generate(randomizer));
-    return result;
+      final Bug result = new Bug();
+      result.setBugRaceId(race.getBugRaceId());
+      result.setParts(race.generate(randomizer));
+      return result;
+    });
   }
 
-  private List<BugRace> getBugRaces() {
+  private Future<List<BugRace>> getBugRaces() {
     // TODO cache races
-    return racesRepository.findAllRaces();
+    return racesRepository.findAll();
   }
 
 }

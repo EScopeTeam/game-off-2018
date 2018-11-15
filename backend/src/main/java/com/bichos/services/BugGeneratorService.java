@@ -2,8 +2,10 @@ package com.bichos.services;
 
 import com.bichos.models.bugs.Bug;
 
+import io.vertx.core.Future;
+
 public interface BugGeneratorService {
 
-  Bug generate();
+  Future<Bug> generate();
 
 }
