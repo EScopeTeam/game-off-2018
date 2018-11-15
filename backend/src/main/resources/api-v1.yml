@@ -159,4 +159,3 @@ definitions:
       conditionsCheck:
         type: "boolean"
         description: "Wheter user has approved and read conditions"
-        

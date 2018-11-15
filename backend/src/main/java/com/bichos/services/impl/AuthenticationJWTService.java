@@ -8,6 +8,7 @@ import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
 import com.bichos.models.SignupRequest;
+
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;

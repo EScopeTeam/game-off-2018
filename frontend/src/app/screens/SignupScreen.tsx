@@ -1,19 +1,23 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { NavigationScreenOptions } from "react-navigation";
+import {
+  NavigationScreenProp,
+  NavigationScreenOptions,
+} from "react-navigation";
 import { navigationStyles } from "./../config/globalStyles";
+import { t } from "../config/i18n";
+import SignUpForm from "../components/SignUpForm";
 
-export default class SignupScreen extends React.Component {
+interface IProp {
+  readonly navigation: NavigationScreenProp<any, any>;
+}
+
+export default class SignupScreen extends React.Component<IProp>{
   public static navigationOptions: NavigationScreenOptions = {
-    title: "Signup",
+    title: t("signUp:title"),
     ...navigationStyles,
   };
 
   public render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Signup</Text>
-      </View>
-    );
+    return <SignUpForm navigation={this.props.navigation} />;
   }
 }
