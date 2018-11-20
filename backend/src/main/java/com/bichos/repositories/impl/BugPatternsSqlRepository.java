@@ -28,7 +28,7 @@ public class BugPatternsSqlRepository {
   public Future<List<BugPattern>> findAllByPartId(final String bugPartId) {
     final Future<ResultSet> fQuery = Future.future();
     final JsonArray params = new JsonArray()
-        .add(Long.valueOf(bugPartId));
+        .add(bugPartId);
     client.queryWithParams(FIND_ALL_BY_PART_SQL, params, fQuery.completer());
 
     return fQuery.compose(rows -> {

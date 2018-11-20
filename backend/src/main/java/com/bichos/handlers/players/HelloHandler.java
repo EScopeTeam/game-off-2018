@@ -19,6 +19,8 @@ public class HelloHandler implements ApiWSHandler {
     final String playerId = message.headers().get("user");
 
     authenticationService.addWebsocketSession(sessionId, playerId);
+
+    message.reply(new JsonObject());
   }
 
   @Override
