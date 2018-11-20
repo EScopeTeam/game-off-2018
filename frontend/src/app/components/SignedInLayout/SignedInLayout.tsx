@@ -69,7 +69,8 @@ class SignedInLayout extends React.Component<IProp, IState> {
       .then((user: User) => {
         this.setState({ user });
       })
-      .catch(() => {
+      .catch(error => {
+        console.log(error);
         this.props.tokenContextData.logout();
       });
   }
