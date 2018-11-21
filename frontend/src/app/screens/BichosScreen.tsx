@@ -3,14 +3,27 @@ import axios from "axios";
 import { View, Text, Button } from "react-native";
 import ITokenContextData from "../models/ITokenContextData";
 import TokenContext from "../contexts/TokenContext";
+import Bug from "../components/Bug";
 
 export default class BichosScreen extends React.Component {
-  public componentDidMount(): void {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      bug: null,
+    };
+  }
+
+  public componentDidMount() {
+    this.getBug();
+  }
+
+  private getBug() {
     axios
-      .post("http://10.226.14.52:8080/bugs/generate")
+      .post("http://localhost:8080/bugs/generate")
       .then(response => {
         const bug = response.data;
-        console.log(bug);
+        this.setState({ bug });
       })
       .catch(error => console.log(error));
   }
@@ -24,6 +37,8 @@ export default class BichosScreen extends React.Component {
             <Button title="LOGOUT" onPress={() => contextData.logout()} />
           )}
         </TokenContext.Consumer>
+        {this.state.bug ? <Bug bug={this.state.bug} /> : null}
+        <Button title="New Bug" onPress={() => this.getBug()} />
       </View>
     );
   }
