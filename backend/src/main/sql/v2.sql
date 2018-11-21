@@ -35,9 +35,10 @@ INSERT INTO bugs_colors (bug_color_id, bug_color_palette_id, name, rgb_code, gen
 -- Data for Name: bugs_parts; Type: TABLE DATA; Schema: public; Owner: bichos
 --
 
-INSERT INTO bugs_parts (bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (1, NULL, 'Body', true, 50, NULL);
-INSERT INTO bugs_parts (bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (1, NULL, 'Head', false, 75, 40);
-
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (1, 1, NULL, 'Body', true, 50, NULL);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (2, 1, NULL, 'Head', false, 60, 40);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position) VALUES (4, 1, 'Arms', true, 75);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position) VALUES (5, 1, 'Eyes', true, 100);
 
 --
 -- TOC entry 2488 (class 0 OID 16641)
@@ -51,7 +52,68 @@ INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance)
 INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (4, 2, 'HEAD-2', 25);
 INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (5, 2, 'HEAD-3', 25);
 INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (6, 2, 'HEAD-4', 25);
-
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (7, 4, 'ARMS-1', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (8, 4, 'ARMS-2', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (9, 4, 'ARMS-3', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (10, 4, 'ARMS-4', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (11, 4, 'ARMS-5', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (12, 4, 'ARMS-6', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (13, 4, 'ARMS-7', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (14, 4, 'ARMS-8', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (15, 4, 'ARMS-9', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (16, 4, 'ARMS-10', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (17, 4, 'ARMS-11', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (18, 4, 'ARMS-12', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (19, 4, 'ARMS-13', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (20, 4, 'ARMS-14', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (21, 4, 'ARMS-15', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (22, 4, 'ARMS-16', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (23, 4, 'ARMS-17', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (24, 4, 'ARMS-18', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (25, 4, 'ARMS-19', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (26, 4, 'ARMS-20', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (27, 4, 'ARMS-21', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (28, 4, 'ARMS-22', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (29, 4, 'ARMS-23', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (30, 4, 'ARMS-24', 4);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (32, 5, 'EYES-1', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (33, 5, 'EYES-2', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (34, 5, 'EYES-3', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (35, 5, 'EYES-4', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (36, 5, 'EYES-5', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (37, 5, 'EYES-6', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (38, 5, 'EYES-7', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (39, 5, 'EYES-8', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (40, 5, 'EYES-9', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (41, 5, 'EYES-10', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (42, 5, 'EYES-11', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (43, 5, 'EYES-12', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (44, 5, 'EYES-13', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (45, 5, 'EYES-14', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (46, 5, 'EYES-15', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (47, 5, 'EYES-16', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (48, 5, 'EYES-17', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (49, 5, 'EYES-18', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (50, 5, 'EYES-19', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (51, 5, 'EYES-20', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (52, 5, 'EYES-21', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (53, 5, 'EYES-22', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (54, 5, 'EYES-23', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (55, 5, 'EYES-24', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (56, 5, 'EYES-25', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (57, 5, 'EYES-26', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (58, 5, 'EYES-27', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (59, 5, 'EYES-28', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (60, 5, 'EYES-29', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (61, 5, 'EYES-30', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (62, 5, 'EYES-31', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (63, 5, 'EYES-32', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (64, 5, 'EYES-33', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (65, 5, 'EYES-34', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (66, 5, 'EYES-35', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (67, 5, 'EYES-36', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (68, 5, 'EYES-37', 3);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (69, 5, 'EYES-38', 3);
 
 --
 -- TOC entry 2485 (class 0 OID 16633)
@@ -111,7 +173,7 @@ SELECT pg_catalog.setval('bugs_images_bug_image_id_seq', 9, true);
 -- Name: bugs_patterns_bug_pattern_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bichos
 --
 
-SELECT pg_catalog.setval('bugs_patterns_bug_pattern_id_seq', 6, true);
+SELECT pg_catalog.setval('bugs_patterns_bug_pattern_id_seq', 70, true);
 
 --
 -- TOC entry 2502 (class 0 OID 0)
@@ -119,7 +181,7 @@ SELECT pg_catalog.setval('bugs_patterns_bug_pattern_id_seq', 6, true);
 -- Name: bugs_parts_bug_part_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bichos
 --
 
-SELECT pg_catalog.setval('bugs_parts_bug_part_id_seq', 2, true);
+SELECT pg_catalog.setval('bugs_parts_bug_part_id_seq', 6, true);
 
 
 --
@@ -139,40 +201,6 @@ SELECT pg_catalog.setval('bugs_races_bug_race_id_seq', 1, true);
 
 SELECT pg_catalog.setval('players_player_id_seq', 2, true);
 
-
--- Completed on 2018-11-20 19:57:48 CET
-
---
--- PostgreSQL database dump complete
---
-INSERT INTO bugs_parts (bug_race_id, name, required, position) VALUES (1, 'Arms', true, 60);
-INSERT INTO bugs_parts (bug_race_id, name, required, position) VALUES (1, 'Eyes', true, 100);
-
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-1', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-2', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-3', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-4', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-5', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-6', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-7', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-8', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-9', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-10', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-11', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-12', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-13', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-14', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-15', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-16', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-17', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-18', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-19', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-20', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-21', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-22', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-23', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-24', 4);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (4, 'ARMS-25', 4);
 
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (7, 'img1', 'ARMS-1-1.png', true, 0);
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (8, 'img1', 'ARMS-2-1.png', true, 0);
@@ -204,45 +232,6 @@ INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position)
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (28, 'img1', 'ARMS-22-1.png', true, 0);
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (29, 'img1', 'ARMS-23-1.png', true, 0);
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (30, 'img1', 'ARMS-24-1.png', true, 0);
-
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-1', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-2', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-3', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-4', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-5', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-6', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-7', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-8', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-9', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-10', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-11', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-12', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-13', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-14', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-15', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-16', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-17', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-18', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-19', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-20', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-21', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-22', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-23', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-24', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-25', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-26', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-27', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-28', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-29', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-30', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-31', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-32', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-33', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-34', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-35', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-36', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-37', 3);
-INSERT INTO bugs_patterns (bug_part_id, name, generation_chance) VALUES (5, 'EYES-38', 3);
 
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (32, 'img1', 'EYES-1-1.png', false, 0);
 INSERT INTO bugs_images (bug_pattern_id, name, image_url, allow_color, position) VALUES (32, 'img2', 'EYES-1-2.png', false, 1);
