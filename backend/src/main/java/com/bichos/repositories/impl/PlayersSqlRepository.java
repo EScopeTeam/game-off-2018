@@ -40,6 +40,9 @@ public class PlayersSqlRepository implements PlayersRepository {
 
   private static final String COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
 
+  private static final String FIND_PLAYER_BY_PLAYER_ID_SQL = "SELECT player_id, email, password, salt, active, username, creation_time, "
+      + "update_time, coins, experiencePoints, online FROM players WHERE player_id = ?";
+
   private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
 
   private static final boolean START_ACTIVE_ACCOUNT = true;
@@ -117,6 +120,15 @@ public class PlayersSqlRepository implements PlayersRepository {
     final JsonArray params = new JsonArray().add(username).add(email);
     client.querySingleWithParams(COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL, params, fCount.completer());
     return fCount.map(arr -> arr.getLong(0) == 1);
+  }
+
+  @Override
+  public Future<Player> findPlayerById(final String playerId) {
+    final Future<JsonArray> fQuery = Future.future();
+    final JsonArray params = new JsonArray().add(playerId);
+    client.querySingleWithParams(FIND_PLAYER_BY_PLAYER_ID_SQL, params, fQuery.completer());
+
+    return fQuery.map(this::mapRow);
   }
 
 }

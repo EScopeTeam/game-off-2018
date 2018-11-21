@@ -8,7 +8,6 @@ import com.bichos.exceptions.UserAlreadyCreatedException;
 import com.bichos.models.Player;
 import com.bichos.models.PlayerSession;
 import com.bichos.models.SignupRequest;
-
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
@@ -146,6 +145,12 @@ public class AuthenticationJWTService implements AuthenticationService {
     player.setPassword(hashPassword(request.getPassword(), salt));
 
     return player;
+  }
+
+  @Override
+  public Future<Player> findPlayerById(final String playerId) {
+
+    return playersRepository.findPlayerById(playerId);
   }
 
 }
