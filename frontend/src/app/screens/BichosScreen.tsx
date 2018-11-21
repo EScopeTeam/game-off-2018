@@ -20,7 +20,7 @@ export default class BichosScreen extends React.Component {
 
   private getBug() {
     axios
-      .post("http://10.226.14.52:8080/bugs/generate")
+      .post("http://localhost:8080/bugs/generate")
       .then(response => {
         const bug = response.data;
         this.setState({ bug });
