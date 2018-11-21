@@ -1,13 +1,19 @@
 import React from "react";
 import { View, TouchableOpacity, Image } from "react-native";
+import { NavigationScreenProp } from "react-navigation";
 import VerticalLine from "../VerticalLine/VerticalLine";
 import GenericTouchableOpacity from "../GenericTouchableOpacity/GenericTouchableOpacity";
 
-export default class BottomMenu extends React.Component {
+
+interface IProp {
+    readonly navigation: NavigationScreenProp<any, any>;
+  }
+
+export default class BottomMenu extends React.Component<IProp> {
     public render() {
         return ( 
             <View>
-                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/stand.png")}/>
+                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/stand.png")} onPress={() => navigation.navigate("Shop")}/>
                 <VerticalLine />
                 <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/backpack.png")}/>
                 <VerticalLine />
