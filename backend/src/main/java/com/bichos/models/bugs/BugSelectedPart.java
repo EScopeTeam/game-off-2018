@@ -2,7 +2,6 @@ package com.bichos.models.bugs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class BugSelectedPart extends BaseBugPart {
   private BugSelectedPattern pattern;
 
   public List<String> hashPattern() {
-    return pattern.hash().stream().map(s -> getBugPartId() + "-" + s).collect(Collectors.toList());
+    return pattern.hash();
   }
 
   public Stream<BugSelectedPart> flat() {

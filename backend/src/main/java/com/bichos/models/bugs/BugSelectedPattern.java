@@ -16,7 +16,7 @@ public class BugSelectedPattern extends BaseBugPattern {
   public List<String> hash() {
     return images.stream()
         .sorted()
-        .map(i -> getBugPatternId() + "-" + i.hash())
+        .map(BugSelectedImage::hash)
         .collect(Collectors.toList());
   }
 

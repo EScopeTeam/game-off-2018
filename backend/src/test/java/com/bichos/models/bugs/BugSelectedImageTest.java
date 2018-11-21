@@ -5,26 +5,26 @@ import org.junit.Test;
 
 public class BugSelectedImageTest {
 
-  private static final String IMAGE_ID = "image1";
+  private static final String IMAGE_URL = "BODY-1-1.png";
   private static final String COLOR_RGB = "#000";
 
   @Test
-  public void theHashShouldReturnTheImageIdAndTheColorCodeIfColorIsAllowed() {
+  public void theHashShouldReturnTheImageUrlAndTheColorCodeIfColorIsAllowed() {
     final BugSelectedImage image = new BugSelectedImage();
-    image.setBugImageId(IMAGE_ID);
+    image.setImageUrl(IMAGE_URL);
     image.setBugColorRgbCode(COLOR_RGB);
     image.setAllowColor(true);
 
-    Assert.assertEquals(IMAGE_ID + "," + COLOR_RGB, image.hash());
+    Assert.assertEquals(IMAGE_URL + "," + COLOR_RGB, image.hash());
   }
 
   @Test
-  public void theHashShouldReturnTheImageIdOnlyIfColorIsNOTAllowed() {
+  public void theHashShouldReturnTheImageUrlOnlyIfColorIsNOTAllowed() {
     final BugSelectedImage image = new BugSelectedImage();
-    image.setBugImageId(IMAGE_ID);
+    image.setImageUrl(IMAGE_URL);
     image.setAllowColor(false);
 
-    Assert.assertEquals(IMAGE_ID, image.hash());
+    Assert.assertEquals(IMAGE_URL, image.hash());
   }
 
 }

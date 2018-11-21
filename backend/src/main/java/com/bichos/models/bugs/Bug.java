@@ -13,6 +13,9 @@ import lombok.Setter;
 @Setter
 public class Bug {
 
+  private static final String PARTS_SEPARATOR = "|";
+  private static final String RACE_SEPARATOR = "/";
+
   private String bugRaceId;
 
   private List<BugSelectedPart> parts = new ArrayList<>();
@@ -22,9 +25,10 @@ public class Bug {
         .flatMap(BugSelectedPart::flat)
         .sorted()
         .flatMap(p -> p.hashPattern().stream())
-        .collect(Collectors.joining("|"));
+        .collect(Collectors.joining(PARTS_SEPARATOR));
+    final String data = bugRaceId + RACE_SEPARATOR + hashedParts;
 
-    return Base64.getEncoder().encodeToString(hashedParts.getBytes(StandardCharsets.UTF_8));
+    return Base64.getEncoder().encodeToString(data.getBytes(StandardCharsets.UTF_8));
   }
 
 }

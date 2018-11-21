@@ -12,7 +12,7 @@ public class BugSelectedImage extends BaseBugImage {
   private String bugColorRgbCode;
 
   public String hash() {
-    return getBugImageId() + (isAllowColor() ? "," + bugColorRgbCode : "");
+    return getImageUrl() + (isAllowColor() ? "," + bugColorRgbCode : "");
   }
 
 }
