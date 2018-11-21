@@ -7,23 +7,23 @@ import GenericTouchableOpacity from "../GenericTouchableOpacity/GenericTouchable
 
 interface IProp {
     readonly navigation: NavigationScreenProp<any, any>;
-  }
+}
 
 export default class BottomMenu extends React.Component<IProp> {
     public render() {
-        return ( 
+        return (
             <View>
-                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/stand.png")} onPress={() => navigation.navigate("Shop")}/>
+                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/stand.png")} onPress={() => this.props.navigation.navigate("Shop")} />
                 <VerticalLine />
-                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/backpack.png")}/>
+                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/backpack.png")} onPress={() => this.props.navigation.navigate("Inventory")} />
                 <VerticalLine />
-                <TouchableOpacity style={{ position: 'relative', top: -20 }}>
+                <TouchableOpacity style={{ position: 'relative', top: -20 }} onPress={() => this.props.navigation.navigate("Battle")}>
                     <Image source={require("../../../assets/bichosScreenIcons/swords.png")} style={{ width: 80, height: 80 }} />
                 </TouchableOpacity>
                 <VerticalLine />
-                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/monster.png")}/>>
+                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/monster.png")} onPress={() => this.props.navigation.navigate("BichosInfo")} />
                 <VerticalLine />
-                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/easter.png")}/>>
+                <GenericTouchableOpacity source={require("../../../assets/bichosScreenIcons/easter.png")} onPress={() => this.props.navigation.navigate("Egg")} />
             </View>
         );
     }

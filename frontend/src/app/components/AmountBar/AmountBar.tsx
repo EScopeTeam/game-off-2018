@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 
 interface IProps {
-  amount: number;
+  coins: number;
 }
 
 export default class AmountBar extends React.Component<IProps> {
@@ -11,7 +11,7 @@ export default class AmountBar extends React.Component<IProps> {
     return (
       <View>
         <View style={styles.bar}>
-          <Text style={styles.text}>{this.props.amount}}</Text>
+          <Text style={styles.text}>{this.props.coins}}</Text>
         </View>
         <TouchableOpacity>
           <Image source={require("../../../assets/bichosScreenIcons/anadir.png")} style={styles.add} />

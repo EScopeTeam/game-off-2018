@@ -13,14 +13,14 @@ import ShopScreen from "../screens/ShopScreen";
 
 export const SignedInRoutes = createBottomTabNavigator({
   Bichos: BichosScreen,
-});
-
-export const SignedOutRoutes = createStackNavigator({
-  Login: LoginScreen,
-  Signup: SignupScreen,
   Shop: ShopScreen,
   Inventory: InventoryScreen,
   Battle: BattleScreen,
   BichosInfo: BichosInfoScreen,
   Egg: EggScreen
+});
+
+export const SignedOutRoutes = createStackNavigator({
+  Login: LoginScreen,
+  Signup: SignupScreen
 });

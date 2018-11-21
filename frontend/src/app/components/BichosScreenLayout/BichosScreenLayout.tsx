@@ -5,12 +5,14 @@ import BoottomMenu from "../BottomMenu/BottomMenu";
 import ExpBar from "../ExpBar/ExpBar";
 import AmountBar from "../AmountBar/AmountBar"
 import SwordBar from "../SwordBar/SwordBar"
+import { NavigationScreenProp } from "react-navigation";
 
 interface IProps {
   lvl: number;
   exp: number;
-  amount: number;
+  coins: number;
   swords: number;
+  readonly navigation: NavigationScreenProp<any, any>;
 }
 
 export default class BichosScreenLayout extends React.Component<IProps> {
@@ -23,7 +25,7 @@ export default class BichosScreenLayout extends React.Component<IProps> {
             <ExpBar lvl={this.props.lvl} exp={this.props.exp}/>
           </View>
           <View style={{ flex: 1 }}>
-            <AmountBar amount={this.props.amount}/>
+            <AmountBar coins={this.props.coins}/>
           </View>
           <View style={{ flex: 1 }}>
             <SwordBar swords={this.props.swords}/>
@@ -31,7 +33,7 @@ export default class BichosScreenLayout extends React.Component<IProps> {
         </View>
         <View style={styles.body} />
         <View style={styles.foot}>
-          <BoottomMenu />
+          <BoottomMenu navigation={this.props.navigation}/>
         </View>
       </View>
     );
