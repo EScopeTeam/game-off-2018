@@ -35,8 +35,8 @@ INSERT INTO bugs_colors (bug_color_id, bug_color_palette_id, name, rgb_code, gen
 -- Data for Name: bugs_parts; Type: TABLE DATA; Schema: public; Owner: bichos
 --
 
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES ('BODY', 1, NULL, 'Body', true, 50, NULL);
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES ('HEAD', 1, NULL, 'Head', true, 75, NULL);
+INSERT INTO bugs_parts (bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (1, NULL, 'Body', true, 50, NULL);
+INSERT INTO bugs_parts (bug_race_id, parent_part_id, name, required, "position", generation_chance) VALUES (1, NULL, 'Head', true, 75, NULL);
 
 
 --
@@ -45,12 +45,12 @@ INSERT INTO bugs_parts (bug_part_id, bug_race_id, parent_part_id, name, required
 -- Data for Name: bugs_patterns; Type: TABLE DATA; Schema: public; Owner: bichos
 --
 
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (1, 'BODY', 'BODY-1', 30);
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (2, 'BODY', 'BODY-2', 70);
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (3, 'HEAD', 'HEAD-1', 25);
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (4, 'HEAD', 'HEAD-2', 25);
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (5, 'HEAD', 'HEAD-3', 25);
-INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (6, 'HEAD', 'HEAD-4', 25);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (1, 1, 'BODY-1', 30);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (2, 1, 'BODY-2', 70);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (3, 2, 'HEAD-1', 25);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (4, 2, 'HEAD-2', 25);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (5, 2, 'HEAD-3', 25);
+INSERT INTO bugs_patterns (bug_pattern_id, bug_part_id, name, generation_chance) VALUES (6, 2, 'HEAD-4', 25);
 
 
 --
@@ -112,6 +112,14 @@ SELECT pg_catalog.setval('bugs_images_bug_image_id_seq', 9, true);
 --
 
 SELECT pg_catalog.setval('bugs_patterns_bug_pattern_id_seq', 6, true);
+
+--
+-- TOC entry 2502 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: bugs_parts_bug_part_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bichos
+--
+
+SELECT pg_catalog.setval('bugs_parts_bug_part_id_seq', 2, true);
 
 
 --

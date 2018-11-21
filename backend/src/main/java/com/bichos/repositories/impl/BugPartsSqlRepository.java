@@ -49,7 +49,7 @@ public class BugPartsSqlRepository {
   }
 
   private Future<BugPart> mapRow(final JsonArray row) {
-    final String bugPartId = row.getString(INDEX_ID);
+    final String bugPartId = String.valueOf(row.getLong(INDEX_ID));
     final Future<List<BugPart>> futureRelatedParts = findAllByParent(bugPartId);
     final Future<List<BugPattern>> futurePatterns = patternsRepository.findAllByPartId(bugPartId);
 
@@ -70,7 +70,7 @@ public class BugPartsSqlRepository {
 
   private Future<List<BugPart>> findAllByParent(final String parentPartId) {
     final JsonArray params = new JsonArray()
-        .add(parentPartId);
+        .add(Long.valueOf(parentPartId));
 
     return findAll(FIND_ALL_BY_PARENT_SQL, params);
   }

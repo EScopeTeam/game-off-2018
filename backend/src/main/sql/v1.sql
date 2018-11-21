@@ -126,9 +126,9 @@ ALTER SEQUENCE public.bugs_images_bug_image_id_seq OWNED BY public.bugs_images.b
 --
 
 CREATE TABLE public.bugs_parts (
-    bug_part_id character varying(20) NOT NULL,
+    bug_part_id integer NOT NULL,
     bug_race_id integer NOT NULL,
-    parent_part_id character varying(20),
+    parent_part_id integer,
     name character varying(50) NOT NULL,
     required boolean NOT NULL,
     "position" smallint NOT NULL,
@@ -138,6 +138,26 @@ CREATE TABLE public.bugs_parts (
 
 ALTER TABLE public.bugs_parts OWNER TO bichos;
 
+--
+-- TOC entry 201 (class 1259 OID 16444)
+-- Name: bugs_parts_bug_part_id_seq; Type: SEQUENCE; Schema: public; Owner: bichos
+--
+ CREATE SEQUENCE public.bugs_parts_bug_part_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ ALTER TABLE public.bugs_parts_bug_part_id_seq OWNER TO bichos;
+--
+-- TOC entry 2904 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: bugs_parts_bug_part_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bichos
+--
+ ALTER SEQUENCE public.bugs_parts_bug_part_id_seq OWNED BY public.bugs_parts.bug_part_id;
+
+
 
 --
 -- TOC entry 204 (class 1259 OID 16464)
@@ -146,7 +166,7 @@ ALTER TABLE public.bugs_parts OWNER TO bichos;
 
 CREATE TABLE public.bugs_patterns (
     bug_pattern_id integer NOT NULL,
-    bug_part_id character varying(20) NOT NULL,
+    bug_part_id integer NOT NULL,
     name character varying(50) NOT NULL,
     generation_chance integer NOT NULL
 );
@@ -297,6 +317,11 @@ ALTER TABLE ONLY public.bugs_colors ALTER COLUMN bug_color_id SET DEFAULT nextva
 
 ALTER TABLE ONLY public.bugs_images ALTER COLUMN bug_image_id SET DEFAULT nextval('public.bugs_images_bug_image_id_seq'::regclass);
 
+--
+-- TOC entry 2727 (class 2604 OID 16449)
+-- Name: bugs_parts bug_part_id; Type: DEFAULT; Schema: public; Owner: bichos
+--
+ ALTER TABLE ONLY public.bugs_parts ALTER COLUMN bug_part_id SET DEFAULT nextval('public.bugs_parts_bug_part_id_seq'::regclass);
 
 --
 -- TOC entry 2728 (class 2604 OID 16467)
