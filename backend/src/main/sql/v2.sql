@@ -11,15 +11,15 @@ INSERT INTO bugs_colors (bug_color_id, bug_color_palette_id, name, rgb_code, gen
 
 INSERT INTO players (player_id, username, password, salt, email, online) VALUES (2, 'test', '5CDD8ED1E7BDDC562BA7186AC680FB89F23CE6D7A4B90E667F259CCD87ECF7742927BDF42F945E8709E7524EE5BC544115E2A7761EEBA2E3E152E35F5405D32D', '689229A90E4AD345F492D30CD49D87853E6FBC0AA5C9652223', 'test@test.com', true);
 
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (2,1,'ARMS',true,175, null);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (2,1,'ARMS',true,15, null);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (3,1,'BODY',true,20, null);
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (5,1,'EARS',true,100, null);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (5,1,'EARS',true,17, null);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (6,1,'eye',true,90,null);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (7,1,'FACE',false,50,40);
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (8,1,'FUR',false,400,5);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (8,1,'FUR',false,25,5);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (9,1,'HAIR',false,300,10);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (10,1,'HORNS',false,250,10);
-INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (11,1,'LEGS',true,170,null);
+INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (11,1,'LEGS',true,12,null);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (12,1,'MOUTH',true,60,null);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (13,1,'NOSE',false,110,60);
 INSERT INTO bugs_parts (bug_part_id, bug_race_id, name, required, position, generation_chance) VALUES (15,1,'TAIL',false,10,20);
