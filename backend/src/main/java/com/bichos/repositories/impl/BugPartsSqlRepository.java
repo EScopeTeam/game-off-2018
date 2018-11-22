@@ -26,7 +26,7 @@ public class BugPartsSqlRepository {
       + "ps.generation_chance, sps.bug_pattern_id FROM bugs_parts ps LEFT JOIN bugs_selected_parts sps "
       + "ON ps.bug_part_id = sps.bug_part_id WHERE sps.bug_id = ?";
   private static final String FIND_ALL_SELECTED_BY_BUG_ID = FIND_ALL_SELECTED + " AND sp.parent_part_id IS NULL";
-  private static final String FIND_ALL_SELECTED_BY_BUG_ID_AND_PARENT = FIND_ALL_SELECTED + " AND sp.parent_part_id = ?";
+  private static final String FIND_ALL_SELECTED_BY_BUG_AND_PARENT = FIND_ALL_SELECTED + " AND sp.parent_part_id = ?";
 
   private static final int INDEX_ID = 0;
   private static final int INDEX_NAME = 1;
@@ -107,7 +107,7 @@ public class BugPartsSqlRepository {
         .add(Long.valueOf(bugId))
         .add(Long.valueOf(parentId));
 
-    return findAllSelected(bugId, FIND_ALL_SELECTED_BY_BUG_ID_AND_PARENT, params);
+    return findAllSelected(bugId, FIND_ALL_SELECTED_BY_BUG_AND_PARENT, params);
   }
 
   private Future<BugSelectedPart> mapSelectedRow(final String bugId, final JsonArray row) {

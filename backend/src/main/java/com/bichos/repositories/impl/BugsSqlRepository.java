@@ -31,8 +31,8 @@ public class BugsSqlRepository implements BugRepository {
 
   @Override
   public Future<Bug> findById(final String bugId) {
-    Future<JsonArray> fResult = Future.future();
-    JsonArray params = new JsonArray()
+    final Future<JsonArray> fResult = Future.future();
+    final JsonArray params = new JsonArray()
         .add(bugId);
     client.querySingleWithParams(FIND_BY_ID, params, fResult.completer());
 
@@ -41,7 +41,7 @@ public class BugsSqlRepository implements BugRepository {
 
   private Future<Bug> mapRow(final JsonArray row) {
     final String bugId = String.valueOf(row.getLong(INDEX_ID));
-    Future<List<BugSelectedPart>> fParts = partsRepository.findAllSelectedByBugId(bugId);
+    final Future<List<BugSelectedPart>> fParts = partsRepository.findAllSelectedByBugId(bugId);
 
     return fParts.map(parts -> {
       final Bug result = new Bug();
@@ -56,8 +56,8 @@ public class BugsSqlRepository implements BugRepository {
 
   @Override
   public Future<List<Bug>> findAllByPlayerId(final String playerId) {
-    Future<ResultSet> fResult = Future.future();
-    JsonArray params = new JsonArray()
+    final Future<ResultSet> fResult = Future.future();
+    final JsonArray params = new JsonArray()
         .add(playerId);
     client.queryWithParams(FIND_ALL_BY_PLAYER_ID, params, fResult.completer());
 
