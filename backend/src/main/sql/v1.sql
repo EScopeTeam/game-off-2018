@@ -1,3 +1,5 @@
+CREATE USER bichos WITH PASSWORD 'bichitos';
+
 --
 -- TOC entry 208 (class 1259 OID 16490)
 -- Name: bugs_color_palettes; Type: TABLE; Schema: public; Owner: bichos
