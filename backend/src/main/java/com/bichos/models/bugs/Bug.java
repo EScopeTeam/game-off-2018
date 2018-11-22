@@ -16,7 +16,13 @@ public class Bug {
   private static final String PARTS_SEPARATOR = "|";
   private static final String RACE_SEPARATOR = "/";
 
+  private String bugId;
+
   private String bugRaceId;
+
+  private String playerId;
+
+  private String name;
 
   private List<BugSelectedPart> parts = new ArrayList<>();
 
