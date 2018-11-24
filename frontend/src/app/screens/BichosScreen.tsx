@@ -43,7 +43,7 @@ function transitionAnimation(index: number) {
   };
 }
 
-export default class LoginScreen extends React.Component<IProp> {
+export default class BichosScreen extends React.Component<IProp> {
   public render() {
     return (
       <View style={{ flex: 1 }}>
