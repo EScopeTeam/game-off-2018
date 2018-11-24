@@ -110,7 +110,7 @@ export default class LoginScreen extends React.Component<IProp> {
         >
           <GenericTouchableOpacity
             source={require("../../../assets/bichosScreenIcons/stand.png")}
-            onPress={() => this.props.navigation.navigate("Shop")}
+            onPress={() => this.refs}
           />
           <VerticalLine />
           <GenericTouchableOpacity
