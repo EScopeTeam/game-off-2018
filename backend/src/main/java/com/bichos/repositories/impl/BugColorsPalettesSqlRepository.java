@@ -40,7 +40,7 @@ public class BugColorsPalettesSqlRepository {
 
   private Future<BugColorPalette> mapRow(final JsonArray row) {
     final String bugColorPaletteId = String.valueOf(row.getLong(INDEX_ID));
-    return colorsRepository.findAllByRaceId(bugColorPaletteId).map(colors -> {
+    return colorsRepository.findAllByPaletteId(bugColorPaletteId).map(colors -> {
       final BugColorPalette result = new BugColorPalette();
       result.setBugColorPaletteId(bugColorPaletteId);
       result.setName(row.getString(INDEX_NAME));

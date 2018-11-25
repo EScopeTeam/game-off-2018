@@ -4,6 +4,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.SQLOperations;
@@ -15,6 +16,10 @@ public class SqlClientMock implements SQLClient {
   private JsonArray resultQuerySingleWithParams;
 
   private Throwable exceptionQuerySingleWithParams;
+
+  private ResultSet resultQueryWithParams;
+
+  private Throwable exceptionQueryWithParams;
 
   @Override
   public SQLClient getConnection(final Handler<AsyncResult<SQLConnection>> handler) {
@@ -37,6 +42,16 @@ public class SqlClientMock implements SQLClient {
       handler.handle(Future.succeededFuture(resultQuerySingleWithParams));
     } else {
       handler.handle(Future.failedFuture(exceptionQuerySingleWithParams));
+    }
+    return null;
+  }
+
+  @Override
+  public SQLClient queryWithParams(final String sql, final JsonArray arguments, final Handler<AsyncResult<ResultSet>> handler) {
+    if (exceptionQuerySingleWithParams == null) {
+      handler.handle(Future.succeededFuture(resultQueryWithParams));
+    } else {
+      handler.handle(Future.failedFuture(exceptionQueryWithParams));
     }
     return null;
   }

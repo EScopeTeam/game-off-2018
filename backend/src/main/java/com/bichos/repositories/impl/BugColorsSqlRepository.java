@@ -24,7 +24,7 @@ public class BugColorsSqlRepository {
 
   private final SQLClient client;
 
-  public Future<List<BugColor>> findAllByRaceId(final String bugColorPaletteId) {
+  public Future<List<BugColor>> findAllByPaletteId(final String bugColorPaletteId) {
     final Future<ResultSet> fQuery = Future.future();
     final JsonArray params = new JsonArray()
         .add(Long.valueOf(bugColorPaletteId));
