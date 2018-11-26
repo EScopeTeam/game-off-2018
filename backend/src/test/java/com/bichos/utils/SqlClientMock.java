@@ -1,5 +1,7 @@
 package com.bichos.utils;
 
+import java.util.function.BiFunction;
+
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -19,7 +21,13 @@ public class SqlClientMock implements SQLClient {
 
   private ResultSet resultQueryWithParams;
 
+  private BiFunction<String, JsonArray, ResultSet> funcQueryWithParams;
+
   private Throwable exceptionQueryWithParams;
+
+  private ResultSet resultQuery;
+
+  private Throwable exceptionQuery;
 
   @Override
   public SQLClient getConnection(final Handler<AsyncResult<SQLConnection>> handler) {
@@ -48,11 +56,24 @@ public class SqlClientMock implements SQLClient {
 
   @Override
   public SQLClient queryWithParams(final String sql, final JsonArray arguments, final Handler<AsyncResult<ResultSet>> handler) {
-    if (exceptionQuerySingleWithParams == null) {
+    if (funcQueryWithParams != null) {
+      handler.handle(Future.succeededFuture(funcQueryWithParams.apply(sql, arguments)));
+    } else if (exceptionQuerySingleWithParams == null) {
       handler.handle(Future.succeededFuture(resultQueryWithParams));
     } else {
       handler.handle(Future.failedFuture(exceptionQueryWithParams));
     }
+    return null;
+  }
+
+  @Override
+  public SQLClient query(String sql, Handler<AsyncResult<ResultSet>> handler) {
+    if (exceptionQuery == null) {
+      handler.handle(Future.succeededFuture(resultQuery));
+    } else {
+      handler.handle(Future.failedFuture(exceptionQuery));
+    }
+
     return null;
   }
 

@@ -102,7 +102,7 @@ public class BugPartsSqlRepository {
     });
   }
 
-  public Future<List<BugSelectedPart>> findAllSelectedByBugIdAndParent(final String bugId, final String parentId) {
+  private Future<List<BugSelectedPart>> findAllSelectedByBugIdAndParent(final String bugId, final String parentId) {
     final JsonArray params = new JsonArray()
         .add(Long.valueOf(bugId))
         .add(Long.valueOf(parentId));
