@@ -6,6 +6,9 @@ info:
 tags:
 - name: "authentication"
   description: "Authentication actions."
+- name: "player"
+  description: "Player actions."
+  
 paths:
   "/login":
     post:
@@ -34,6 +37,58 @@ paths:
           description: "Error in entity."
           schema:
             $ref: "#/definitions/EntityErrors"
+        default:
+          description: "Unexpected error."
+  "/signup":
+    post:
+      tags:
+      - "authentication"
+      description: "Sign up."
+      operationId: "signup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/SignUpRequest"
+      reponses:
+        201:
+          description: "User account created succesfully."
+        400:
+          description: "Invalid data in sign up."
+          schema:
+            $ref: "#/definitions/EntityErrors"
+        409:
+          description: "Mail or nickname have been already taken"
+        default:
+          description: "Unexpected error."
+  "/hello":
+    post:
+      tags:
+      - "player"
+      description: "Initialize player data."
+      operationId: "hello"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/HelloRequest"
+      responses:
+        200:
+          description: "Player data initialization succedeed."
+          schema:
+            $ref: "#definitions/PlayerData"
+        404:
+          description: "Player data not found."
         default:
           description: "Unexpected error."
             
@@ -103,3 +158,85 @@ definitions:
           min: 1
         additionalProperties: 
           type: "string"
+          
+  SignUpRequest:
+    type: "object"
+    required: 
+    - "mail"
+    - "nickname"
+    - "password"
+    - "passwordRep"
+    - "conditionsCheck"
+    properties:
+      mail:
+        type: "string"
+        description: "Mail account of the player."
+        example: "mymail@myaccount.com"
+      nickname:
+        type: "string"
+        description: "User name of the player."
+        example: "pepitoflores2"
+      password:
+        type: "string"
+        description: "User account password."
+        example: "thisismypassword"
+      passwordRep:
+        type: "string"
+        decription: "User account password repeated to check correct field"
+        example: "thisismypassword"
+      conditionsCheck:
+        type: "boolean"
+        description: "Wheter user has approved and read conditions"
+        
+  HelloRequest:
+    type: "object"
+    required:
+    - "sessionId"
+    - "playerId"
+    properties:
+      sessionId:
+        type: "string"
+        description: "The session ID of the player."
+        example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTQxMjU2NTc3LCJleHAiOjE1NDE4NjEzNzcsImlzcyI6IkJJQ0hPUyJ9.18y4y62ycN_0NHYMht9AXOlckEw80Z5z_tzyBiag-HHiiwhzMqG_CnZSormN-F7K-TE2JhMbJ-DD2JanTEgXGw"
+      playerId:
+        type: "string"
+        description: "The ID of the current player."
+        example: "70"
+  PlayerData:
+    type: "object"
+    required:
+    - userId
+    - username
+    - coins
+    - experience
+    - email
+    properties:
+      userId:
+        type: "string"
+        description: "The ID of the current user account."
+        example: "15"
+      username:
+        type: "string"
+        description: "Name of the current user."
+        example: "pepitoflores"
+      coins:
+        type: "number"
+        format: "double"
+        description: "Number of coins of the player."
+        example: "205"
+      experience:
+        type: "integer"
+        format: "int64"
+        description: "Experience points of the player."
+      email:
+        type: "string"
+        description: "E-mail account of the player."
+        example: "pepe@pe.pe"
+      online:
+        type: boolean
+        description: "Whether the player is currentyle on line or not."
+        example: "true"
+      active:
+        type: boolean
+        description: "Wheter the user account is actived or not."
+        example: "true"      

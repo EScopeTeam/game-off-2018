@@ -5,7 +5,7 @@ import styles from "./styles";
 export default class Loading extends React.Component {
   public render() {
     return (
-      <Modal supportedOrientations={["landscape", "portrait"]} transparent>
+      <Modal supportedOrientations={["portrait"]} transparent>
         <View style={styles.container}>
           <ActivityIndicator
             color="white"

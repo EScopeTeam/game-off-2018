@@ -1,6 +1,8 @@
 package com.bichos.binders;
 
 import com.bichos.repositories.BugRacesRepository;
+import java.time.Clock;
+
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.repositories.impl.BugColorsPalettesSqlRepository;
@@ -21,8 +23,8 @@ public class RepositoriesModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public PlayersRepository providePlayersRepository(final SQLClient client) {
-    return new PlayersSqlRepository(client);
+  public PlayersRepository providePlayersRepository(final SQLClient client, final Clock clock) {
+    return new PlayersSqlRepository(client, clock);
   }
 
   @Provides

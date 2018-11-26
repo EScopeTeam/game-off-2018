@@ -10,24 +10,41 @@ import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.SQLOperations;
+import io.vertx.ext.sql.UpdateResult;
+import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 public class SqlClientMock implements SQLClient {
 
+  @Setter
   private JsonArray resultQuerySingleWithParams;
 
+  @Setter
   private Throwable exceptionQuerySingleWithParams;
 
+  @Setter
   private ResultSet resultQueryWithParams;
 
+  @Setter
   private BiFunction<String, JsonArray, ResultSet> funcQueryWithParams;
 
+  @Setter
   private Throwable exceptionQueryWithParams;
 
+  @Setter
   private ResultSet resultQuery;
 
+  @Setter
   private Throwable exceptionQuery;
+  
+  @Setter
+  private UpdateResult resultUpdateWithParams;
+
+  @Setter
+  private Throwable exceptionUpdateWithParams;
+
+  @Getter
+  private JsonArray paramsUpdateWithParams;
 
   @Override
   public SQLClient getConnection(final Handler<AsyncResult<SQLConnection>> handler) {
@@ -75,6 +92,17 @@ public class SqlClientMock implements SQLClient {
     }
 
     return null;
+  }
+  
+  public SQLClient updateWithParams(final String sql, final JsonArray params, final Handler<AsyncResult<UpdateResult>> handler) {
+    paramsUpdateWithParams = params;
+
+    if (exceptionUpdateWithParams == null) {
+      handler.handle(Future.succeededFuture(resultUpdateWithParams));
+    } else {
+      handler.handle(Future.failedFuture(exceptionUpdateWithParams));
+    }
+    return this;
   }
 
 }
