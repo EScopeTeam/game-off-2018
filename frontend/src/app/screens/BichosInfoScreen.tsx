@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text,Image } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
@@ -14,6 +14,12 @@ interface IProp {
 export default class BichosInfoScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
+    tabBarIcon: () => (
+      <Image
+        source={require("../../../assets/bichosScreenIcons/monster.png")}
+        style={{ width: 50, height: 50 }}
+      />
+    ),
     ...navigationStyles,
   };
 

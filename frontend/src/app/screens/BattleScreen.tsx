@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text,Image } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
@@ -14,6 +14,12 @@ interface IProp {
 export default class BattleScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
+    tabBarIcon: () => (
+      <Image
+        source={require("../../../assets/bichosScreenIcons/swords.png")}
+        style={{ width: 80, height: 80, position: 'relative', top: -20 }}
+      />
+    ),
     ...navigationStyles,
   };
 
