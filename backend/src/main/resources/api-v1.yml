@@ -55,7 +55,7 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/SignUpRequest"
-      reponses:
+      responses:
         201:
           description: "User account created succesfully."
         400:
@@ -86,7 +86,7 @@ paths:
         200:
           description: "Player data initialization succedeed."
           schema:
-            $ref: "#definitions/PlayerData"
+            $ref: "#/definitions/PlayerData"
         404:
           description: "Player data not found."
         default:
@@ -182,7 +182,7 @@ definitions:
         example: "thisismypassword"
       passwordRep:
         type: "string"
-        decription: "User account password repeated to check correct field"
+        description: "User account password repeated to check correct field"
         example: "thisismypassword"
       conditionsCheck:
         type: "boolean"
@@ -210,6 +210,8 @@ definitions:
     - coins
     - experience
     - email
+    - online
+    - active
     properties:
       userId:
         type: "string"
