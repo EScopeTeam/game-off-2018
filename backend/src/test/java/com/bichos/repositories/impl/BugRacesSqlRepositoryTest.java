@@ -56,10 +56,10 @@ public class BugRacesSqlRepositoryTest {
 
     client.setResultQuery(new ResultSet(Collections.emptyList(), rows, null));
 
-    List<BugColorPalette> palettes = Arrays.asList(new BugColorPalette());
+    final List<BugColorPalette> palettes = Arrays.asList(new BugColorPalette());
     when(colorsPalettesRepository.findAllByRaceId(String.valueOf(ID))).thenReturn(Future.succeededFuture(palettes));
 
-    List<BugPart> parts = Arrays.asList(new BugPart());
+    final List<BugPart> parts = Arrays.asList(new BugPart());
     when(partsRepository.findAllByRaceId(String.valueOf(ID))).thenReturn(Future.succeededFuture(parts));
 
     final Async async = context.async();

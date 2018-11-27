@@ -63,7 +63,7 @@ public class BugPartsSqlRepositoryTest {
     client.setFuncQueryWithParams(
         (sql, params) -> new ResultSet(Collections.emptyList(), sql.contains("parent_part_id = ?") ? Collections.emptyList() : rows, null));
 
-    List<BugPattern> patterns = Arrays.asList(new BugPattern());
+    final List<BugPattern> patterns = Arrays.asList(new BugPattern());
     when(patternsRepository.findAllByPartId(String.valueOf(ID))).thenReturn(Future.succeededFuture(patterns));
 
     final Async async = context.async();
@@ -99,7 +99,7 @@ public class BugPartsSqlRepositoryTest {
     client.setFuncQueryWithParams(
         (sql, params) -> new ResultSet(Collections.emptyList(), sql.contains("parent_part_id = ?") ? Collections.emptyList() : rows, null));
 
-    BugSelectedPattern pattern = new BugSelectedPattern();
+    final BugSelectedPattern pattern = new BugSelectedPattern();
     when(patternsRepository.findSelectedById(BUG_ID, String.valueOf(PATTERN_ID))).thenReturn(Future.succeededFuture(pattern));
 
     final Async async = context.async();

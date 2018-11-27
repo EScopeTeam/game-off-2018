@@ -73,18 +73,20 @@ public class SqlClientMock implements SQLClient {
 
   @Override
   public SQLClient queryWithParams(final String sql, final JsonArray arguments, final Handler<AsyncResult<ResultSet>> handler) {
-    if (funcQueryWithParams != null) {
-      handler.handle(Future.succeededFuture(funcQueryWithParams.apply(sql, arguments)));
-    } else if (exceptionQuerySingleWithParams == null) {
-      handler.handle(Future.succeededFuture(resultQueryWithParams));
+    if (funcQueryWithParams == null) {
+      if (exceptionQuerySingleWithParams == null) {
+        handler.handle(Future.succeededFuture(resultQueryWithParams));
+      } else {
+        handler.handle(Future.failedFuture(exceptionQueryWithParams));
+      }
     } else {
-      handler.handle(Future.failedFuture(exceptionQueryWithParams));
+      handler.handle(Future.succeededFuture(funcQueryWithParams.apply(sql, arguments)));
     }
     return null;
   }
 
   @Override
-  public SQLClient query(String sql, Handler<AsyncResult<ResultSet>> handler) {
+  public SQLClient query(final String sql, final Handler<AsyncResult<ResultSet>> handler) {
     if (exceptionQuery == null) {
       handler.handle(Future.succeededFuture(resultQuery));
     } else {

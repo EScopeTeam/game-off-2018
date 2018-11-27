@@ -145,7 +145,7 @@ public class PlayersSqlRepositoryTest {
           .add(START_EXPERIENCE_POINTS)
           .add(START_PLAYER_ONLINE);
 
-      assertThat(expectedResult, is(client.getParamsUpdateWithParams()));
+      assertThat("The update paramaters are wrong.", expectedResult, is(client.getParamsUpdateWithParams()));
       async.complete();
     });
   }
