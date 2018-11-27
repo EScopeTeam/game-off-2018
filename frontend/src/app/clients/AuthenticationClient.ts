@@ -16,7 +16,7 @@ export default class AuthenticationClient {
 
     return response.data.token;
   }
-  
+
   public async signIn(username: string, password: string): Promise<string> {
     const response = await axios.post(this._settings.rest.signIn, {
       username,
@@ -24,9 +24,5 @@ export default class AuthenticationClient {
     });
 
     return response.data.token;
-  }
-
-  public async hello(token: string): Promise<User> {
-    return websocketHelper.connect(token);
   }
 }
