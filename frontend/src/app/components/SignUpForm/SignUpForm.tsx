@@ -11,7 +11,7 @@ import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
-import FormButton from "../FormButton/FormButton"
+import FormButton from "../FormButton/FormButton";
 import { signUpConstraints } from "./signUpConstraints";
 import {
   getFieldValuesWithValidationErrors,
@@ -22,6 +22,7 @@ import ValidationError from "../../errors/ValidationError";
 import IFormFieldError from "../../models/IFormFieldError";
 import FormError from "../FormError";
 import Loading from "../Loading";
+import ISignUpForm from "../../models/ISignUpForm";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
@@ -71,32 +72,33 @@ class SignInForm extends React.Component<IProp, IState> {
         setter: (value: string) => this.setState({ password: { value } }),
       },
       rePassword: {
-        name: "password",
-        placeholderCode: "login:password",
-        setter: (value: string) => this.setState({ password: { value } }),
+        name: "rePassword",
+        placeholderCode: "login:re-password",
+        setter: (value: string) => this.setState({ rePassword: { value } }),
       },
     };
   }
 
   private submit(): void {
-    const form = {
+    const form: ISignUpForm = {
       username: this.state.username.value,
       password: this.state.password.value,
-      rePassword: this.state.rePassword.value,
+      email: "",
     };
 
     this.setState({
       generalErrors: [],
       username: { value: form.username },
       password: { value: form.password },
+      rePassword: { value: this.state.rePassword.value },
       loading: true,
     });
 
-    validate(form, signUpConstraints)
-      .then(() => {
-        if (form.password === form.rePassword) {
+    if (form.password === this.state.rePassword.value) {
+      validate(form, signUpConstraints)
+        .then(() => {
           authenticationClient
-            .signIn(form.username, form.password)
+            .signUp(form)
             .then((token: string) => {
               saveToken(token)
                 .then(() => {
@@ -107,14 +109,14 @@ class SignInForm extends React.Component<IProp, IState> {
                 .catch(this.setGeneralError.bind(this));
             })
             .catch(this.setHttpErrors.bind(this));
-        } else {
-          this.setValidationPasswordErrors();
-        }
-      })
-      .catch(this.setValidationErrors.bind(this));
+        })
+        .catch(this.setValidationErrors.bind(this));
+    } else {
+      this.setValidationPasswordErrors();
+    }
   }
 
-  private setGeneralError(): void {
+  private setGeneralError(error: Error): void {
     this.setState({
       loading: false,
       generalErrors: [{ code: "generalError" }],
@@ -123,7 +125,10 @@ class SignInForm extends React.Component<IProp, IState> {
   private setValidationPasswordErrors(): void {
     this.setState({
       loading: false,
-      generalErrors: [{ code: "The password is different" }],
+      rePassword: {
+        value: this.state.rePassword.value,
+        errors: [{ code: "The repeated password is different" }],
+      },
     });
   }
 
@@ -204,15 +209,12 @@ class SignInForm extends React.Component<IProp, IState> {
             secureTextEntry
             refInput={this.thirdInput}
           />
-          <View style={styles.button_login} >
+          <View style={styles.button_login}>
             <FormButton
               title="LOGIN"
               onPress={() => navigation.navigate("Login")}
             />
-            <FormButton
-              title="SIGNUP"
-              onPress={() => this.submit()}
-            />
+            <FormButton title="SIGNUP" onPress={() => this.submit()} />
           </View>
         </Card>
         <View style={styles.footer_login} />
@@ -233,4 +235,3 @@ export default (props: any) => {
     </TokenContext.Consumer>
   );
 };
-

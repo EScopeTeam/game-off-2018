@@ -10,9 +10,9 @@ public final class SignUpMappers {
 
   public static SignupRequest mapApiToModel(final ApiSignUpRequest request) {
     final SignupRequest model = new SignupRequest();
-    model.setEmail(request.getMail());
+    model.setEmail(request.getEmail());
     model.setPassword(request.getPassword());
-    model.setUsername(request.getNickname());
+    model.setUsername(request.getUsername());
 
     return model;
   }
