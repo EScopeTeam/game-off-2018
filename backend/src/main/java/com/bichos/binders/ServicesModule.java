@@ -5,12 +5,16 @@ import java.time.Clock;
 import javax.validation.Validator;
 
 import com.bichos.config.AuthenticationConfig;
+import com.bichos.repositories.BugRacesRepository;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
+import com.bichos.services.BugsGeneratorService;
 import com.bichos.services.ValidationService;
 import com.bichos.services.impl.AuthenticationJWTService;
+import com.bichos.services.impl.BugsGeneratorServiceImpl;
 import com.bichos.services.impl.JavaxValidationService;
+import com.bichos.utils.Randomizer;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -33,6 +37,12 @@ public class ServicesModule extends AbstractModule {
   @Singleton
   public ValidationService provideValidationService(final Validator validator) {
     return new JavaxValidationService(validator);
+  }
+
+  @Provides
+  @Singleton
+  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository) {
+    return new BugsGeneratorServiceImpl(randomizer, racesRepository);
   }
 
 }

@@ -2,7 +2,7 @@ package com.bichos.handlers.authentication;
 
 import com.bichos.exceptions.InvalidLoginException;
 import com.bichos.handlers.ApiHandler;
-import com.bichos.mappers.LoginMappers;
+import com.bichos.mappers.LoginMappersUtils;
 import com.bichos.models.ApiLoginRequest;
 import com.bichos.services.AuthenticationService;
 import com.bichos.services.ValidationService;
@@ -31,7 +31,7 @@ public class LoginHandler implements ApiHandler {
 
     authenticationService.login(request.getUsername(), request.getPassword()).setHandler(result -> {
       if (result.succeeded()) {
-        HandlerUtils.jsonResponse(context, LoginMappers.mapTokenToResponse(result.result()));
+        HandlerUtils.jsonResponse(context, LoginMappersUtils.mapTokenToResponse(result.result()));
       } else if (result.cause() != null && result.cause() instanceof InvalidLoginException) {
         context.fail(HttpStatus.UNAUTHORIZED.getStatusCode());
       } else {

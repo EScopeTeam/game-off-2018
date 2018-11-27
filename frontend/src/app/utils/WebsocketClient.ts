@@ -8,7 +8,7 @@ import settings from "../config/settings";
 const GOAWAY_ERROR_CODE: number = 3000;
 const NORMAL_CLOSURE_CODE: number = 1000;
 const MAX_RECONNECT: number = 5;
-const TIME_BETWEEN_RECONNECTION: number = 1000;
+const TIME_BETWEEN_RECONNECTION: number = 5000;
 
 export default class WebsocketClient {
   private _token: string;
@@ -68,7 +68,7 @@ export default class WebsocketClient {
 
           if (e && e.code === GOAWAY_ERROR_CODE) {
             this._logout();
-          } else {
+          } else if (this._reconnects < MAX_RECONNECT) {
             this._reconnectId = setTimeout(
               this.connect.bind(this),
               TIME_BETWEEN_RECONNECTION
