@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text,Image } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
@@ -11,15 +11,21 @@ interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
 }
 
-export default class EggScreen extends React.Component<IProp> {
+export default class WorldScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
+    tabBarIcon: () => (
+      <Image
+        source={require("../../../assets/bichosScreenIcons/world.png")}
+        style={{ width: 50, height: 50 }}
+      />
+    ),
     ...navigationStyles,
   };
 
   public render() {
     return (
-      <Text>EggScreen</Text>
+      <Text>WorldScreen</Text>
     );
   }
 }
