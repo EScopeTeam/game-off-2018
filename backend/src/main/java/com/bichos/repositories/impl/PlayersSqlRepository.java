@@ -43,7 +43,7 @@ public class PlayersSqlRepository implements PlayersRepository {
 
   private static final String FIND_PLAYER_BY_PLAYER_ID_SQL = "SELECT " + ATTRIBUTES + " FROM players WHERE player_id = ?";
 
-  private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
+  private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
   private static final boolean START_ACTIVE_ACCOUNT = true;
   private static final double START_PLAYER_COINS = 0.0;
