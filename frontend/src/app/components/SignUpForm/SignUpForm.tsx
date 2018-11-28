@@ -30,6 +30,7 @@ interface IProp {
 }
 
 interface IState {
+  email: IFormFieldValue;
   username: IFormFieldValue;
   password: IFormFieldValue;
   rePassword: IFormFieldValue;
@@ -40,13 +41,17 @@ interface IState {
 class SignInForm extends React.Component<IProp, IState> {
   private _form: { [key: string]: IFormField };
 
-  private secondInput: React.RefObject<TextInput> = createRef<TextInput>();
-  private thirdInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private usernameInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private passwordInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private rePasswordInput: React.RefObject<TextInput> = createRef<TextInput>();
 
   constructor(props: IProp) {
     super(props);
 
     this.state = {
+      email: {
+        value: "",
+      },
       username: {
         value: "",
       },
@@ -61,6 +66,11 @@ class SignInForm extends React.Component<IProp, IState> {
     };
 
     this._form = {
+      email: {
+        name: "email",
+        placeholderCode: "signup:email",
+        setter: (value: string) => this.setState({ email: { value } }),
+      },
       username: {
         name: "username",
         placeholderCode: "login:username",
@@ -83,13 +93,14 @@ class SignInForm extends React.Component<IProp, IState> {
     const form: ISignUpForm = {
       username: this.state.username.value,
       password: this.state.password.value,
-      email: "",
+      email: this.state.email.value,
     };
 
     this.setState({
       generalErrors: [],
       username: { value: form.username },
       password: { value: form.password },
+      email: { value: form.email },
       rePassword: { value: this.state.rePassword.value },
       loading: true,
     });
@@ -144,6 +155,12 @@ class SignInForm extends React.Component<IProp, IState> {
       ];
     } else if (error.response && error.request.status === 422) {
       newState = getFieldValuesWithHttpErrors(this._form, error, this.state);
+    } else if (error.response && error.request.status === 409) {
+      newState = this.state;
+      newState.username = {
+        value: newState.username.value,
+        errors: [{ code: "notUnique" }],
+      };
     } else {
       newState = this.state;
       newState.generalErrors = [
@@ -180,34 +197,43 @@ class SignInForm extends React.Component<IProp, IState> {
         <Card containerStyle={{ height: 280 }}>
           <FormError errors={this.state.generalErrors} />
           <GenericTextInput
+            field={this._form.email}
+            fieldValue={this.state.email}
+            keyboardType="email-address"
+            onSubmitEditing={() => {
+              if (this.usernameInput.current) {
+                this.usernameInput.current.focus();
+              }
+            }}
+          />
+          <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
-            keyLabel="Email"
             onSubmitEditing={() => {
-              if (this.secondInput.current) {
-                this.secondInput.current.focus();
+              if (this.passwordInput.current) {
+                this.passwordInput.current.focus();
               }
             }}
+            refInput={this.usernameInput}
           />
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
-            keyLabel="Password"
             secureTextEntry
-            refInput={this.secondInput}
             onSubmitEditing={() => {
-              if (this.thirdInput.current) {
-                this.thirdInput.current.focus();
+              if (this.rePasswordInput.current) {
+                this.rePasswordInput.current.focus();
               }
             }}
+            refInput={this.passwordInput}
           />
           <GenericTextInput
             field={this._form.rePassword}
             fieldValue={this.state.rePassword}
-            keyLabel="Password"
             secureTextEntry
-            refInput={this.thirdInput}
+            onSubmitEditing={() => this.submit()}
+            refInput={this.rePasswordInput}
           />
           <View style={styles.button_login}>
             <FormButton

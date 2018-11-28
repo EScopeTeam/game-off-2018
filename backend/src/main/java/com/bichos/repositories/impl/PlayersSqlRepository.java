@@ -37,7 +37,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   private static final String UPDATE_ONLINE_BY_ID_SQL = "UPDATE players SET online = ? WHERE player_id = ?";
 
   private static final String INSERT_PLAYER_SQL = "INSERT INTO players (email, password, salt, active, username, creation_time, update_time, "
-      + "coins, experiencePoints, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      + "coins, experience_points, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String COUNT_PLAYER_BY_UNAME_OR_EMAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
 
