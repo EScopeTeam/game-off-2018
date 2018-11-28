@@ -1,6 +1,7 @@
 package com.bichos.models.bugs;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -25,6 +26,8 @@ public class Bug {
   private String name;
 
   private List<BugSelectedPart> parts = new ArrayList<>();
+
+  private OffsetDateTime updateTime;
 
   public String hash() {
     final String hashedParts = parts.stream()
