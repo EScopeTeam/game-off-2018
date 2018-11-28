@@ -2,7 +2,7 @@ import React from "react";
 import { SignedInRoutes } from "../../config/routes";
 import ITokenContextData from "../../models/ITokenContextData";
 import TokenContext from "../../contexts/TokenContext";
-import User from "../../models/User";
+import IUser from "../../models/IUser";
 import UserContext from "../../contexts/UserContext";
 import WebsocketClient from "../../utils/WebsocketClient";
 import EventBusStatus from "../../models/EventBusStatus";
@@ -14,7 +14,7 @@ interface IProp {
 }
 
 interface IState {
-  user?: User;
+  user?: IUser;
   eventBusStatus: EventBusStatus;
 }
 
@@ -66,16 +66,17 @@ class SignedInLayout extends React.Component<IProp, IState> {
   private connect(): void {
     this._eventBus
       .connect()
-      .then((user: User) => {
+      .then((user: IUser) => {
         this.setState({ user });
       })
-      .catch(() => {
+      .catch(error => {
+        console.log(error);
         this.props.tokenContextData.logout();
       });
   }
 
   public render() {
-    const user: User | undefined = this.state.user;
+    const user: IUser | undefined = this.state.user;
     const eventBusStatus: EventBusStatus = this.state.eventBusStatus;
 
     if (eventBusStatus === EventBusStatus.CONNECTED && user) {

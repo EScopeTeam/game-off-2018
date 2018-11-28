@@ -14,4 +14,5 @@ public interface PlayersRepository {
 
   Future<Boolean> existsPlayerbyUsernameOrEmail(String username, String email);
 
+  Future<Player> findPlayerById(String playerId);
 }

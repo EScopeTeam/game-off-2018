@@ -9,6 +9,7 @@ import com.bichos.handlers.authentication.AuthenticationHandler;
 import com.bichos.handlers.authentication.LoginHandler;
 import com.bichos.handlers.authentication.SignUpHandler;
 import com.bichos.handlers.authentication.WsAuthenticationHandler;
+import com.bichos.handlers.bugs.BugsGeneratorHandler;
 import com.bichos.handlers.errors.DecodeExceptionHandler;
 import com.bichos.handlers.errors.ResourceNotFoundHandler;
 import com.bichos.handlers.errors.ValidationErrorHandler;
@@ -31,6 +32,7 @@ public class HandlersModule extends AbstractModule {
   protected void configure() {
     final Multibinder<ApiHandler> apiHandlerBinder = Multibinder.newSetBinder(binder(), ApiHandler.class);
     bindApiHandler(apiHandlerBinder, LoginHandler.class);
+    bindApiHandler(apiHandlerBinder, BugsGeneratorHandler.class);
     bindApiHandler(apiHandlerBinder, SignUpHandler.class);
 
     final Multibinder<ApiWSHandler> apiWSHandlerBinder = Multibinder.newSetBinder(binder(), ApiWSHandler.class);

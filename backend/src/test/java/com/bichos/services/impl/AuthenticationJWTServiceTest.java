@@ -55,6 +55,7 @@ public class AuthenticationJWTServiceTest {
   private static final ZoneId INSTANT_ZONEID = ZoneId.of("UTC");
   private static final String VALID_EMAIL = "hello@world.com";
   private static final String NOT_VALID_EMAIL = "wrong@you.com";
+  private static final String NOT_VALID_PLAYER_ID = "-1";
 
   private AuthenticationJWTService service;
 
@@ -317,6 +318,52 @@ public class AuthenticationJWTServiceTest {
       }
     });
 
+  }
+
+  @Test
+  public void findPlayerByIdIfPlayerExists(final TestContext context) {
+
+    final Player player = new Player();
+    player.setUserId(PLAYER_ID);
+
+    when(playersRepository.findPlayerById(PLAYER_ID)).thenReturn(Future.succeededFuture(player));
+
+    final Async async = context.async();
+    service.findPlayerById(PLAYER_ID).setHandler(result -> {
+      if (result.succeeded()) {
+
+        final ArgumentCaptor<String> claimsCaptor = ArgumentCaptor.forClass(String.class);
+        verify(playersRepository).findPlayerById(claimsCaptor.capture());
+        context.assertEquals(PLAYER_ID, claimsCaptor.getValue());
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
+  }
+
+  @Test
+  public void findPlayerByIdIfPlayerDoesNotExist(final TestContext context) {
+
+    final Player player = new Player();
+    player.setUserId(NOT_VALID_PLAYER_ID);
+
+    when(playersRepository.findPlayerById(PLAYER_ID)).thenReturn(Future.succeededFuture(player));
+
+    final Async async = context.async();
+    service.findPlayerById(PLAYER_ID).setHandler(result -> {
+      if (result.succeeded()) {
+
+        final ArgumentCaptor<String> claimsCaptor = ArgumentCaptor.forClass(String.class);
+        verify(playersRepository).findPlayerById(claimsCaptor.capture());
+        context.assertEquals(PLAYER_ID, claimsCaptor.getValue());
+
+        async.complete();
+      } else {
+        context.fail(result.cause());
+      }
+    });
   }
 
 }

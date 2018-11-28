@@ -21,6 +21,6 @@ export default class WorldScreen extends React.Component<IProp> {
   public render() {
     return (
       <BichosScreenLayout lvl={5} exp={2500} coins={10000} swords={1500} navigation={this.props.navigation} />
-    );
+    ); 
   }
 }

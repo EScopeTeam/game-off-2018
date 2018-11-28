@@ -1,4 +1,5 @@
 export default {
-  BASE_PATH: "http://127.0.0.1:8080",
-  WEBSOCKET_URL: "http://127.0.0.1:8080/websocket",
+  BASE_PATH: "http://localhost:8080",
+  WEBSOCKET_URL: "http://localhost:8080/websocket",
+  BUGS_URL: "http://localhost:9090/bugs",
 };

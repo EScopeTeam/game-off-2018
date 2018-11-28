@@ -1,9 +1,12 @@
 package com.bichos.utils;
 
+import java.util.function.BiFunction;
+
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
+import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.sql.SQLOperations;
@@ -18,6 +21,21 @@ public class SqlClientMock implements SQLClient {
 
   @Setter
   private Throwable exceptionQuerySingleWithParams;
+
+  @Setter
+  private ResultSet resultQueryWithParams;
+
+  @Setter
+  private BiFunction<String, JsonArray, ResultSet> funcQueryWithParams;
+
+  @Setter
+  private Throwable exceptionQueryWithParams;
+
+  @Setter
+  private ResultSet resultQuery;
+
+  @Setter
+  private Throwable exceptionQuery;
 
   @Setter
   private UpdateResult resultUpdateWithParams;
@@ -54,6 +72,30 @@ public class SqlClientMock implements SQLClient {
   }
 
   @Override
+  public SQLClient queryWithParams(final String sql, final JsonArray arguments, final Handler<AsyncResult<ResultSet>> handler) {
+    if (funcQueryWithParams == null) {
+      if (exceptionQuerySingleWithParams == null) {
+        handler.handle(Future.succeededFuture(resultQueryWithParams));
+      } else {
+        handler.handle(Future.failedFuture(exceptionQueryWithParams));
+      }
+    } else {
+      handler.handle(Future.succeededFuture(funcQueryWithParams.apply(sql, arguments)));
+    }
+    return null;
+  }
+
+  @Override
+  public SQLClient query(final String sql, final Handler<AsyncResult<ResultSet>> handler) {
+    if (exceptionQuery == null) {
+      handler.handle(Future.succeededFuture(resultQuery));
+    } else {
+      handler.handle(Future.failedFuture(exceptionQuery));
+    }
+
+    return null;
+  }
+
   public SQLClient updateWithParams(final String sql, final JsonArray params, final Handler<AsyncResult<UpdateResult>> handler) {
     paramsUpdateWithParams = params;
 

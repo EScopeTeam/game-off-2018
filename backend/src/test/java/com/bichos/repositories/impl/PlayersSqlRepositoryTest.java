@@ -145,7 +145,7 @@ public class PlayersSqlRepositoryTest {
           .add(START_EXPERIENCE_POINTS)
           .add(START_PLAYER_ONLINE);
 
-      assertThat(expectedResult, is(client.getParamsUpdateWithParams()));
+      assertThat("The update paramaters are wrong.", expectedResult, is(client.getParamsUpdateWithParams()));
       async.complete();
     });
   }
@@ -178,6 +178,63 @@ public class PlayersSqlRepositoryTest {
         } else {
           async.complete();
         }
+      }
+    });
+  }
+
+  @Test
+  public void checkFindPlayerByPlayerIdReturnsPlayerdIfThereIsOne(final TestContext context) {
+    client.setResultQuerySingleWithParams(new JsonArray()
+        .add(PLAYER_ID)
+        .add(PLAYER_EMAIL)
+        .add(PLAYER_PASSWORD)
+        .add(PLAYER_SALT)
+        .add(PLAYER_ACTIVE)
+        .add(PLAYER_USERNAME)
+        .add(CREATION_DATE)
+        .add(UPDATE_DATE)
+        .add(COINS)
+        .add(EXP_POINTS)
+        .add(PLAYER_ONLINE));
+
+    final Async async = context.async();
+    playersRepository.findPlayerById(String.valueOf(PLAYER_ID)).setHandler(playerResult -> {
+      if (playerResult.succeeded()) {
+        final Player player = playerResult.result();
+
+        context.assertNotNull(player);
+        context.assertEquals(String.valueOf(PLAYER_ID), player.getUserId());
+        context.assertEquals(PLAYER_USERNAME, player.getUsername());
+        context.assertEquals(PLAYER_PASSWORD, player.getPassword());
+        context.assertEquals(PLAYER_SALT, player.getSalt());
+        context.assertEquals(PLAYER_EMAIL, player.getEmail());
+        context.assertEquals(PLAYER_ONLINE, player.isOnline());
+        context.assertEquals(PLAYER_ACTIVE, player.getActive());
+        context.assertEquals(OffsetDateTime.parse(CREATION_DATE, POSTGRE_TIME_FORMATTER), player.getCreationTime());
+        context.assertEquals(OffsetDateTime.parse(UPDATE_DATE, POSTGRE_TIME_FORMATTER), player.getUpdateTime());
+        context.assertEquals(BigDecimal.valueOf(COINS), player.getCoins());
+        context.assertEquals(BigInteger.valueOf(EXP_POINTS), player.getExperiencePoints());
+
+        async.complete();
+      } else {
+        context.fail(playerResult.cause());
+      }
+    });
+  }
+
+  @Test
+  public void checkFindPlayerByPlayerIdReturnsNullIfThereIsNone(final TestContext context) {
+    client.setResultQuerySingleWithParams(null);
+
+    final Async async = context.async();
+    playersRepository.findPlayerById(String.valueOf(PLAYER_ID)).setHandler(playerResult -> {
+      if (playerResult.succeeded()) {
+        final Player player = playerResult.result();
+
+        context.assertNull(player);
+        async.complete();
+      } else {
+        context.fail(playerResult.cause());
       }
     });
   }
