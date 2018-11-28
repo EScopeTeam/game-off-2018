@@ -1,12 +1,20 @@
 package com.bichos.binders;
 
-import com.bichos.repositories.BugRacesRepository;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Clock;
+import java.util.List;
+import java.util.Random;
 
+import com.bichos.repositories.BugDictionaryRepository;
+import com.bichos.repositories.BugRacesRepository;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.repositories.impl.BugColorsPalettesSqlRepository;
 import com.bichos.repositories.impl.BugColorsSqlRepository;
+import com.bichos.repositories.impl.BugDictionaryInMemoryRepository;
 import com.bichos.repositories.impl.BugImagesSqlRepository;
 import com.bichos.repositories.impl.BugPartsSqlRepository;
 import com.bichos.repositories.impl.BugPatternsSqlRepository;
@@ -43,6 +51,19 @@ public class RepositoriesModule extends AbstractModule {
     final BugColorsPalettesSqlRepository colorsPalettesRepository = new BugColorsPalettesSqlRepository(client, colorsRepository);
 
     return new BugRacesSqlRepository(client, partsRepository, colorsPalettesRepository);
+  }
+
+  @Provides
+  @Singleton
+  public BugDictionaryRepository provideDictionaryRepository() throws IOException {
+
+    final File adjFile = Paths.get(".", "/src/main/resources/adj.txt").toFile();
+    final File nounsFile = Paths.get(".", "/src/main/resources/nns.txt").toFile();
+
+    final List<String> adjectives = Files.readAllLines(adjFile.toPath());
+    final List<String> nouns = Files.readAllLines(nounsFile.toPath());
+
+    return new BugDictionaryInMemoryRepository(adjectives, nouns, new Random());
   }
 
 }
