@@ -5,7 +5,7 @@ import {
   NavigationScreenOptions,
 } from "react-navigation";
 import { navigationStyles } from "../config/globalStyles";
-import BichosScreenLayout from "../components/BichosScreenLayout/BichosScreenLayout";
+import BichosScreenLayout from "../components/WorldLayout/WorldScreen";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;

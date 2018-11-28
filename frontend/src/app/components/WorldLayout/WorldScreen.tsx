@@ -17,7 +17,7 @@ interface IState {
   bug?: any;
 }
 
-export default class BichosScreenLayout extends React.Component<{}, IState> {
+export default class WorldScreen extends React.Component<{}, IState> {
   constructor(props: {}) {
     super(props);
 
