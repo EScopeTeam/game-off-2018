@@ -11,9 +11,9 @@ export default class SwordBar extends React.Component<IProps> {
     return (
       <View>
         <View style={styles.bar}>
-          <Text style={styles.text}>{this.props.swords}}</Text>
+          <Text style={styles.text}>{this.props.swords}</Text>
         </View>
-        <Image source={require("../../../assets/bichosScreenIcons/sword.png")} style={styles.image} />
+        <Image source={require("../../../../assets/bichosScreenIcons/sword.png")} style={styles.image} />
       </View>
     );
   }

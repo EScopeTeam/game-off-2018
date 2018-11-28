@@ -11,12 +11,12 @@ export default class AmountBar extends React.Component<IProps> {
     return (
       <View>
         <View style={styles.bar}>
-          <Text style={styles.text}>{this.props.coins}}</Text>
+          <Text style={styles.text}>{this.props.coins}</Text>
         </View>
         <TouchableOpacity>
-          <Image source={require("../../../assets/bichosScreenIcons/anadir.png")} style={styles.add} />
+          <Image source={require("../../../../assets/bichosScreenIcons/anadir.png")} style={styles.add} />
         </TouchableOpacity>
-        <Image source={require("../../../assets/bichosScreenIcons/dolar.png")} style={styles.dolar} />
+        <Image source={require("../../../../assets/bichosScreenIcons/dolar.png")} style={styles.dolar} />
       </View>
     );
   }

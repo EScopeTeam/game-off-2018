@@ -1,7 +1,6 @@
 import React from "react";
-import { View, StatusBar } from "react-native";
+import { View } from "react-native";
 import styles from "./styles";
-import BoottomMenu from "../BottomMenu/BottomMenu";
 import ExpBar from "../ExpBar/ExpBar";
 import AmountBar from "../AmountBar/AmountBar"
 import SwordBar from "../SwordBar/SwordBar"
@@ -19,7 +18,6 @@ export default class BichosScreenLayout extends React.Component<IProps> {
   public render() {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar hidden={true} />
         <View style={styles.head}>
           <View style={{ flex: 1 }}>
             <ExpBar lvl={this.props.lvl} exp={this.props.exp}/>
@@ -32,9 +30,6 @@ export default class BichosScreenLayout extends React.Component<IProps> {
           </View>
         </View>
         <View style={styles.body} />
-        <View style={styles.foot}>
-          <BoottomMenu navigation={this.props.navigation}/>
-        </View>
       </View>
     );
   }

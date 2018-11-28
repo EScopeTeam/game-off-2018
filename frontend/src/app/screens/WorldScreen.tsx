@@ -5,6 +5,7 @@ import {
   NavigationScreenOptions,
 } from "react-navigation";
 import { navigationStyles } from "../config/globalStyles";
+import BichosScreenLayout from "../components/BichosScreenLayout/BichosScreenLayout";
 
 
 interface IProp {
@@ -14,18 +15,12 @@ interface IProp {
 export default class WorldScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
-    tabBarIcon: () => (
-      <Image
-        source={require("../../../assets/bichosScreenIcons/world.png")}
-        style={{ width: 50, height: 50 }}
-      />
-    ),
     ...navigationStyles,
   };
 
   public render() {
     return (
-      <Text>WorldScreen</Text>
+      <BichosScreenLayout lvl={5} exp={2500} coins={10000} swords={1500} navigation={this.props.navigation} />
     );
   }
 }

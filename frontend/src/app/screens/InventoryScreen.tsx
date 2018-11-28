@@ -1,5 +1,5 @@
 import React from "react";
-import { Text,Image } from "react-native";
+import { Text, Image, View } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
@@ -14,18 +14,14 @@ interface IProp {
 export default class InventoryScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
-    tabBarIcon: () => (
-      <Image
-        source={require("../../../assets/bichosScreenIcons/backpack.png")}
-        style={{ width: 50, height: 50 }}
-      />
-    ),
     ...navigationStyles,
   };
 
   public render() {
     return (
-      <Text>InventoryScreen</Text>
+      <View style={{flex:1, backgroundColor: "#ed8a19" }}>
+        <Text>InventoryScreen</Text>
+      </View>
     );
   }
 }

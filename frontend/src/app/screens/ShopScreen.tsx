@@ -13,18 +13,12 @@ interface IProp {
 export default class ShopScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
     header: null,
-    tabBarIcon: () => (
-      <Image
-        source={require("../../../assets/bichosScreenIcons/stand.png")}
-        style={{ width: 50, height: 50 }}
-      />
-    ),
     ...navigationStyles,
   };
 
   public render() {
     return (
-      <View>
+      <View style={{ flex: 1, backgroundColor: "#69b0bb"}}>
         <StatusBar hidden={true} />
         <Text>ShopScreen</Text>
       </View>

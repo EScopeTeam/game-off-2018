@@ -9,11 +9,5 @@ export default StyleSheet.create({
   },
   body: {
     flex: 15
-  },
-  foot: {
-    flex: 2,
-    backgroundColor: "#35464d",
-    flexDirection: "row",
-    justifyContent: "space-around"
   }
 });

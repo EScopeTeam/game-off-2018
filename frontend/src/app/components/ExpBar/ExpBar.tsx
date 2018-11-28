@@ -14,7 +14,7 @@ export default class ExpBar extends React.Component<IProps> {
         <View style={styles.bar}>
           <View style={[styles.solidBar,{width: (this.props.lvl + 26)}]} />
         </View>
-        <Image source={require("../../../assets/bichosScreenIcons/new.png")} style={styles.imageLvl} />
+        <Image source={require("../../../../assets/bichosScreenIcons/new.png")} style={styles.imageLvl} />
         <Text style={styles.textLvl}>{this.props.lvl}</Text>
       </View>
     );
