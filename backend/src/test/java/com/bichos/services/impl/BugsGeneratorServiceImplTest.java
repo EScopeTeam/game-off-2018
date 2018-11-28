@@ -3,8 +3,12 @@ package com.bichos.services.impl;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +28,8 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 public class BugsGeneratorServiceImplTest {
 
   private static final String RACE_ID = "1";
+  private static final Instant INSTANT_NOW = Instant.now();
+  private static final ZoneId INSTANT_ZONEID = ZoneId.of("UTC");
 
   private Randomizer randomizer;
 
@@ -31,12 +37,22 @@ public class BugsGeneratorServiceImplTest {
 
   private BugsGeneratorServiceImpl service;
 
+  private Clock clock;
+
+  private Random random;
+
   @Before
   public void initialize() {
     randomizer = mock(Randomizer.class);
     racesRepository = mock(BugRacesRepository.class);
 
-    service = new BugsGeneratorServiceImpl(randomizer, racesRepository);
+    clock = mock(Clock.class);
+    when(clock.instant()).thenReturn(INSTANT_NOW);
+    when(clock.getZone()).thenReturn(INSTANT_ZONEID);
+
+    random = mock(Random.class);
+
+    service = new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, random);
   }
 
   @Test

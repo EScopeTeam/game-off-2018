@@ -1,6 +1,7 @@
 package com.bichos.binders;
 
 import java.time.Clock;
+import java.util.Random;
 
 import javax.validation.Validator;
 
@@ -41,8 +42,8 @@ public class ServicesModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository) {
-    return new BugsGeneratorServiceImpl(randomizer, racesRepository);
+  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository, final Clock clock) {
+    return new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, new Random());
   }
 
 }

@@ -36,7 +36,7 @@ public class SqlClientMock implements SQLClient {
 
   @Setter
   private Throwable exceptionQuery;
-  
+
   @Setter
   private UpdateResult resultUpdateWithParams;
 
@@ -93,7 +93,7 @@ public class SqlClientMock implements SQLClient {
 
     return null;
   }
-  
+
   public SQLClient updateWithParams(final String sql, final JsonArray params, final Handler<AsyncResult<UpdateResult>> handler) {
     paramsUpdateWithParams = params;
 
