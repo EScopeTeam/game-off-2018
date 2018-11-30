@@ -3,6 +3,9 @@ package com.bichos.repositories.impl;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -36,12 +39,18 @@ public class BugsSqlRepositoryTest {
 
   private BugPartsSqlRepository partsRepository;
 
+  private Clock clock;
+
   @Before
   public void initialize() {
     client = new SqlClientMock();
 
+    clock = mock(Clock.class);
+    when(clock.instant()).thenReturn(Instant.now());
+    when(clock.getZone()).thenReturn(ZoneId.systemDefault());
+
     partsRepository = mock(BugPartsSqlRepository.class);
-    bugsRepository = new BugsSqlRepository(client, partsRepository);
+    bugsRepository = new BugsSqlRepository(client, partsRepository, clock);
   }
 
   @Test

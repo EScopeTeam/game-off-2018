@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.bichos.repositories.BugDictionaryRepository;
 import com.bichos.repositories.BugRacesRepository;
+import com.bichos.repositories.BugRepository;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.repositories.impl.BugColorsPalettesSqlRepository;
@@ -19,6 +20,7 @@ import com.bichos.repositories.impl.BugImagesSqlRepository;
 import com.bichos.repositories.impl.BugPartsSqlRepository;
 import com.bichos.repositories.impl.BugPatternsSqlRepository;
 import com.bichos.repositories.impl.BugRacesSqlRepository;
+import com.bichos.repositories.impl.BugsSqlRepository;
 import com.bichos.repositories.impl.PlayersSessionsSqlRepository;
 import com.bichos.repositories.impl.PlayersSqlRepository;
 import com.google.inject.AbstractModule;
@@ -64,6 +66,16 @@ public class RepositoriesModule extends AbstractModule {
     final List<String> nouns = Files.readAllLines(nounsFile.toPath());
 
     return new BugDictionaryInMemoryRepository(adjectives, nouns, new Random());
+  }
+
+  @Provides
+  @Singleton
+  public BugRepository provideBugRepository(final SQLClient client, final Clock clock) {
+    final BugImagesSqlRepository imagesRepository = new BugImagesSqlRepository(client);
+    final BugPatternsSqlRepository patternsRepository = new BugPatternsSqlRepository(client, imagesRepository);
+    final BugPartsSqlRepository partsRepository = new BugPartsSqlRepository(client, patternsRepository);
+
+    return new BugsSqlRepository(client, partsRepository, clock);
   }
 
 }
