@@ -71,16 +71,16 @@ public class PlayersSqlRepository implements PlayersRepository {
     } else {
       result = new Player();
       result.setUserId(String.valueOf(row.getLong(INDEX_ID)));
-      result.setEmail(row.getString(INDEX_EMAIL));
+      result.setUsername(row.getString(INDEX_USERNAME));
       result.setPassword(row.getString(INDEX_PASSWORD));
       result.setSalt(row.getString(INDEX_SALT));
+      result.setEmail(row.getString(INDEX_EMAIL));
+      result.setOnline(row.getBoolean(INDEX_ONLINE));
       result.setActive(row.getBoolean(INDEX_ACTIVE));
       result.setCreationTime(OffsetDateTime.parse(row.getString(INDEX_CREATION_DATE), POSTGRE_TIME_FORMATTER));
       result.setUpdateTime(OffsetDateTime.parse(row.getString(INDEX_UPDATE_DATE), POSTGRE_TIME_FORMATTER));
-      result.setUsername(row.getString(INDEX_USERNAME));
       result.setCoins(BigDecimal.valueOf(row.getDouble(INDEX_COINS)));
       result.setExperiencePoints(BigInteger.valueOf(row.getLong(INDEX_EXPERIENCE_POINTS)));
-      result.setOnline(row.getBoolean(INDEX_ONLINE));
     }
 
     return result;
