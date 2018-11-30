@@ -6,7 +6,7 @@ Execute the following command in this same directory:
 
 To run the created image:
 
-`docker run -p 5432:5432 -P --name bichos_db postgre/bichos`
+`docker run -p 5432:5432 -P --name bichos_db postgre/bugs`
 
 user: bichos
 
