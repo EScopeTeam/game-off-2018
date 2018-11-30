@@ -110,14 +110,10 @@ class SignInForm extends React.Component<IProp, IState> {
         .then(() => {
           authenticationClient
             .signUp(form)
-            .then((token: string) => {
-              saveToken(token)
-                .then(() => {
-                  this.setState({ loading: false }, () => {
-                    this.props.tokenContextData.login(token);
-                  });
-                })
-                .catch(this.setGeneralError.bind(this));
+            .then(() => {
+              this.setState({ loading: false }, () => {
+                this.props.navigation.navigate("Login");
+              });
             })
             .catch(this.setHttpErrors.bind(this));
         })

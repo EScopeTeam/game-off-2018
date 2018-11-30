@@ -18,9 +18,7 @@ export default class AuthenticationClient {
     return response.data.token;
   }
 
-  public async signUp(form: ISignUpForm): Promise<string> {
-    const response = await axios.post(this._settings.rest.signUp, form);
-
-    return response.data.token;
+  public async signUp(form: ISignUpForm): Promise<void> {
+    await axios.post(this._settings.rest.signUp, form);
   }
 }

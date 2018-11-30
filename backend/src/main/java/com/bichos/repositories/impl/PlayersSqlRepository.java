@@ -99,7 +99,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   @Override
   public Future<Void> insertPlayer(final Player player) {
     final Future<UpdateResult> fResult = Future.future();
-    client.updateWithParams(INSERT_PLAYER_SQL, new JsonArray()
+    final JsonArray params = new JsonArray()
         .add(player.getEmail())
         .add(player.getPassword())
         .add(player.getSalt())
@@ -109,7 +109,8 @@ public class PlayersSqlRepository implements PlayersRepository {
         .add(OffsetDateTime.now(clock).format(POSTGRE_TIME_FORMATTER))
         .add(START_PLAYER_COINS)
         .add(START_EXPERIENCE_POINTS)
-        .add(START_PLAYER_ONLINE), fResult.completer());
+        .add(START_PLAYER_ONLINE);
+    client.updateWithParams(INSERT_PLAYER_SQL, params, fResult.completer());
 
     return fResult.mapEmpty();
   }
