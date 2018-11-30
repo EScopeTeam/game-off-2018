@@ -9,6 +9,8 @@ public interface BugsGeneratorService {
 
   Future<Bug> generate();
 
-  Future<BugStats> generateStats();
+  Future<BugStats> generateFullBug();
+
+  Future<Void> saveBug(BugStats bugStats);
 
 }

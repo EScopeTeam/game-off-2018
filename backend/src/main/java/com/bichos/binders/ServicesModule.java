@@ -6,7 +6,9 @@ import java.util.Random;
 import javax.validation.Validator;
 
 import com.bichos.config.AuthenticationConfig;
+import com.bichos.repositories.BugDictionaryRepository;
 import com.bichos.repositories.BugRacesRepository;
+import com.bichos.repositories.BugRepository;
 import com.bichos.repositories.PlayersRepository;
 import com.bichos.repositories.PlayersSessionsRepository;
 import com.bichos.services.AuthenticationService;
@@ -42,8 +44,11 @@ public class ServicesModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer, final BugRacesRepository racesRepository, final Clock clock) {
-    return new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, new Random());
+  public BugsGeneratorService provideBugGeneratorService(final Randomizer randomizer,
+      final BugRacesRepository racesRepository, final Clock clock, final BugDictionaryRepository bugDictionaryRepository,
+      final BugRepository bugRepository) {
+    return new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, new Random(),
+        bugDictionaryRepository, bugRepository);
   }
 
 }

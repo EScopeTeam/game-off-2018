@@ -16,7 +16,9 @@ import org.junit.runner.RunWith;
 
 import com.bichos.models.bugs.BugRace;
 import com.bichos.models.bugs.BugSelectedPart;
+import com.bichos.repositories.BugDictionaryRepository;
 import com.bichos.repositories.BugRacesRepository;
+import com.bichos.repositories.BugRepository;
 import com.bichos.utils.Randomizer;
 
 import io.vertx.core.Future;
@@ -41,10 +43,19 @@ public class BugsGeneratorServiceImplTest {
 
   private Random random;
 
+  private BugRepository bugRepository;
+
+  private BugDictionaryRepository bugDictionaryRepository;
+
   @Before
   public void initialize() {
     randomizer = mock(Randomizer.class);
     racesRepository = mock(BugRacesRepository.class);
+    bugRepository = mock(BugRepository.class);
+
+    bugDictionaryRepository = mock(BugDictionaryRepository.class);
+    when(bugDictionaryRepository.getRandomNoun()).thenReturn(Future.succeededFuture("monster"));
+    when(bugDictionaryRepository.getRandomAdjective()).thenReturn(Future.succeededFuture("astonishing"));
 
     clock = mock(Clock.class);
     when(clock.instant()).thenReturn(INSTANT_NOW);
@@ -52,7 +63,8 @@ public class BugsGeneratorServiceImplTest {
 
     random = mock(Random.class);
 
-    service = new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, random);
+    service = new BugsGeneratorServiceImpl(randomizer, racesRepository, clock, random,
+        bugDictionaryRepository, bugRepository);
   }
 
   @Test

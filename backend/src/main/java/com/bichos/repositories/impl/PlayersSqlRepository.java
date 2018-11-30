@@ -38,7 +38,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   private static final String INSERT_PLAYER_SQL = "INSERT INTO players (email, password, salt, active, username, creation_time, update_time, "
       + "coins, experiencePoints, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-  private static final String COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
+  private static final String COUNT_PLAYER_BY_USER_OR_MAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
 
   private static final String FIND_PLAYER_BY_PLAYER_ID_SQL = "SELECT player_id, email, password, salt, active, username, creation_time, "
       + "update_time, coins, experiencePoints, online FROM players WHERE player_id = ?";
@@ -118,7 +118,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   public Future<Boolean> existsPlayerbyUsernameOrEmail(final String username, final String email) {
     final Future<JsonArray> fCount = Future.future();
     final JsonArray params = new JsonArray().add(username).add(email);
-    client.querySingleWithParams(COUNT_PLAYER_BY_USERNAME_OR_EMAIL_SQL, params, fCount.completer());
+    client.querySingleWithParams(COUNT_PLAYER_BY_USER_OR_MAIL_SQL, params, fCount.completer());
     return fCount.map(arr -> arr.getLong(0) == 1);
   }
 

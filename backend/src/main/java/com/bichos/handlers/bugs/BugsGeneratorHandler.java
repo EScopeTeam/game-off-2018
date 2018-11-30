@@ -15,9 +15,15 @@ public class BugsGeneratorHandler implements ApiHandler {
 
   @Override
   public void handle(final RoutingContext context) {
-    bugsGeneratorService.generate().setHandler(result -> {
+    bugsGeneratorService.generateFullBug().setHandler(result -> {
       if (result.succeeded()) {
-        context.response().end(result.result().hash());
+        bugsGeneratorService.saveBug(result.result()).setHandler(res -> {
+          if (result.succeeded()) {
+            context.response().end(result.result().hash());
+          } else {
+            context.fail(result.cause());
+          }
+        });
       } else {
         context.fail(result.cause());
       }
