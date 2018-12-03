@@ -11,7 +11,7 @@ import styles from "./styles";
 import IFormField from "../../models/IFormField";
 import IFormFieldValue from "../../models/IFormFieldValue";
 import GenericTextInput from "../GenericTextInput/GenericTextInput";
-import FormButton from "../FormButton/FormButton"
+import FormButton from "../FormButton/FormButton";
 import { signUpConstraints } from "./signUpConstraints";
 import {
   getFieldValuesWithValidationErrors,
@@ -22,6 +22,7 @@ import ValidationError from "../../errors/ValidationError";
 import IFormFieldError from "../../models/IFormFieldError";
 import FormError from "../FormError";
 import Loading from "../Loading";
+import ISignUpForm from "../../models/ISignUpForm";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
@@ -29,6 +30,7 @@ interface IProp {
 }
 
 interface IState {
+  email: IFormFieldValue;
   username: IFormFieldValue;
   password: IFormFieldValue;
   rePassword: IFormFieldValue;
@@ -39,13 +41,17 @@ interface IState {
 class SignInForm extends React.Component<IProp, IState> {
   private _form: { [key: string]: IFormField };
 
-  private secondInput: React.RefObject<TextInput> = createRef<TextInput>();
-  private thirdInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private usernameInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private passwordInput: React.RefObject<TextInput> = createRef<TextInput>();
+  private rePasswordInput: React.RefObject<TextInput> = createRef<TextInput>();
 
   constructor(props: IProp) {
     super(props);
 
     this.state = {
+      email: {
+        value: "",
+      },
       username: {
         value: "",
       },
@@ -60,6 +66,11 @@ class SignInForm extends React.Component<IProp, IState> {
     };
 
     this._form = {
+      email: {
+        name: "email",
+        placeholderCode: "signup:email",
+        setter: (value: string) => this.setState({ email: { value } }),
+      },
       username: {
         name: "username",
         placeholderCode: "login:username",
@@ -71,50 +82,48 @@ class SignInForm extends React.Component<IProp, IState> {
         setter: (value: string) => this.setState({ password: { value } }),
       },
       rePassword: {
-        name: "password",
-        placeholderCode: "login:password",
-        setter: (value: string) => this.setState({ password: { value } }),
+        name: "rePassword",
+        placeholderCode: "login:re-password",
+        setter: (value: string) => this.setState({ rePassword: { value } }),
       },
     };
   }
 
   private submit(): void {
-    const form = {
+    const form: ISignUpForm = {
       username: this.state.username.value,
       password: this.state.password.value,
-      rePassword: this.state.rePassword.value,
+      email: this.state.email.value,
     };
 
     this.setState({
       generalErrors: [],
       username: { value: form.username },
       password: { value: form.password },
+      email: { value: form.email },
+      rePassword: { value: this.state.rePassword.value },
       loading: true,
     });
 
-    validate(form, signUpConstraints)
-      .then(() => {
-        if (form.password === form.rePassword) {
+    if (form.password === this.state.rePassword.value) {
+      validate(form, signUpConstraints)
+        .then(() => {
           authenticationClient
-            .signIn(form.username, form.password)
-            .then((token: string) => {
-              saveToken(token)
-                .then(() => {
-                  this.setState({ loading: false }, () => {
-                    this.props.tokenContextData.login(token);
-                  });
-                })
-                .catch(this.setGeneralError.bind(this));
+            .signUp(form)
+            .then(() => {
+              this.setState({ loading: false }, () => {
+                this.props.navigation.navigate("Login");
+              });
             })
             .catch(this.setHttpErrors.bind(this));
-        } else {
-          this.setValidationPasswordErrors();
-        }
-      })
-      .catch(this.setValidationErrors.bind(this));
+        })
+        .catch(this.setValidationErrors.bind(this));
+    } else {
+      this.setValidationPasswordErrors();
+    }
   }
 
-  private setGeneralError(): void {
+  private setGeneralError(error: Error): void {
     this.setState({
       loading: false,
       generalErrors: [{ code: "generalError" }],
@@ -123,7 +132,10 @@ class SignInForm extends React.Component<IProp, IState> {
   private setValidationPasswordErrors(): void {
     this.setState({
       loading: false,
-      generalErrors: [{ code: "The password is different" }],
+      rePassword: {
+        value: this.state.rePassword.value,
+        errors: [{ code: "The repeated password is different" }],
+      },
     });
   }
 
@@ -139,6 +151,12 @@ class SignInForm extends React.Component<IProp, IState> {
       ];
     } else if (error.response && error.request.status === 422) {
       newState = getFieldValuesWithHttpErrors(this._form, error, this.state);
+    } else if (error.response && error.request.status === 409) {
+      newState = this.state;
+      newState.username = {
+        value: newState.username.value,
+        errors: [{ code: "notUnique" }],
+      };
     } else {
       newState = this.state;
       newState.generalErrors = [
@@ -175,44 +193,50 @@ class SignInForm extends React.Component<IProp, IState> {
         <Card containerStyle={{ height: 280 }}>
           <FormError errors={this.state.generalErrors} />
           <GenericTextInput
+            field={this._form.email}
+            fieldValue={this.state.email}
+            keyboardType="email-address"
+            onSubmitEditing={() => {
+              if (this.usernameInput.current) {
+                this.usernameInput.current.focus();
+              }
+            }}
+          />
+          <GenericTextInput
             field={this._form.username}
             fieldValue={this.state.username}
             keyboardType="email-address"
-            keyLabel="Email"
             onSubmitEditing={() => {
-              if (this.secondInput.current) {
-                this.secondInput.current.focus();
+              if (this.passwordInput.current) {
+                this.passwordInput.current.focus();
               }
             }}
+            refInput={this.usernameInput}
           />
           <GenericTextInput
             field={this._form.password}
             fieldValue={this.state.password}
-            keyLabel="Password"
             secureTextEntry
-            refInput={this.secondInput}
             onSubmitEditing={() => {
-              if (this.thirdInput.current) {
-                this.thirdInput.current.focus();
+              if (this.rePasswordInput.current) {
+                this.rePasswordInput.current.focus();
               }
             }}
+            refInput={this.passwordInput}
           />
           <GenericTextInput
             field={this._form.rePassword}
             fieldValue={this.state.rePassword}
-            keyLabel="Password"
             secureTextEntry
-            refInput={this.thirdInput}
+            onSubmitEditing={() => this.submit()}
+            refInput={this.rePasswordInput}
           />
-          <View style={styles.button_login} >
+          <View style={styles.button_login}>
             <FormButton
               title="LOGIN"
               onPress={() => navigation.navigate("Login")}
             />
-            <FormButton
-              title="SIGNUP"
-              onPress={() => this.submit()}
-            />
+            <FormButton title="SIGNUP" onPress={() => this.submit()} />
           </View>
         </Card>
         <View style={styles.footer_login} />
@@ -233,4 +257,3 @@ export default (props: any) => {
     </TokenContext.Consumer>
   );
 };
-

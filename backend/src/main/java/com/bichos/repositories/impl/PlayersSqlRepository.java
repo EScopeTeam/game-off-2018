@@ -37,7 +37,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   private static final String UPDATE_ONLINE_BY_ID_SQL = "UPDATE players SET online = ? WHERE player_id = ?";
 
   private static final String INSERT_PLAYER_SQL = "INSERT INTO players (email, password, salt, active, username, creation_time, update_time, "
-      + "coins, experiencePoints, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      + "coins, experience_points, online) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   private static final String COUNT_PLAYER_BY_UNAME_OR_EMAIL_SQL = "SELECT count(*) FROM players WHERE username = ? OR email = ?";
 
@@ -71,16 +71,16 @@ public class PlayersSqlRepository implements PlayersRepository {
     } else {
       result = new Player();
       result.setUserId(String.valueOf(row.getLong(INDEX_ID)));
-      result.setEmail(row.getString(INDEX_EMAIL));
+      result.setUsername(row.getString(INDEX_USERNAME));
       result.setPassword(row.getString(INDEX_PASSWORD));
       result.setSalt(row.getString(INDEX_SALT));
+      result.setEmail(row.getString(INDEX_EMAIL));
+      result.setOnline(row.getBoolean(INDEX_ONLINE));
       result.setActive(row.getBoolean(INDEX_ACTIVE));
       result.setCreationTime(OffsetDateTime.parse(row.getString(INDEX_CREATION_DATE), POSTGRE_TIME_FORMATTER));
       result.setUpdateTime(OffsetDateTime.parse(row.getString(INDEX_UPDATE_DATE), POSTGRE_TIME_FORMATTER));
-      result.setUsername(row.getString(INDEX_USERNAME));
       result.setCoins(BigDecimal.valueOf(row.getDouble(INDEX_COINS)));
       result.setExperiencePoints(BigInteger.valueOf(row.getLong(INDEX_EXPERIENCE_POINTS)));
-      result.setOnline(row.getBoolean(INDEX_ONLINE));
     }
 
     return result;
@@ -99,7 +99,7 @@ public class PlayersSqlRepository implements PlayersRepository {
   @Override
   public Future<Void> insertPlayer(final Player player) {
     final Future<UpdateResult> fResult = Future.future();
-    client.updateWithParams(INSERT_PLAYER_SQL, new JsonArray()
+    final JsonArray params = new JsonArray()
         .add(player.getEmail())
         .add(player.getPassword())
         .add(player.getSalt())
@@ -109,7 +109,8 @@ public class PlayersSqlRepository implements PlayersRepository {
         .add(OffsetDateTime.now(clock).format(POSTGRE_TIME_FORMATTER))
         .add(START_PLAYER_COINS)
         .add(START_EXPERIENCE_POINTS)
-        .add(START_PLAYER_ONLINE), fResult.completer());
+        .add(START_PLAYER_ONLINE);
+    client.updateWithParams(INSERT_PLAYER_SQL, params, fResult.completer());
 
     return fResult.mapEmpty();
   }

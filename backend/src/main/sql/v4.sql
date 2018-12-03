@@ -12,3 +12,6 @@ ALTER TABLE public.players
 
 ALTER TABLE public.players
     ADD COLUMN experience_points bigint DEFAULT 0 NOT NULL;
+    
+ALTER TABLE public.players
+    ALTER COLUMN salt TYPE character varying (75) COLLATE pg_catalog."default";

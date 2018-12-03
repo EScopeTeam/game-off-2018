@@ -162,17 +162,15 @@ definitions:
   SignUpRequest:
     type: "object"
     required: 
-    - "mail"
-    - "nickname"
+    - "email"
+    - "username"
     - "password"
-    - "passwordRep"
-    - "conditionsCheck"
     properties:
-      mail:
+      email:
         type: "string"
         description: "Mail account of the player."
         example: "mymail@myaccount.com"
-      nickname:
+      username:
         type: "string"
         description: "User name of the player."
         example: "pepitoflores2"
@@ -180,13 +178,6 @@ definitions:
         type: "string"
         description: "User account password."
         example: "thisismypassword"
-      passwordRep:
-        type: "string"
-        description: "User account password repeated to check correct field"
-        example: "thisismypassword"
-      conditionsCheck:
-        type: "boolean"
-        description: "Wheter user has approved and read conditions"
         
   HelloRequest:
     type: "object"

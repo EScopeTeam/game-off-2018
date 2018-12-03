@@ -132,7 +132,9 @@ public class AuthenticationJWTService implements AuthenticationService {
   }
 
   private Future<Boolean> checkUniqueUsernameAndEmail(final SignupRequest request) {
-    return playersRepository.existsPlayerbyUsernameOrEmail(request.getUsername(), request.getEmail());
+    return playersRepository
+        .existsPlayerbyUsernameOrEmail(request.getUsername(), request.getEmail())
+        .map(exist -> !exist);
   }
 
   private Player createPlayerFromSignupRequest(final SignupRequest request) {
