@@ -8,6 +8,7 @@ const settings: ISettings = {
     },
     rest: {
       login: env.BASE_PATH + "/login",
+      signUp: env.BASE_PATH + "/signup",
     },
   },
 };

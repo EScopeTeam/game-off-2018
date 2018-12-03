@@ -26,7 +26,7 @@ public class HelloHandler implements ApiWSHandler {
         if (result.result() == null) {
           message.fail(HttpStatus.NOT_FOUND.getStatusCode(), HttpStatus.NOT_FOUND.getStatusMessage());
         } else {
-          message.reply(PlayerMapper.mapPlayerToResponse(result.result()));
+          message.reply(JsonObject.mapFrom(PlayerMapper.mapPlayerToResponse(result.result())));
         }
       } else {
         message.fail(HttpStatus.INTERNAL_SERVER_ERROR.getStatusCode(), result.cause().getMessage());

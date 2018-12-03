@@ -24,7 +24,7 @@ public class PlayersSessionsSqlRepository implements PlayersSessionsRepository {
   private static final int INDEX_PLAYER_ID = 1;
   private static final int INDEX_START_DATE = 2;
 
-  private static final DateTimeFormatter POSGRESS_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
+  private static final DateTimeFormatter POSGRESS_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
   private final SQLClient client;
 

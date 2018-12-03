@@ -1,5 +1,5 @@
 import EventBusClient, { EventBus } from "../../../lib/vertx-eventbus";
-import User from "../models/User";
+import IUser from "../models/IUser";
 import env from "../config/env.conf";
 import NotConnectedWebsocketError from "../errors/NotConnectedWebsocketErorr";
 import EventBusStatus from "../models/EventBusStatus";
@@ -35,12 +35,12 @@ export default class WebsocketClient {
     this._changeStatus = changeStatus;
   }
 
-  public connect(): Promise<User> {
+  public connect(): Promise<IUser> {
     this._reconnects++;
     this._changeStatus(EventBusStatus.CONNECTING);
     this.clean();
 
-    return new Promise<User>((resolve, reject) => {
+    return new Promise<IUser>((resolve, reject) => {
       this._eventBus = new EventBusClient(env.WEBSOCKET_URL);
       this._eventBus.defaultHeaders = {
         Authorization: "Bearer " + this._token,
@@ -51,7 +51,7 @@ export default class WebsocketClient {
         this._reconnects = 0;
 
         this.send(settings.api.websocket.hello, {})
-          .then((user: User) => {
+          .then((user: IUser) => {
             this._changeStatus(EventBusStatus.CONNECTED);
             resolve(user);
           })

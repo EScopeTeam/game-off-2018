@@ -54,7 +54,7 @@ public class BugsSqlRepositoryTest {
 
     client.setResultQuerySingleWithParams(row);
 
-    List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
+    final List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
     when(partsRepository.findAllSelectedByBugId(String.valueOf(ID))).thenReturn(Future.succeededFuture(parts));
 
     final Async async = context.async();
@@ -79,7 +79,7 @@ public class BugsSqlRepositoryTest {
 
     client.setResultQueryWithParams(new ResultSet(Collections.emptyList(), rows, null));
 
-    List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
+    final List<BugSelectedPart> parts = Arrays.asList(new BugSelectedPart());
     when(partsRepository.findAllSelectedByBugId(String.valueOf(ID))).thenReturn(Future.succeededFuture(parts));
 
     final Async async = context.async();

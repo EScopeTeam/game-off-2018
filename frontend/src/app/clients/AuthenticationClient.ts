@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IApiSettings } from "../models/ISettings";
+import ISignUpForm from "../models/ISignUpForm";
 
 export default class AuthenticationClient {
   private _settings: IApiSettings;
@@ -16,17 +17,8 @@ export default class AuthenticationClient {
 
     return response.data.token;
   }
-  
-  public async signIn(username: string, password: string): Promise<string> {
-    const response = await axios.post(this._settings.rest.signIn, {
-      username,
-      password,
-    });
 
-    return response.data.token;
-  }
-
-  public async hello(token: string): Promise<User> {
-    return websocketHelper.connect(token);
+  public async signUp(form: ISignUpForm): Promise<void> {
+    await axios.post(this._settings.rest.signUp, form);
   }
 }

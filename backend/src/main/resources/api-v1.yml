@@ -55,7 +55,7 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/SignUpRequest"
-      reponses:
+      responses:
         201:
           description: "User account created succesfully."
         400:
@@ -86,7 +86,7 @@ paths:
         200:
           description: "Player data initialization succedeed."
           schema:
-            $ref: "#definitions/PlayerData"
+            $ref: "#/definitions/PlayerData"
         404:
           description: "Player data not found."
         default:
@@ -162,17 +162,15 @@ definitions:
   SignUpRequest:
     type: "object"
     required: 
-    - "mail"
-    - "nickname"
+    - "email"
+    - "username"
     - "password"
-    - "passwordRep"
-    - "conditionsCheck"
     properties:
-      mail:
+      email:
         type: "string"
         description: "Mail account of the player."
         example: "mymail@myaccount.com"
-      nickname:
+      username:
         type: "string"
         description: "User name of the player."
         example: "pepitoflores2"
@@ -180,13 +178,6 @@ definitions:
         type: "string"
         description: "User account password."
         example: "thisismypassword"
-      passwordRep:
-        type: "string"
-        decription: "User account password repeated to check correct field"
-        example: "thisismypassword"
-      conditionsCheck:
-        type: "boolean"
-        description: "Wheter user has approved and read conditions"
         
   HelloRequest:
     type: "object"
@@ -210,6 +201,8 @@ definitions:
     - coins
     - experience
     - email
+    - online
+    - active
     properties:
       userId:
         type: "string"

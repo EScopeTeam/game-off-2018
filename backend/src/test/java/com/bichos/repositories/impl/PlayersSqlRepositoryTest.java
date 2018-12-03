@@ -28,7 +28,7 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 @RunWith(VertxUnitRunner.class)
 public class PlayersSqlRepositoryTest {
 
-  private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSX");
+  private static final DateTimeFormatter POSTGRE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
   private static final int PLAYER_ID = 12;
   private static final String PLAYER_USERNAME = "test01";
@@ -68,16 +68,16 @@ public class PlayersSqlRepositoryTest {
   public void checkFindPlayerByUsernameReturnsAPlayerIfThereIsOne(final TestContext context) {
     client.setResultQuerySingleWithParams(new JsonArray()
         .add(PLAYER_ID)
-        .add(PLAYER_EMAIL)
+        .add(PLAYER_USERNAME)
         .add(PLAYER_PASSWORD)
         .add(PLAYER_SALT)
+        .add(PLAYER_EMAIL)
+        .add(PLAYER_ONLINE)
         .add(PLAYER_ACTIVE)
-        .add(PLAYER_USERNAME)
         .add(CREATION_DATE)
         .add(UPDATE_DATE)
         .add(COINS)
-        .add(EXP_POINTS)
-        .add(PLAYER_ONLINE));
+        .add(EXP_POINTS));
 
     final Async async = context.async();
     playersRepository.findPlayerByUsername(PLAYER_USERNAME).setHandler(playerResult -> {
@@ -145,7 +145,7 @@ public class PlayersSqlRepositoryTest {
           .add(START_EXPERIENCE_POINTS)
           .add(START_PLAYER_ONLINE);
 
-      assertThat(expectedResult, is(client.getParamsUpdateWithParams()));
+      assertThat("The update paramaters are wrong.", expectedResult, is(client.getParamsUpdateWithParams()));
       async.complete();
     });
   }
@@ -186,16 +186,16 @@ public class PlayersSqlRepositoryTest {
   public void checkFindPlayerByPlayerIdReturnsPlayerdIfThereIsOne(final TestContext context) {
     client.setResultQuerySingleWithParams(new JsonArray()
         .add(PLAYER_ID)
-        .add(PLAYER_EMAIL)
+        .add(PLAYER_USERNAME)
         .add(PLAYER_PASSWORD)
         .add(PLAYER_SALT)
+        .add(PLAYER_EMAIL)
+        .add(PLAYER_ONLINE)
         .add(PLAYER_ACTIVE)
-        .add(PLAYER_USERNAME)
         .add(CREATION_DATE)
         .add(UPDATE_DATE)
         .add(COINS)
-        .add(EXP_POINTS)
-        .add(PLAYER_ONLINE));
+        .add(EXP_POINTS));
 
     final Async async = context.async();
     playersRepository.findPlayerById(String.valueOf(PLAYER_ID)).setHandler(playerResult -> {

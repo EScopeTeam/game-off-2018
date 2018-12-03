@@ -279,7 +279,7 @@ public class AuthenticationJWTServiceTest {
     final SignupRequest request = new SignupRequest();
     request.setEmail(VALID_EMAIL);
     request.setUsername(VALID_USERNAME);
-    when(playersRepository.existsPlayerbyUsernameOrEmail(VALID_USERNAME, VALID_EMAIL)).thenReturn(Future.succeededFuture(true));
+    when(playersRepository.existsPlayerbyUsernameOrEmail(VALID_USERNAME, VALID_EMAIL)).thenReturn(Future.succeededFuture(false));
     when(playersRepository.insertPlayer(any(Player.class))).thenReturn(Future.succeededFuture());
 
     final Async async = context.async();

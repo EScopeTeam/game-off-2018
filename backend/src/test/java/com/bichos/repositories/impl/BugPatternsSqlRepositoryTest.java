@@ -57,7 +57,7 @@ public class BugPatternsSqlRepositoryTest {
 
     client.setResultQueryWithParams(new ResultSet(Collections.emptyList(), rows, null));
 
-    List<BugImage> images = Arrays.asList(new BugImage());
+    final List<BugImage> images = Arrays.asList(new BugImage());
     when(imagesRepository.findAllByPatternId(String.valueOf(ID))).thenReturn(Future.succeededFuture(images));
 
     final Async async = context.async();
@@ -87,7 +87,7 @@ public class BugPatternsSqlRepositoryTest {
 
     client.setResultQuerySingleWithParams(row);
 
-    List<BugSelectedImage> images = Arrays.asList(new BugSelectedImage());
+    final List<BugSelectedImage> images = Arrays.asList(new BugSelectedImage());
     when(imagesRepository.findAllSelectedByPatternId(BUG_ID, String.valueOf(ID))).thenReturn(Future.succeededFuture(images));
 
     final Async async = context.async();
