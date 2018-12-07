@@ -20,7 +20,6 @@ const W_H_RATION: number = 1;
 export default class BugDisplay extends React.Component<IProp> {
   private formatBug(bugHash: string): IBug {
     const data: string = new Buffer(bugHash, "base64").toString("ascii");
-    console.log(data);
     const firstSeparation: number = data.indexOf(RACE_SEPARATOR);
     const bugRaceId: string = data.substr(0, firstSeparation);
     const images: IBugImage[] = this.formatBugImages(

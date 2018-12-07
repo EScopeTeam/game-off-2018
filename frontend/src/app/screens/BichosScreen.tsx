@@ -4,10 +4,9 @@ import { View, Text, Button } from "react-native";
 import ITokenContextData from "../models/ITokenContextData";
 import TokenContext from "../contexts/TokenContext";
 import BugDisplay from "../components/BugDisplay";
-import IBug from "../models/IBug";
 
 interface IState {
-  bug: IBug | null;
+  bug: string | null;
 }
 
 export default class BichosScreen extends React.Component<{}, IState> {
@@ -30,7 +29,7 @@ export default class BichosScreen extends React.Component<{}, IState> {
         const bug = response.data;
         this.setState({ bug });
       })
-      .catch(error => console.error(error));
+      .catch();
   }
 
   public render() {

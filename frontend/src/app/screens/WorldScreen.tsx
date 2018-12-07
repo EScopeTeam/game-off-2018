@@ -1,24 +1,23 @@
 import React from "react";
+import { Text, Image } from "react-native";
 import {
   NavigationScreenProp,
   NavigationScreenOptions,
 } from "react-navigation";
-import { navigationStyles } from "./../config/globalStyles";
-import { t } from "../config/i18n";
-import LoginForm from "../components/LoginForm";
-
+import { navigationStyles } from "../config/globalStyles";
+import BichosScreenLayout from "../components/WorldLayout/WorldScreen";
 
 interface IProp {
   readonly navigation: NavigationScreenProp<any, any>;
 }
 
-export default class LoginScreen extends React.Component<IProp> {
+export default class WorldScreen extends React.Component<IProp> {
   public static navigationOptions: NavigationScreenOptions = {
-    title: t("login:title"),
+    header: null,
     ...navigationStyles,
   };
 
   public render() {
-    return <LoginForm navigation={this.props.navigation} />;
+    return <BichosScreenLayout />;
   }
 }
